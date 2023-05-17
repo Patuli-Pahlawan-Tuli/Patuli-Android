@@ -4,17 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="84dp"
         android:layout_height="84dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,11 +23,36 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
-        android:text="Selamat Datang di Patuli"
-        android:textSize="24sp"
+        android:text="Masukkan Data Diri Anda"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="14dp"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Nama"
+
+        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="custom"
+        app:helperText="Masukkan Nama Anda"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:startIconDrawable="@drawable/ic_baseline_person_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email"
@@ -37,18 +60,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="14dp"
-        android:hint="Email"
         android:fontFamily="@font/roboto_regular"
 
+        android:hint="Email"
+        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="custom"
+        app:helperText="Masukkan Email Anda"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:startIconDrawable="@drawable/ic_baseline_email_24"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_clear_24"
-        app:helperText="Masukkan Email Anda"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/til_name"
+        app:startIconDrawable="@drawable/ic_baseline_email_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_email"
@@ -85,6 +108,34 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirm_password"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+
+        android:layout_marginEnd="14dp"
+        android:fontFamily="@font/roboto_regular"
+
+        android:hint="Konfirmasi Kata Sandi"
+        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="custom"
+        app:helperText="Masukkan Ulang Kata Sandi Anda"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_password"
+        app:startIconDrawable="@drawable/ic_baseline_lock_check">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/btn_login"
         style="@style/Widget.Material3.Button.ElevatedButton"
@@ -101,7 +152,7 @@
         android:textColor="@color/md_theme_light_onPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_password" />
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
 
 
     <LinearLayout
@@ -113,25 +164,25 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
         <TextView
-            android:id="@+id/tv_dont_have_account"
+            android:id="@+id/tv_have_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
-            android:text="Belum Punya Akun?"
+            android:text="Sudah Punya Akun?"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/btn_login"
             tools:layout_editor_absoluteX="14dp" />
 
         <TextView
-            android:id="@+id/tv_register"
+            android:id="@+id/tv_loginr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
-            android:text="Daftar"
+            android:text="Masuk"
             android:textColor="@color/link"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/tv_dont_have_account"
