@@ -1,9 +1,6 @@
 package com.puxxbu.PatuliApp
 
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,6 +17,6 @@ class LoginActivity : AppCompatActivity() {
         windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
 
         supportActionBar?.hide()
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_home)
     }
 }
