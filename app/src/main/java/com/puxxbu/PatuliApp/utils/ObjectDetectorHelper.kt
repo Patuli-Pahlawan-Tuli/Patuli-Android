@@ -2,8 +2,11 @@ package com.puxxbu.PatuliApp.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tflite.client.TfLiteInitializationOptions
 import com.google.android.gms.tflite.gpu.support.TfLiteGpu
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -15,14 +18,16 @@ import org.tensorflow.lite.task.gms.vision.detector.Detection
 import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
 
 class ObjectDetectorHelper(
-    var threshold: Float = 0.5f,
-    var numThreads: Int = 2,
-    var maxResults: Int = 1,
-    var currentDelegate: Int = 0,
-    var currentModel: Int = 0,
+
     val context: Context,
     val objectDetectorListener: DetectorListener
 ) {
+    var threshold: Float = 0.6f
+    var numThreads: Int = 2
+    var maxResults: Int = 1
+
+    private val _resultResponse = MutableLiveData<MutableList<Detection>?>()
+    val resultResponse: MutableLiveData<MutableList<Detection>?> = _resultResponse
 
     private val TAG = "ObjectDetectionHelper"
 
@@ -72,33 +77,10 @@ class ObjectDetectorHelper(
         val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
 
         // Use the specified hardware for running the model. Default to CPU
-        when (currentDelegate) {
-            DELEGATE_CPU -> {
-                // Default
-            }
-            DELEGATE_GPU -> {
-                if (gpuSupported) {
-                    baseOptionsBuilder.useGpu()
-                } else {
-                    objectDetectorListener.onError("GPU is not supported on this device")
-                }
-            }
-            DELEGATE_NNAPI -> {
-                baseOptionsBuilder.useNnapi()
-            }
-        }
 
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-        val modelName =
-            when (currentModel) {
-                MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
-                MODEL_EFFICIENTDETV0 -> "efficientdet-lite0.tflite"
-                MODEL_EFFICIENTDETV1 -> "efficientdet-lite1.tflite"
-                MODEL_EFFICIENTDETV2 -> "efficientdet-lite2.tflite"
-                else -> "mobilenetv1.tflite"
-            }
-
+        val modelName = "abjad_fulltrain_metadata.tflite"
         try {
             objectDetector =
                 ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())
@@ -139,6 +121,13 @@ class ObjectDetectorHelper(
             inferenceTime,
             tensorImage.height,
             tensorImage.width)
+
+        _resultResponse.postValue(results)
+
+
+
+
+
     }
 
     interface DetectorListener {

@@ -5,19 +5,20 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
+import kotlinx.coroutines.*
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -32,13 +33,17 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private val fragmentCameraBinding
         get() = _fragmentCameraBinding!!
 
+    private val _resultResponse = MutableLiveData<String>()
+    val resultResponse: MutableLiveData<String> = _resultResponse
+
     private lateinit var objectDetectorHelper: ObjectDetectorHelper
     private lateinit var bitmapBuffer: Bitmap
     private var preview: Preview? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-
+    private var job: Job? = null
+    private val logDelay = 1000L // Delay in milliseconds
 
 
     /** Blocking camera operations are performed using this executor */
@@ -52,7 +57,11 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         // user could have removed them while the app was in paused state.
         if (!PermissionsFragment.hasPermissions(requireContext())) {
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, permissionsFragment, PermissionsFragment::class.java.simpleName)
+                .replace(
+                    R.id.fragment_container,
+                    permissionsFragment,
+                    PermissionsFragment::class.java.simpleName
+                )
                 .commit()
         }
     }
@@ -72,6 +81,10 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     ): View {
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
 
+        val tvHasil = fragmentCameraBinding.tvHasil
+        tvHasil.setText("Hasil")
+        startLogging(tvHasil)
+
         return fragmentCameraBinding.root
     }
 
@@ -81,105 +94,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         objectDetectorHelper = ObjectDetectorHelper(
             context = requireContext(),
-            objectDetectorListener = this)
+            objectDetectorListener = this
+        )
 
         // Attach listeners to UI control widgets
 //        initBottomSheetControls()
     }
-
-//    private fun initBottomSheetControls() {
-//        // When clicked, lower detection score threshold floor
-//        fragmentCameraBinding.bottomSheetLayout.thresholdMinus.setOnClickListener {
-//            if (objectDetectorHelper.threshold >= 0.1) {
-//                objectDetectorHelper.threshold -= 0.1f
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, raise detection score threshold floor
-//        fragmentCameraBinding.bottomSheetLayout.thresholdPlus.setOnClickListener {
-//            if (objectDetectorHelper.threshold <= 0.8) {
-//                objectDetectorHelper.threshold += 0.1f
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, reduce the number of objects that can be detected at a time
-//        fragmentCameraBinding.bottomSheetLayout.maxResultsMinus.setOnClickListener {
-//            if (objectDetectorHelper.maxResults > 1) {
-//                objectDetectorHelper.maxResults--
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, increase the number of objects that can be detected at a time
-//        fragmentCameraBinding.bottomSheetLayout.maxResultsPlus.setOnClickListener {
-//            if (objectDetectorHelper.maxResults < 5) {
-//                objectDetectorHelper.maxResults++
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, decrease the number of threads used for detection
-//        fragmentCameraBinding.bottomSheetLayout.threadsMinus.setOnClickListener {
-//            if (objectDetectorHelper.numThreads > 1) {
-//                objectDetectorHelper.numThreads--
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, increase the number of threads used for detection
-//        fragmentCameraBinding.bottomSheetLayout.threadsPlus.setOnClickListener {
-//            if (objectDetectorHelper.numThreads < 4) {
-//                objectDetectorHelper.numThreads++
-//                updateControlsUi()
-//            }
-//        }
-//
-//        // When clicked, change the underlying hardware used for inference. Current options are CPU
-//        // GPU, and NNAPI
-//        fragmentCameraBinding.bottomSheetLayout.spinnerDelegate.setSelection(0, false)
-//        fragmentCameraBinding.bottomSheetLayout.spinnerDelegate.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                    objectDetectorHelper.currentDelegate = p2
-//                    updateControlsUi()
-//                }
-//
-//                override fun onNothingSelected(p0: AdapterView<*>?) {
-//                    /* no op */
-//                }
-//            }
-//
-//        // When clicked, change the underlying model used for object detection
-//        fragmentCameraBinding.bottomSheetLayout.spinnerModel.setSelection(0, false)
-//        fragmentCameraBinding.bottomSheetLayout.spinnerModel.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                    objectDetectorHelper.currentModel = p2
-//                    updateControlsUi()
-//                }
-//
-//                override fun onNothingSelected(p0: AdapterView<*>?) {
-//                    /* no op */
-//                }
-//            }
-//    }
-
-    // Update the values displayed in the bottom sheet. Reset detector.
-//    private fun updateControlsUi() {
-//        fragmentCameraBinding.bottomSheetLayout.maxResultsValue.text =
-//            objectDetectorHelper.maxResults.toString()
-//        fragmentCameraBinding.bottomSheetLayout.thresholdValue.text =
-//            String.format("%.2f", objectDetectorHelper.threshold)
-//        fragmentCameraBinding.bottomSheetLayout.threadsValue.text =
-//            objectDetectorHelper.numThreads.toString()
-//
-//        // Needs to be cleared instead of reinitialized because the GPU
-//        // delegate needs to be initialized on the thread using it when applicable
-//        objectDetectorHelper.clearObjectDetector()
-//        fragmentCameraBinding.overlay.clear()
-//    }
 
     // Initialize CameraX, and prepare to bind the camera use cases
     private fun setUpCamera() {
@@ -288,10 +208,33 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 imageWidth
             )
 
+            _resultResponse.value = "No Result"
+            if (results != null) {
+                for (result in results) {
+                    _resultResponse.value = result.categories[0].label
+                    Log.d(TAG, "onResults: Results: ${result.categories[0].label} ")
+                }
+            }
+
+
+
+
+
             // Force a redraw
             fragmentCameraBinding.overlay.invalidate()
         }
     }
+
+    fun startLogging(textView: TextView) {
+        job = CoroutineScope(Dispatchers.Main).launch {
+            while (isActive) {
+                Log.d(TAG, "TES ${resultResponse.value}")
+                textView.text = resultResponse.value
+                delay(logDelay)
+            }
+        }
+    }
+
 
     override fun onError(error: String) {
         activity?.runOnUiThread {
