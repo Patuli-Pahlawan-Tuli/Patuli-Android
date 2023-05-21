@@ -1,11 +1,12 @@
-package com.puxxbu.PatuliApp
+package com.puxxbu.PatuliApp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.puxxbu.PatuliApp.R
 
-class OnboardingActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_onboarding)
+        setContentView(R.layout.activity_home)
     }
 }
