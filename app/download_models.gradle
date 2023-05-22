@@ -22,6 +22,12 @@ task downloadModelFile2(type: Download) {
     overwrite false
 }
 
+task downloadModelFile3(type: Download) {
+    src 'https://drive.google.com/u/5/uc?id=196HD8RqmRUarYzLeiO0ynuQFsrQFv3-G&export=download'
+    dest project.ext.ASSET_DIR + '/abjadA-Z.tflite'
+    overwrite false
+}
+
 task copyTestModel(type: Copy, dependsOn: downloadModelFile) {
     from project.ext.ASSET_DIR + '/mobilenetv1.tflite'
     into project.ext.TEST_ASSETS_DIR

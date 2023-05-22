@@ -80,7 +80,7 @@ class ObjectDetectorHelper(
 
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-        val modelName = "abjad_fulltrain_metadata.tflite"
+        val modelName = "abjadA-Z.tflite"
         try {
             objectDetector =
                 ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())

@@ -44,6 +44,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var cameraProvider: ProcessCameraProvider? = null
     private var job: Job? = null
     private val logDelay = 1000L // Delay in milliseconds
+    private var dataResult : String = ""
 
 
     /** Blocking camera operations are performed using this executor */
@@ -229,7 +230,10 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 Log.d(TAG, "TES ${resultResponse.value}")
-                textView.text = resultResponse.value
+                if (resultResponse.value != "No Result" && resultResponse.value != null) {
+                    dataResult += "${resultResponse.value} "
+                }
+                textView.text = dataResult
                 delay(logDelay)
             }
         }
