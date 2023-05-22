@@ -1,4 +1,4 @@
-package com.puxxbu.PatuliApp.ui
+package com.puxxbu.PatuliApp.ui.login
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +10,6 @@ import com.puxxbu.PatuliApp.R
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //fullscreen
-        val windowInsetsController =
-            WindowCompat.getInsetsController(window, window.decorView) ?: return
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
-
         supportActionBar?.hide()
         setContentView(R.layout.activity_login)
     }

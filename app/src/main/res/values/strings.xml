@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Patuli App</string>
+    <string name="error_name_empty">Nama tidak boleh kosong</string>
+    <string name="error_email_empty">Email tidak boleh kosong</string>
+    <string name="error_password_empty">Password tidak boleh kosong</string>
+    <string name="error_email_not_valid">Email tidak valid</string>
+    <string name="error_password_not_valid">Password minimal 8 karakter</string>
+    <string name="register_success">Register Berhasil</string>
+    <string name="error_password_not_match">Konfirmasi password tidak sesuai</string>
 </resources>

@@ -17,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String", "URL", '"https://story-api.dicoding.dev/v1/"')
+        buildConfigField("String", "URL", '"https://practice-bros.et.r.appspot.com/api/v1/"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
