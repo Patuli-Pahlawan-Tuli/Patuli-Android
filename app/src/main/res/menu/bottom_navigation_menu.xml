@@ -5,24 +5,24 @@
         android:id="@+id/item_1"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_sign_language_24"
-        android:title="Translate"
+        android:title="Penerjemah"
         />
     <item
         android:id="@+id/item_2"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_quiz_24"
-        android:title="Quiz"
+        android:title="Kuis"
          />
     <item
         android:id="@+id/item_3"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_book_24"
-        android:title="Lesson"
+        android:title="Belajar"
         />
     <item
         android:id="@+id/item_4"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile"
+        android:title="Profil"
         />
 </menu>
