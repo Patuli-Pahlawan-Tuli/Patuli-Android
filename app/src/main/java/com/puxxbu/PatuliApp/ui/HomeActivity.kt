@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.puxxbu.PatuliApp.databinding.ActivityHomeBinding
 import com.puxxbu.PatuliApp.fragments.PermissionsFragment
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
 
