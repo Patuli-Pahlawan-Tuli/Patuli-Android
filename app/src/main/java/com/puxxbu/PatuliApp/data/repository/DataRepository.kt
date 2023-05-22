@@ -3,11 +3,13 @@ package com.puxxbu.PatuliApp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.puxxbu.PatuliApp.data.api.config.ApiService
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
+import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.utils.Event
 
 class DataRepository constructor(
@@ -63,6 +65,50 @@ class DataRepository constructor(
         })
 
 
+    }
+
+    fun postLogin(email: String, password: String) {
+        _isLoading.value = true
+        val client = apiService.postLogin(email, password)
+        client.enqueue(object : retrofit2.Callback<LoginResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<LoginResponse>,
+                response: retrofit2.Response<LoginResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _loginResponse.value = response.body()
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), LoginResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<LoginResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+
+    fun getSessionData(): LiveData<UserDataModel> {
+        return pref.getSession().asLiveData()
+    }
+
+    suspend fun setSessionData(userDataModel: UserDataModel) {
+        pref.saveSession(userDataModel)
+    }
+
+
+    suspend fun login() {
+        pref.login()
+    }
+
+    suspend fun logout() {
+        pref.logout()
     }
 
 

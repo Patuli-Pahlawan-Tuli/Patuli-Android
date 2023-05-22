@@ -45,8 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="clear_text"
         app:helperText="Masukkan Email Anda"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
@@ -74,8 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_email"
 
-        app:endIconDrawable="@drawable/ic_baseline_clear_24"
-        app:endIconMode="custom"
+        app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_baseline_password_24">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -139,6 +137,18 @@
 
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 
 

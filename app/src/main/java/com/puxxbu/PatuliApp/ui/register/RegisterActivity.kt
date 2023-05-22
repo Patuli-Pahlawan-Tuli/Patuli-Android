@@ -47,19 +47,19 @@ class RegisterActivity : AppCompatActivity() {
 
             when{
                 name.isEmpty() -> {
-                    binding.tietName.error = getString(R.string.error_name_empty)
+                    binding.tilName.error = getString(R.string.error_name_empty)
                 }
                 email.isEmpty() -> {
-                    binding.tietEmail.error = getString(R.string.error_email_empty)
+                    binding.tilEmail.error = getString(R.string.error_email_empty)
                 }
                 password.isEmpty() -> {
-                    binding.tietPassword.error = getString(R.string.error_password_empty)
+                    binding.tilPassword.error = getString(R.string.error_password_empty)
                 }
                 confirmationPasword.isEmpty() -> {
-                    binding.tietConfirmPassword.error = getString(R.string.error_password_empty)
+                    binding.tilConfirmPassword.error = getString(R.string.error_password_empty)
                 }
                 password != confirmationPasword -> {
-                    binding.tietConfirmPassword.error = getString(R.string.error_password_not_match)
+                    binding.tilConfirmPassword.error = getString(R.string.error_password_not_match)
                 }
                 else -> {
                     if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length >= 8){

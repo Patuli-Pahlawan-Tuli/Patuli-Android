@@ -1,10 +1,11 @@
-package com.puxxbu.PatuliApp
+package com.puxxbu.PatuliApp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityHomeBinding
 import com.puxxbu.PatuliApp.fragments.PermissionsFragment
 

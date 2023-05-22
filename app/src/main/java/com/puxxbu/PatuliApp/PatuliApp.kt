@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.puxxbu.PatuliApp.data.api.config.ApiConfig
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
 import com.puxxbu.PatuliApp.data.repository.DataRepository
+import com.puxxbu.PatuliApp.ui.login.LoginViewModel
 import com.puxxbu.PatuliApp.ui.register.RegisterViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -34,6 +35,7 @@ class PatuliApp : Application() {
 
     private val viewModelModule = module {
         viewModel { RegisterViewModel(get())  }
+        viewModel { LoginViewModel(get()) }
     }
 
     private val repoModule = module {

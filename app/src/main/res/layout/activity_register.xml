@@ -11,7 +11,7 @@
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,10 @@
         android:fontFamily="@font/roboto_regular"
         android:hint="Nama"
 
+        app:endIconMode="clear_text"
         app:errorEnabled="true"
+
+        app:errorIconDrawable="@null"
 
         app:helperText="Masukkan Nama Anda"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +67,9 @@
         android:layout_marginEnd="14dp"
         android:fontFamily="@font/roboto_regular"
 
+        app:endIconMode="clear_text"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
 
         android:hint="Email"
         app:helperText="Masukkan Email Anda"
@@ -92,6 +97,11 @@
         android:fontFamily="@font/roboto_regular"
         android:hint="Kata Sandi"
 
+        app:errorEnabled="true"
+        app:endIconMode="clear_text"
+
+        app:errorIconDrawable="@null"
+
         app:helperText="Masukkan Kata Sandi Anda"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +112,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,6 +128,10 @@
         android:layout_marginEnd="14dp"
         android:fontFamily="@font/roboto_regular"
 
+        app:errorEnabled="true"
+        app:endIconMode="clear_text"
+        app:errorIconDrawable="@null"
+
         android:hint="Konfirmasi Kata Sandi"
         app:helperText="Masukkan Ulang Kata Sandi Anda"
 
@@ -128,7 +143,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_confirm_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,6 +179,7 @@
             android:id="@+id/tv_have_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
 
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
