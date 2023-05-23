@@ -14,6 +14,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
@@ -45,6 +46,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var job: Job? = null
     private val logDelay = 1000L // Delay in milliseconds
 
+    private var isFragmentActive = false
+
 
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
@@ -69,9 +72,11 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     override fun onDestroyView() {
         _fragmentCameraBinding = null
         super.onDestroyView()
+        cameraExecutor.shutdown()
+        isFragmentActive = false
 
         // Shut down our background executor
-        cameraExecutor.shutdown()
+
     }
 
     override fun onCreateView(
@@ -84,6 +89,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         val tvHasil = fragmentCameraBinding.tvHasil
         tvHasil.setText("Hasil")
         startLogging(tvHasil)
+        isFragmentActive = true
 
         return fragmentCameraBinding.root
     }
@@ -197,32 +203,32 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         imageHeight: Int,
         imageWidth: Int
     ) {
-        activity?.runOnUiThread {
+
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            activity?.runOnUiThread {
 //            fragmentCameraBinding.bottomSheetLayout.inferenceTimeVal.text =
 //                String.format("%d ms", inferenceTime)
 
-            // Pass necessary information to OverlayView for drawing on the canvas
-            fragmentCameraBinding.overlay.setResults(
-                results ?: LinkedList<Detection>(),
-                imageHeight,
-                imageWidth
-            )
+                // Pass necessary information to OverlayView for drawing on the canvas
+                fragmentCameraBinding.overlay.setResults(
+                    results ?: LinkedList<Detection>(),
+                    imageHeight,
+                    imageWidth
+                )
 
-            _resultResponse.value = "No Result"
-            if (results != null) {
-                for (result in results) {
-                    _resultResponse.value = result.categories[0].label
-                    Log.d(TAG, "onResults: Results: ${result.categories[0].label} ")
+                _resultResponse.value = "No Result"
+                if (results != null) {
+                    for (result in results) {
+                        _resultResponse.value = result.categories[0].label
+                        Log.d(TAG, "onResults: Results: ${result.categories[0].label} ")
+                    }
                 }
+                // Force a redraw
+                fragmentCameraBinding.overlay.invalidate()
             }
-
-
-
-
-
-            // Force a redraw
-            fragmentCameraBinding.overlay.invalidate()
         }
+
+
     }
 
     fun startLogging(textView: TextView) {

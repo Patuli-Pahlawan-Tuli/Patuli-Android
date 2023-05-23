@@ -63,18 +63,14 @@ class HomeActivity : AppCompatActivity() {
                         R.id.item_1 -> {
                             // Tampilkan CameraFragment
                             fragmentManager.beginTransaction()
-                                .hide(profileFragment)
-                                .hide(permissionsFragment)
-                                .show(cameraFragment)
+                                .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
                                 .commit()
                             true
                         }
                         R.id.item_4 -> {
                             // Tampilkan ProfileFragment
                             fragmentManager.beginTransaction()
-                                .hide(cameraFragment)
-                                .hide(permissionsFragment)
-                                .show(profileFragment)
+                                .replace(R.id.fragment_container, profileFragment, ProfileFragment::class.java.simpleName)
                                 .commit()
                             true
                         }
