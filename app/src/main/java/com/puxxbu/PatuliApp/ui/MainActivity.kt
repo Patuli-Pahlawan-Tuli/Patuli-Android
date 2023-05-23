@@ -7,6 +7,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.puxxbu.PatuliApp.databinding.ActivityOnboardingBinding
+import com.puxxbu.PatuliApp.ui.home.HomeActivity
 import com.puxxbu.PatuliApp.ui.login.LoginActivity
 import com.puxxbu.PatuliApp.ui.register.RegisterActivity
 

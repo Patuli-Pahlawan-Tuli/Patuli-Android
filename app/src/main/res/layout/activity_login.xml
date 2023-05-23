@@ -25,7 +25,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
-        android:text="Selamat Datang di Patuli"
+        android:text="@string/welcome"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="14dp"
-        android:hint="Email"
+        android:hint="@string/email"
         android:fontFamily="@font/roboto_regular"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,20 +66,23 @@
         android:layout_marginEnd="14dp"
 
         android:fontFamily="@font/roboto_regular"
-        android:hint="Kata Sandi"
+        android:hint="@string/password"
 
         app:helperText="Masukkan Kata Sandi Anda"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_email"
 
-        app:endIconMode="clear_text"
+        app:endIconMode="password_toggle"
+
+
         app:startIconDrawable="@drawable/ic_baseline_password_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +95,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="14dp"
         android:backgroundTint="@color/md_theme_light_onPrimaryContainer"
-        android:text="Masuk"
+        android:text="@string/login"
         android:fontFamily="@font/roboto_medium"
 
         android:textSize="18sp"
@@ -117,7 +120,7 @@
 
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
-            android:text="Belum Punya Akun?"
+            android:text="@string/dont_have_acc"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/btn_login"
             tools:layout_editor_absoluteX="14dp" />
@@ -129,7 +132,7 @@
             android:layout_marginStart="4dp"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
-            android:text="Daftar"
+            android:text="@string/register"
             android:textColor="@color/link"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/tv_dont_have_account"

@@ -1,11 +1,10 @@
 package com.puxxbu.PatuliApp.data.api.config
 
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
+import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -24,6 +23,12 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<LoginResponse>
+
+
+    @GET("account/profile")
+    fun getProfile(
+       @Header("Authorization") token: String
+    ): Call<ProfileResponse>
 
 
 

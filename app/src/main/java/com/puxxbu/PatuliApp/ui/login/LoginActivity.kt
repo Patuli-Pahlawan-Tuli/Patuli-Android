@@ -1,21 +1,14 @@
 package com.puxxbu.PatuliApp.ui.login
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
-import com.puxxbu.PatuliApp.ui.HomeActivity
+import com.puxxbu.PatuliApp.ui.home.HomeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {

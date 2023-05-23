@@ -8,4 +8,16 @@
     <string name="error_password_not_valid">Password minimal 8 karakter</string>
     <string name="register_success">Register Berhasil</string>
     <string name="error_password_not_match">Konfirmasi password tidak sesuai</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="login">Masuk</string>
+    <string name="name">Nama</string>
+    <string name="confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="register">Daftar</string>
+    <string name="already_have_acc">Sudah Punya Akun?</string>
+    <string name="masukkan_data_diri_anda">Masukkan Data Diri Anda</string>
+    <string name="welcome">Selamat Datang di Patuli</string>
+    <string name="dont_have_acc">Belum Punya Akun?</string>
+    <string name="patuli">Patuli</string>
+    <string name="password_placeholder">ISIWATONHAHAHAHAHHAHAHAHAHAHAHAHAH</string>
 </resources>

@@ -2,12 +2,15 @@ package com.puxxbu.PatuliApp
 
 import android.app.Application
 import android.content.Context
+import android.provider.ContactsContract.Profile
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.puxxbu.PatuliApp.data.api.config.ApiConfig
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
 import com.puxxbu.PatuliApp.data.repository.DataRepository
+import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileViewModel
+import com.puxxbu.PatuliApp.ui.home.HomeViewModel
 import com.puxxbu.PatuliApp.ui.login.LoginViewModel
 import com.puxxbu.PatuliApp.ui.register.RegisterViewModel
 import org.koin.android.ext.koin.androidContext
@@ -36,6 +39,8 @@ class PatuliApp : Application() {
     private val viewModelModule = module {
         viewModel { RegisterViewModel(get())  }
         viewModel { LoginViewModel(get()) }
+        viewModel { HomeViewModel(get()) }
+        viewModel { ProfileViewModel(get()) }
     }
 
     private val repoModule = module {
