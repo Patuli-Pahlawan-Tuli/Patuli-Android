@@ -1,14 +1,12 @@
 package com.puxxbu.PatuliApp.ui.fragments.profile
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import com.puxxbu.PatuliApp.R
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.login.LoginActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +18,7 @@ class ProfileFragment : Fragment() {
     private var _fragmentProfileBinding: FragmentProfileBinding? = null
     private val fragmentProfileBinding get() = _fragmentProfileBinding!!
 
-    private val profileViewModel : ProfileViewModel by viewModel()
+    private val profileViewModel: ProfileViewModel by viewModel()
 
 
     override fun onCreateView(
@@ -36,10 +34,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupData() {
-        profileViewModel.getSessionData().observe(viewLifecycleOwner){
-            if (it.isLogin){
+        profileViewModel.getSessionData().observe(viewLifecycleOwner) {
+            if (it.isLogin) {
                 profileViewModel.getProfile(it.token)
-            }else{
+            } else {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
                 requireActivity().finish()
             }
@@ -51,19 +49,19 @@ class ProfileFragment : Fragment() {
         _fragmentProfileBinding = null
     }
 
-    fun setupView(){
-        profileViewModel.profileData.observe(viewLifecycleOwner){
+    fun setupView() {
+
+
+        profileViewModel.profileData.observe(viewLifecycleOwner) {
             fragmentProfileBinding.apply {
                 tietName.setText(it.data.name)
                 tietEmail.setText(it.data.email)
+                Glide.with(requireContext()).load(it.data.imageUrl).into(imageView)
             }
 
         }
 
     }
-
-
-
 
 
 }

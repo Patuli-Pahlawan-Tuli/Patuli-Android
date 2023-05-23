@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +50,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     private var isFragmentActive = false
 
+    val handler = Handler(Looper.getMainLooper())
+
 
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
@@ -70,9 +74,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onDestroyView() {
-        _fragmentCameraBinding = null
+
         super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+        objectDetectorHelper.clearObjectDetector()
+        _fragmentCameraBinding = null
         cameraExecutor.shutdown()
+        job?.cancel()
         isFragmentActive = false
 
         // Shut down our background executor
@@ -204,28 +212,27 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         imageWidth: Int
     ) {
 
-        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-            activity?.runOnUiThread {
-//            fragmentCameraBinding.bottomSheetLayout.inferenceTimeVal.text =
-//                String.format("%d ms", inferenceTime)
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) && activity != null) {
+            handler.post{
+                activity?.runOnUiThread {
+                    fragmentCameraBinding.overlay.setResults(
+                        results ?: LinkedList<Detection>(),
+                        imageHeight,
+                        imageWidth
+                    )
 
-                // Pass necessary information to OverlayView for drawing on the canvas
-                fragmentCameraBinding.overlay.setResults(
-                    results ?: LinkedList<Detection>(),
-                    imageHeight,
-                    imageWidth
-                )
-
-                _resultResponse.value = "No Result"
-                if (results != null) {
-                    for (result in results) {
-                        _resultResponse.value = result.categories[0].label
-                        Log.d(TAG, "onResults: Results: ${result.categories[0].label} ")
+                    _resultResponse.value = "No Result"
+                    if (results != null) {
+                        for (result in results) {
+                            _resultResponse.value = result.categories[0].label
+                            Log.d(TAG, "onResults: Results: ${result.categories[0].label} ")
+                        }
                     }
+                    // Force a redraw
+                    fragmentCameraBinding.overlay.invalidate()
                 }
-                // Force a redraw
-                fragmentCameraBinding.overlay.invalidate()
             }
+
         }
 
 
@@ -249,16 +256,18 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onInitialized() {
-        objectDetectorHelper.setupObjectDetector()
-        // Initialize our background executor
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
+            objectDetectorHelper.setupObjectDetector()
+            // Initialize our background executor
+            cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // Wait for the views to be properly laid out
-        fragmentCameraBinding.viewFinder.post {
-            // Set up the camera and its use cases
-            setUpCamera()
+            // Wait for the views to be properly laid out
+            fragmentCameraBinding.viewFinder.post {
+                // Set up the camera and its use cases
+                setUpCamera()
+            }
+
+            fragmentCameraBinding.progressCircular.visibility = View.GONE
         }
-
-        fragmentCameraBinding.progressCircular.visibility = View.GONE
     }
 }
