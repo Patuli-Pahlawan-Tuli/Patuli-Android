@@ -21,4 +21,7 @@
     <string name="patuli">Patuli</string>
     <string name="password_placeholder">ISIWATONHAHAHAHAHHAHAHAHAHAHAHAHAH</string>
     <string name="save_changes">Simpan Perubahan</string>
+    <string name="change_profile_picture">Ubah Foto Anda</string>
+    <string name="logout">Logout</string>
+    <string name="konfirmasi_kata_sandi_baru">Konfirmasi Kata Sandi Baru</string>
 </resources>

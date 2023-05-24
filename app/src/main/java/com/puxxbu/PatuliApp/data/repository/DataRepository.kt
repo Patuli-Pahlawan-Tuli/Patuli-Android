@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.puxxbu.PatuliApp.data.api.config.ApiService
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
+import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
@@ -29,6 +30,9 @@ class DataRepository constructor(
 
     private val _profileResponse = MutableLiveData<ProfileResponse>()
     val profileResponse: LiveData<ProfileResponse> = _profileResponse
+
+    private val _editPasswordResponse = MutableLiveData<Event<EditPasswordResponse>>()
+    val editPasswordResponse: LiveData<Event<EditPasswordResponse>> = _editPasswordResponse
 
 
     fun postRegister(name: String, email: String, password: String, passwordConfirmation: String) {
@@ -70,6 +74,34 @@ class DataRepository constructor(
 
 
     }
+
+    fun editPassword(token: String, oldPassword: String, newPassword: String, newPasswordConfirmation: String){
+        _isLoading.value = true
+        val client = apiService.editPassword(token , oldPassword , newPassword , newPasswordConfirmation )
+        client.enqueue(object : retrofit2.Callback<EditPasswordResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<EditPasswordResponse>,
+                response: retrofit2.Response<EditPasswordResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                    _editPasswordResponse.value = Event(response.body()!!)
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), EditPasswordResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    _editPasswordResponse.value = Event(errorResponse)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<EditPasswordResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
 
     fun postLogin(email: String, password: String) {
         _isLoading.value = true

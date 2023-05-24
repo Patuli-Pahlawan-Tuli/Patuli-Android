@@ -40,10 +40,10 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.tietPassword.text.toString()
             val confirmationPasword = binding.tietConfirmPassword.text.toString()
 
-            binding.tietName.error = null
-            binding.tietEmail.error = null
-            binding.tietPassword.error = null
-            binding.tietConfirmPassword.error = null
+            binding.tilName.error = null
+            binding.tilEmail.error = null
+            binding.tilPassword.error = null
+            binding.tilConfirmPassword.error = null
 
             when{
                 name.isEmpty() -> {

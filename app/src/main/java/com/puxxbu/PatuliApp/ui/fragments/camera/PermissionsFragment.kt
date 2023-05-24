@@ -10,7 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.puxxbu.PatuliApp.R
 
-private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
+private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
 class PermissionsFragment : Fragment() {
 
@@ -28,19 +28,27 @@ class PermissionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val permissionCamera = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+        val permissionStorage = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if ((permissionCamera == PackageManager.PERMISSION_GRANTED) && (permissionStorage == PackageManager.PERMISSION_GRANTED)) {
+            navigateToCamera()
+        }
         when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
                 navigateToCamera()
             }
             else -> {
                 requestPermissionLauncher.launch(
                     Manifest.permission.CAMERA)
+                requestPermissionLauncher.launch(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
     }
+
+
 
     private fun navigateToCamera() {
         val cameraFragment = CameraFragment()

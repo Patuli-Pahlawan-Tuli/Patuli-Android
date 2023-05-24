@@ -31,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.tietEmail.text.toString()
             val password = binding.tietPassword.text.toString()
+            binding.tilEmail.error = null
+            binding.tilPassword.error = null
             when {
                 email.isEmpty() -> {
                     binding.tilEmail.error = "Masukkan email"

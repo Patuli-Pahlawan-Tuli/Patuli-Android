@@ -79,7 +79,9 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         handler.removeCallbacksAndMessages(null)
         objectDetectorHelper.clearObjectDetector()
         _fragmentCameraBinding = null
-        cameraExecutor.shutdown()
+        if (::cameraExecutor.isInitialized) {
+            cameraExecutor.shutdown()
+        }
         job?.cancel()
         isFragmentActive = false
 

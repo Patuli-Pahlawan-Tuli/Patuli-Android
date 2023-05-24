@@ -56,10 +56,19 @@ class ProfileFragment : Fragment() {
             fragmentProfileBinding.apply {
                 tietName.setText(it.data.name)
                 tietEmail.setText(it.data.email)
-                Glide.with(requireContext()).load(it.data.imageUrl).into(imageView)
+                Glide.with(requireContext()).load(it.data.imageUrl).into(ivProfilePicture)
             }
-
         }
+
+        fragmentProfileBinding.apply {
+            tietPassword.setOnClickListener {
+                val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+
+
 
     }
 

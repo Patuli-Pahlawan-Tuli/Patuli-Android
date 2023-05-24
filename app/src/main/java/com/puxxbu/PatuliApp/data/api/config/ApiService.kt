@@ -1,6 +1,7 @@
 package com.puxxbu.PatuliApp.data.api.config
 
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
+import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import retrofit2.Call
@@ -29,6 +30,15 @@ interface ApiService {
     fun getProfile(
        @Header("Authorization") token: String
     ): Call<ProfileResponse>
+
+    @FormUrlEncoded
+    @PUT("account/edit-password")
+    fun editPassword(
+        @Header("Authorization") token: String,
+        @Field("oldPassword") oldPassword: String,
+        @Field("newPassword") newPassword: String,
+        @Field("passwordConfirmation") newPasswordConfirmation: String
+    ): Call<EditPasswordResponse>
 
 
 

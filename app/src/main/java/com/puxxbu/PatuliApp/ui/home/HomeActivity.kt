@@ -39,21 +39,12 @@ class HomeActivity : AppCompatActivity() {
                 finish()
             } else {
                 // Tampilkan PermissionsFragment jika user belum memberikan izin
-                if (!checkCameraPermission()) {
+                if (!checkCameraPermission() && !checkFilePermission()) {
                     fragmentManager.beginTransaction()
                         .add(
                             R.id.fragment_container,
                             permissionsFragment,
                             PermissionsFragment::class.java.simpleName
-                        )
-                        .commit()
-                } else {
-                    // Tampilkan CameraFragment jika user telah memberikan izin
-                    fragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_container,
-                            cameraFragment,
-                            CameraFragment::class.java.simpleName
                         )
                         .commit()
                 }
@@ -92,15 +83,22 @@ class HomeActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Hapus Fragment pada onDestroy()
-        fragmentManager.beginTransaction()
-            .remove(permissionsFragment)
-            .remove(cameraFragment)
-            .remove(profileFragment)
-            .commit()
+    private fun checkFilePermission(): Boolean{
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
+
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        // Hapus Fragment pada onDestroy()
+//        fragmentManager.beginTransaction()
+//            .remove(permissionsFragment)
+//            .remove(cameraFragment)
+//            .remove(profileFragment)
+//            .commit()
+//    }
 
 }
