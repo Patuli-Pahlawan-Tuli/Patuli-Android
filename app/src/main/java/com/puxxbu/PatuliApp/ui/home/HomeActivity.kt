@@ -50,13 +50,18 @@ class HomeActivity : AppCompatActivity() {
                         .commit()
                 }else{
                     // Tampilkan CameraFragment
-                    fragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_container,
-                            cameraFragment,
-                            CameraFragment::class.java.simpleName
-                        )
-                        .commit()
+                    val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                    if (containerFragment !is CameraFragment){
+                        fragmentManager.beginTransaction()
+                            .add(
+                                R.id.fragment_container,
+                                cameraFragment,
+                                CameraFragment::class.java.simpleName
+                            )
+                            .commit()
+
+                    }
+
                 }
 
                 binding.bottomNavigation.setOnItemSelectedListener { item ->

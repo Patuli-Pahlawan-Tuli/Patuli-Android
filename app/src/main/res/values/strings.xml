@@ -24,4 +24,5 @@
     <string name="change_profile_picture">Ubah Foto Anda</string>
     <string name="logout">Keluar</string>
     <string name="konfirmasi_kata_sandi_baru">Konfirmasi Kata Sandi Baru</string>
+    <string name="title_translate_result">Hasil Terjemahan</string>
 </resources>

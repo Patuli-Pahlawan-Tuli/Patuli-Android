@@ -47,6 +47,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var cameraProvider: ProcessCameraProvider? = null
     private var job: Job? = null
     private val logDelay = 1000L // Delay in milliseconds
+    private var dataResult : String = ""
 
     private var isFragmentActive = false
 
@@ -71,6 +72,15 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 )
                 .commit()
         }
+
+        if (job?.isCancelled == true) {
+            startLogging(fragmentCameraBinding.tvResult)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job?.cancel()
     }
 
     override fun onDestroyView() {
@@ -96,9 +106,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     ): View {
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
 
-        val tvHasil = fragmentCameraBinding.tvHasil
+        val tvHasil = fragmentCameraBinding.tvResult
         tvHasil.setText("Hasil")
         startLogging(tvHasil)
+        fragmentCameraBinding.ivRefresh.setOnClickListener {
+            dataResult = ""
+        }
+
         isFragmentActive = true
 
         return fragmentCameraBinding.root
@@ -246,7 +260,10 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 Log.d(TAG, "TES ${resultResponse.value}")
-                textView.text = resultResponse.value
+                if (resultResponse.value != "No Result" && resultResponse.value != null) {
+                    dataResult += "${resultResponse.value} "
+                }
+                textView.text = dataResult
                 delay(logDelay)
             }
         }

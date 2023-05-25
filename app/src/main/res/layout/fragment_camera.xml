@@ -32,13 +32,66 @@
         android:layout_gravity="center"
         style="?android:attr/progressBarStyleLarge" />
 
-    <TextView
-        android:id="@+id/tv_hasil"
+<!--    <TextView-->
+<!--        android:id="@+id/tv_hasil"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        android:text="TextView"-->
+<!--        android:textColor="@color/md_theme_light_onPrimary"/>-->
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_translate_result"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <TextView
+                    android:id="@+id/tv_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text=" A  AA A"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/iv_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="TextView"
-        android:textColor="@color/md_theme_light_onPrimary"/>
+        android:layout_marginBottom="115dp"
+        android:layout_marginRight="24dp"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_baseline_refresh_24"
+        />
 
     <!--    <include-->
 <!--        android:id="@+id/bottom_sheet_layout"-->
