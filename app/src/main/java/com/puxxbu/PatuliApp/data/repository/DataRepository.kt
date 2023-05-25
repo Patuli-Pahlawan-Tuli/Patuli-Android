@@ -30,6 +30,9 @@ class DataRepository constructor(
     private val _responseMessage = MutableLiveData<Event<String>>()
     val responseMessage: LiveData<Event<String>> = _responseMessage
 
+    private val _profileErrorResponse = MutableLiveData<Event<String>>()
+    val profileErrorResponse: LiveData<Event<String>> = _profileErrorResponse
+
     private val _profileResponse = MutableLiveData<ProfileResponse>()
     val profileResponse: LiveData<ProfileResponse> = _profileResponse
 
@@ -71,8 +74,7 @@ class DataRepository constructor(
             }
 
             override fun onFailure(call: retrofit2.Call<RegisterResponse>, t: Throwable) {
-                _isLoading.value = false
-                _responseMessage.value = Event(t.message.toString())
+                Log.d("TAG", "Failed: ${t.message}")
             }
 
         })
@@ -89,12 +91,12 @@ class DataRepository constructor(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
-                    _responseMessage.value = Event(response.body()?.message.toString())
+                    _profileErrorResponse.value = Event(response.body()?.message.toString())
                     _editPasswordResponse.value = Event(response.body()!!)
                 } else {
                     val errorResponse =
                         Gson().fromJson(response.errorBody()?.string(), EditPasswordResponse::class.java)
-                    _responseMessage.value = Event(errorResponse.message)
+                    _profileErrorResponse.value = Event(errorResponse.message)
                     _editPasswordResponse.value = Event(errorResponse)
                     Log.d("TAG", "onResponse: ${errorResponse.message}")
                 }
@@ -116,13 +118,13 @@ class DataRepository constructor(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
-                    _responseMessage.value = Event(response.body()?.message.toString())
+                    _profileErrorResponse.value = Event(response.body()?.message.toString())
                     _editProfilePicResponse.value = response.body()
 
                 } else {
                     val errorResponse =
                         Gson().fromJson(response.errorBody()?.string(), EditProfilePicResponse::class.java)
-                    _responseMessage.value = Event(errorResponse.message)
+                    _profileErrorResponse.value = Event(errorResponse.message)
                     Log.d("TAG", "onResponse: ${errorResponse.message}")
                 }
             }
@@ -171,11 +173,11 @@ class DataRepository constructor(
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
                     _profileResponse.value = response.body()
-                    _responseMessage.value = Event(response.body()?.message.toString())
+                    _profileErrorResponse.value = Event(response.body()?.message.toString())
                 } else {
                     val errorResponse =
                         Gson().fromJson(response.errorBody()?.string(), ProfileResponse::class.java)
-                    _responseMessage.value = Event(errorResponse.message)
+                    _profileErrorResponse.value = Event(errorResponse.message)
                     Log.d("TAG", "onResponse: ${errorResponse.message}")
                 }
             }

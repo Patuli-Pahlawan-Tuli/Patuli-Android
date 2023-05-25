@@ -45,12 +45,14 @@ class LoginActivity : AppCompatActivity() {
                 else -> {
                     if (Patterns.EMAIL_ADDRESS.matcher(email).matches() ){
                         loginViewModel.postLogin(email, password)
-                        loginCheck()
+
                     } else {
                         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                             binding.tilEmail.error = getString(R.string.error_email_not_valid)
                         }
                     }
+
+                    loginCheck()
 
                 }
             }
@@ -77,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
+                        Log.d("LoginActivity", "Login Berhasil")
                         finish()
                     }
                     builder.show()

@@ -15,7 +15,7 @@ import okhttp3.MultipartBody
 
 class ProfileViewModel(private val dataRepository: DataRepository) : ViewModel() {
     val profileData : LiveData<ProfileResponse> = dataRepository.profileResponse
-    val responseMessage: LiveData<Event<String>> = dataRepository.responseMessage
+    val profileErrorResponse: LiveData<Event<String>> = dataRepository.profileErrorResponse
     val isLoading: LiveData<Boolean> = dataRepository.isLoading
     val editProfilePicResponse: LiveData<EditProfilePicResponse> = dataRepository.editProfilePicResponse
     val editPasswordResponse: LiveData<Event<EditPasswordResponse>> = dataRepository.editPasswordResponse

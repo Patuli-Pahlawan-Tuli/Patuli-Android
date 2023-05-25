@@ -63,15 +63,15 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         super.onResume()
         // Make sure that all permissions are still present, since the
         // user could have removed them while the app was in paused state.
-        if (!PermissionsFragment.hasPermissions(requireContext())) {
-            fragmentManager.beginTransaction()
-                .replace(
-                    R.id.fragment_container,
-                    permissionsFragment,
-                    PermissionsFragment::class.java.simpleName
-                )
-                .commit()
-        }
+//        if (!PermissionsFragment.hasPermissions(requireContext())) {
+//            fragmentManager.beginTransaction()
+//                .replace(
+//                    R.id.fragment_container,
+//                    permissionsFragment,
+//                    PermissionsFragment::class.java.simpleName
+//                )
+//                .commit()
+//        }
 
         if (job?.isCancelled == true) {
             startLogging(fragmentCameraBinding.tvResult)

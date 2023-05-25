@@ -35,53 +35,48 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
 
         homeViewModel.getSessionData().observe(this) {
-            if (!it.isLogin) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
-                // Tampilkan PermissionsFragment jika user belum memberikan izin
-                if (!checkCameraPermission() && !checkFilePermission()) {
+            // Tampilkan PermissionsFragment jika user belum memberikan izin
+            if (!checkCameraPermission() && !checkFilePermission()) {
+                fragmentManager.beginTransaction()
+                    .add(
+                        R.id.fragment_container,
+                        permissionsFragment,
+                        PermissionsFragment::class.java.simpleName
+                    )
+                    .commit()
+            }else{
+                // Tampilkan CameraFragment
+                val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                if (containerFragment !is CameraFragment){
                     fragmentManager.beginTransaction()
                         .add(
                             R.id.fragment_container,
-                            permissionsFragment,
-                            PermissionsFragment::class.java.simpleName
+                            cameraFragment,
+                            CameraFragment::class.java.simpleName
                         )
                         .commit()
-                }else{
-                    // Tampilkan CameraFragment
-                    val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                    if (containerFragment !is CameraFragment){
-                        fragmentManager.beginTransaction()
-                            .add(
-                                R.id.fragment_container,
-                                cameraFragment,
-                                CameraFragment::class.java.simpleName
-                            )
-                            .commit()
-
-                    }
 
                 }
 
-                binding.bottomNavigation.setOnItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.item_1 -> {
-                            // Tampilkan CameraFragment
-                            fragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
-                                .commit()
-                            true
-                        }
-                        R.id.item_4 -> {
-                            // Tampilkan ProfileFragment
-                            fragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, profileFragment, ProfileFragment::class.java.simpleName)
-                                .commit()
-                            true
-                        }
-                        else -> false
+            }
+
+            binding.bottomNavigation.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.item_1 -> {
+                        // Tampilkan CameraFragment
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
+                            .commit()
+                        true
                     }
+                    R.id.item_4 -> {
+                        // Tampilkan ProfileFragment
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, profileFragment, ProfileFragment::class.java.simpleName)
+                            .commit()
+                        true
+                    }
+                    else -> false
                 }
             }
         }

@@ -32,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
         setupAction()
     }
 
+
     private fun setupAction() {
         showLoading()
         binding.btnRegister.setOnClickListener {
@@ -80,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.tvLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            Log.d("RegisterActivity", "Login")
         }
 
     }
