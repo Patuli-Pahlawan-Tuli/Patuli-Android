@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityHomeBinding
+import com.puxxbu.PatuliApp.ui.MainActivity
 import com.puxxbu.PatuliApp.ui.OnboardingActivity
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
@@ -35,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel.getSessionData().observe(this) {
             if (!it.isLogin) {
-                startActivity(Intent(this, OnboardingActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 // Tampilkan PermissionsFragment jika user belum memberikan izin
@@ -45,6 +46,15 @@ class HomeActivity : AppCompatActivity() {
                             R.id.fragment_container,
                             permissionsFragment,
                             PermissionsFragment::class.java.simpleName
+                        )
+                        .commit()
+                }else{
+                    // Tampilkan CameraFragment
+                    fragmentManager.beginTransaction()
+                        .add(
+                            R.id.fragment_container,
+                            cameraFragment,
+                            CameraFragment::class.java.simpleName
                         )
                         .commit()
                 }

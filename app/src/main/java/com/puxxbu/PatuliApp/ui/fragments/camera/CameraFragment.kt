@@ -119,17 +119,19 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     // Initialize CameraX, and prepare to bind the camera use cases
     private fun setUpCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener(
-            {
-                // CameraProvider
-                cameraProvider = cameraProviderFuture.get()
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
+            val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+            cameraProviderFuture.addListener(
+                {
+                    // CameraProvider
+                    cameraProvider = cameraProviderFuture.get()
 
-                // Build and bind the camera use cases
-                bindCameraUseCases()
-            },
-            ContextCompat.getMainExecutor(requireContext())
-        )
+                    // Build and bind the camera use cases
+                    bindCameraUseCases()
+                },
+                ContextCompat.getMainExecutor(requireContext())
+            )
+        }
     }
 
     // Declare and bind preview, capture and analysis use cases

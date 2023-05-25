@@ -8,11 +8,13 @@ import com.google.gson.Gson
 import com.puxxbu.PatuliApp.data.api.config.ApiService
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
+import com.puxxbu.PatuliApp.data.api.response.profile.EditProfilePicResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.utils.Event
+import okhttp3.MultipartBody
 
 class DataRepository constructor(
     private val pref: SessionDataPreferences,
@@ -33,6 +35,9 @@ class DataRepository constructor(
 
     private val _editPasswordResponse = MutableLiveData<Event<EditPasswordResponse>>()
     val editPasswordResponse: LiveData<Event<EditPasswordResponse>> = _editPasswordResponse
+
+    private val _editProfilePicResponse = MutableLiveData<EditProfilePicResponse>()
+    val editProfilePicResponse: LiveData<EditProfilePicResponse> = _editProfilePicResponse
 
 
     fun postRegister(name: String, email: String, password: String, passwordConfirmation: String) {
@@ -72,7 +77,6 @@ class DataRepository constructor(
 
         })
 
-
     }
 
     fun editPassword(token: String, oldPassword: String, newPassword: String, newPasswordConfirmation: String){
@@ -97,6 +101,33 @@ class DataRepository constructor(
             }
 
             override fun onFailure(call: retrofit2.Call<EditPasswordResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+    fun editProfilePicture(token : String, image : MultipartBody.Part){
+        _isLoading.value = true
+        val client = apiService.editProfilePicture(token , image)
+        client.enqueue(object : retrofit2.Callback<EditProfilePicResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<EditProfilePicResponse>,
+                response: retrofit2.Response<EditProfilePicResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                    _editProfilePicResponse.value = response.body()
+
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), EditProfilePicResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<EditProfilePicResponse>, t: Throwable) {
                 Log.d("TAG", "Failed: ${t.message}")
             }
         })

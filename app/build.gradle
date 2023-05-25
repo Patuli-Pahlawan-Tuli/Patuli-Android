@@ -82,6 +82,9 @@ dependencies {
     // CameraX Camera2 extensions
     implementation "androidx.camera:camera-camera2:$camerax_version"
 
+    //circle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // CameraX Lifecycle library
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
 

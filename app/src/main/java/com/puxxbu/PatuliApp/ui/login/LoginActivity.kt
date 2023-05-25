@@ -3,9 +3,11 @@ package com.puxxbu.PatuliApp.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
 import com.puxxbu.PatuliApp.ui.home.HomeActivity
@@ -41,8 +43,15 @@ class LoginActivity : AppCompatActivity() {
                     binding.tilPassword.error = "Masukkan password"
                 }
                 else -> {
-                    loginViewModel.postLogin(email, password)
-                    loginCheck()
+                    if (Patterns.EMAIL_ADDRESS.matcher(email).matches() ){
+                        loginViewModel.postLogin(email, password)
+                        loginCheck()
+                    } else {
+                        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                            binding.tilEmail.error = getString(R.string.error_email_not_valid)
+                        }
+                    }
+
                 }
             }
         }
