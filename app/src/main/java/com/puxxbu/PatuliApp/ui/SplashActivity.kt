@@ -38,20 +38,26 @@ class SplashActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkPermissionsTiramisu()){
-                proceedApplication()
-            }else{
-                requestPermissionsTiramisu()
-            }
-        } else {
-            if (checkPermissions()){
-                proceedApplication()
-            }else{
-                requestPermissions()
-            }
-
+        if (checkPermissions()){
+            proceedApplication()
+        }else{
+            requestPermissions()
         }
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            if (checkPermissionsTiramisu()){
+//                proceedApplication()
+//            }else{
+//                requestPermissionsTiramisu()
+//            }
+//        } else {
+//            if (checkPermissions()){
+//                proceedApplication()
+//            }else{
+//                requestPermissions()
+//            }
+//
+//        }
 
 //        if (checkPermissions()) {
 //            proceedApplication()
@@ -139,27 +145,41 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions(): Boolean {
-        return (ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(
-                    this,
-                    readImagePermission
-                ) == PackageManager.PERMISSION_GRANTED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED)
+        } else {
+            return (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        readImagePermission
+                    ) == PackageManager.PERMISSION_GRANTED)
+        }
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun checkPermissionsTiramisu(): Boolean {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED)
-    }
+//    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//    private fun checkPermissionsTiramisu(): Boolean {
+//        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED)
+//    }
 
     private fun requestPermissions() {
-        requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CAMERA_AND_STORAGE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionsTiramisu()
+        } else {
+            requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CAMERA_AND_STORAGE)
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
