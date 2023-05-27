@@ -100,6 +100,10 @@ dependencies {
     //Koin
     implementation "io.insert-koin:koin-android:3.4.0"
 
+    //recycleView
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+
+
 
     // Datastore, LiveData, ViewModel
     implementation "androidx.datastore:datastore-preferences:1.0.0"

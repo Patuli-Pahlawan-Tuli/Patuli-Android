@@ -25,4 +25,6 @@
     <string name="logout">Keluar</string>
     <string name="konfirmasi_kata_sandi_baru">Konfirmasi Kata Sandi Baru</string>
     <string name="title_translate_result">Hasil Terjemahan</string>
+    <string name="start_lesson">Mulai Pembelajaran</string>
+    <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero.</string>
 </resources>

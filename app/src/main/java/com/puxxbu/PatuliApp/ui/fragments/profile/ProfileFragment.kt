@@ -32,10 +32,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
-const val REQUEST_CODE = 1
 class ProfileFragment : Fragment() {
-
-
 
     private val TAG = "ProfileFragment"
     private var _fragmentProfileBinding: FragmentProfileBinding? = null

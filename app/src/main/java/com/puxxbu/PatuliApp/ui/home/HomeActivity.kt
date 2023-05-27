@@ -8,12 +8,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.util.Log
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityHomeBinding
 import com.puxxbu.PatuliApp.ui.MainActivity
 import com.puxxbu.PatuliApp.ui.OnboardingActivity
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
+import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonFragment
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,12 +29,29 @@ class HomeActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private val permissionsFragment = PermissionsFragment()
     private val cameraFragment = CameraFragment()
+    private val lessonFragment = LessonFragment()
     private val profileFragment = ProfileFragment()
+
+    private var isLogin : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        Log.d("HomeActivity", "onCreate: DIBUAT")
+
+        val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        Log.d("HomeActivity", "onCreate: $containerFragment")
+        if (containerFragment !is CameraFragment ){
+            fragmentManager.beginTransaction()
+                .add(
+                    R.id.fragment_container,
+                    cameraFragment,
+                    CameraFragment::class.java.simpleName
+                )
+                .commit()
+
+        }
 
         homeViewModel.getSessionData().observe(this) {
             // Tampilkan PermissionsFragment jika user belum memberikan izin
@@ -45,18 +64,6 @@ class HomeActivity : AppCompatActivity() {
                     )
                     .commit()
             }else{
-                // Tampilkan CameraFragment
-                val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                if (containerFragment !is CameraFragment){
-                    fragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_container,
-                            cameraFragment,
-                            CameraFragment::class.java.simpleName
-                        )
-                        .commit()
-
-                }
 
             }
 
@@ -66,6 +73,12 @@ class HomeActivity : AppCompatActivity() {
                         // Tampilkan CameraFragment
                         fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
+                            .commit()
+                        true
+                    }
+                    R.id.item_3 ->{
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, lessonFragment, LessonFragment::class.java.simpleName)
                             .commit()
                         true
                     }
