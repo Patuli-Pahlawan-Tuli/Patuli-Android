@@ -12,8 +12,6 @@
         android:layout_height="match_parent"
         app:scaleType="fillStart">
 
-
-
     </androidx.camera.view.PreviewView>
 
 
@@ -22,6 +20,8 @@
         android:id="@+id/overlay"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
+
+
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_circular"
@@ -92,6 +92,38 @@
         android:layout_gravity="right|bottom"
         android:src="@drawable/ic_baseline_refresh_24"
         />
+
+    <Button
+        android:id="@+id/btn_change_model"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+
+        app:popupMenuStyle="@style/MyPopupMenuStyle"
+
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+
+        android:layout_gravity="top|right"
+
+        app:icon="@drawable/ic_baseline_person_24"/>
+
+<!--    <androidx.appcompat.widget.AppCompatSpinner-->
+<!--        android:id="@+id/spinner_model"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentRight="true"-->
+
+<!--        android:textSize="11sp"-->
+
+<!--        android:layout_gravity="top|right"-->
+<!--        android:entries="@array/models_spinner_titles"-->
+<!--        android:spinnerMode="dropdown" />-->
 
     <!--    <include-->
 <!--        android:id="@+id/bottom_sheet_layout"-->

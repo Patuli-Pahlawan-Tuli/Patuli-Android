@@ -24,7 +24,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".DetailLessonActivity"
+            android:name=".ui.fragments.lesson.DetailLessonActivity"
             android:exported="false" />
         <activity
             android:name=".ui.fragments.lesson.LessonListActivity"

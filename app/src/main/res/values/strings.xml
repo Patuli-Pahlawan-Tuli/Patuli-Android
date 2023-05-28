@@ -27,4 +27,12 @@
     <string name="title_translate_result">Hasil Terjemahan</string>
     <string name="start_lesson">Mulai Pembelajaran</string>
     <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero.</string>
+    <string-array name="models_spinner_titles">
+        <item>MobileNet V1</item>
+        <item>EfficientDet Lite0</item>
+        <item>EfficientDet Lite1</item>
+        <item>EfficientDet Lite2</item>
+        <item>Abjad NonQuantized</item>
+        <item>Abjad Quantized</item>
+    </string-array>
 </resources>

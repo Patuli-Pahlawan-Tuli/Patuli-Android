@@ -10,6 +10,7 @@ class DetailLessonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailLessonBinding.inflate(layoutInflater)
+        supportActionBar?.hide()
         setContentView(binding.root)
     }
 }

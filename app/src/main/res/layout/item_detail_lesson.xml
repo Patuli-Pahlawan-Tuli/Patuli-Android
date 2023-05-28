@@ -5,7 +5,7 @@
     style="?attr/materialCardViewElevatedStyle"
     android:id="@+id/card"
     app:cardBackgroundColor="#F7F2FA"
-    android:layout_width="160dp"
+    android:layout_width="140dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 

@@ -3,6 +3,7 @@ package com.puxxbu.PatuliApp.ui.fragments.camera
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,15 +11,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.camera.core.*
+import com.puxxbu.PatuliApp.R
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
-import com.puxxbu.PatuliApp.R
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
 import kotlinx.coroutines.*
@@ -31,10 +37,10 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     private val TAG = "CameraFragment"
 
-    private var _fragmentCameraBinding: FragmentCameraBinding? = null
+    private var _binding: FragmentCameraBinding? = null
 
-    private val fragmentCameraBinding
-        get() = _fragmentCameraBinding!!
+    private val binding
+        get() = _binding!!
 
     private val _resultResponse = MutableLiveData<String>()
     val resultResponse: MutableLiveData<String> = _resultResponse
@@ -74,7 +80,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 //        }
 
         if (job?.isCancelled == true) {
-            startLogging(fragmentCameraBinding.tvResult)
+            startLogging(binding.tvResult)
         }
     }
 
@@ -88,7 +94,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         super.onDestroyView()
         handler.removeCallbacksAndMessages(null)
         objectDetectorHelper.clearObjectDetector()
-        _fragmentCameraBinding = null
+        _binding = null
         if (::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
         }
@@ -104,18 +110,24 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
-        val tvHasil = fragmentCameraBinding.tvResult
+        val tvHasil = binding.tvResult
         tvHasil.setText("Hasil")
         startLogging(tvHasil)
-        fragmentCameraBinding.ivRefresh.setOnClickListener {
+        binding.ivRefresh.setOnClickListener {
             dataResult = ""
         }
 
+        binding.btnChangeModel.setOnClickListener {
+            showMenu(it, R.menu.popup_menu)
+        }
+
+
+
         isFragmentActive = true
 
-        return fragmentCameraBinding.root
+        return binding.root
     }
 
     @SuppressLint("MissingPermission")
@@ -129,6 +141,37 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         // Attach listeners to UI control widgets
 //        initBottomSheetControls()
+    }
+
+    private fun showMenu(v : View, @MenuRes menuRes: Int){
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.option_1 -> {
+                    objectDetectorHelper.currentModel = 0
+                    updateControlsUi()
+                    true
+                }
+
+                R.id.option_2 -> {
+                    objectDetectorHelper.currentModel = 1
+                    updateControlsUi()
+                    true
+                }
+
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    private fun updateControlsUi() {
+        // Needs to be cleared instead of reinitialized because the GPU
+        // delegate needs to be initialized on the thread using it when applicable
+        objectDetectorHelper.clearObjectDetector()
+        binding.overlay.clear()
     }
 
     // Initialize CameraX, and prepare to bind the camera use cases
@@ -164,14 +207,14 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         preview =
             Preview.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(fragmentCameraBinding.viewFinder.display.rotation)
+                .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(fragmentCameraBinding.viewFinder.display.rotation)
+                .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
@@ -201,7 +244,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
 
             // Attach the viewfinder's surface provider to preview use case
-            preview?.setSurfaceProvider(fragmentCameraBinding.viewFinder.surfaceProvider)
+            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
@@ -218,7 +261,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        imageAnalyzer?.targetRotation = fragmentCameraBinding.viewFinder.display.rotation
+        imageAnalyzer?.targetRotation = binding.viewFinder.display.rotation
     }
 
     // Update UI after objects have been detected. Extracts original image height/width
@@ -233,7 +276,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) && activity != null) {
             handler.post{
                 activity?.runOnUiThread {
-                    fragmentCameraBinding.overlay.setResults(
+                    binding.overlay.setResults(
                         results ?: LinkedList<Detection>(),
                         imageHeight,
                         imageWidth
@@ -247,7 +290,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         }
                     }
                     // Force a redraw
-                    fragmentCameraBinding.overlay.invalidate()
+                    binding.overlay.invalidate()
                 }
             }
 
@@ -283,12 +326,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             cameraExecutor = Executors.newSingleThreadExecutor()
 
             // Wait for the views to be properly laid out
-            fragmentCameraBinding.viewFinder.post {
+            binding.viewFinder.post {
                 // Set up the camera and its use cases
                 setUpCamera()
             }
 
-            fragmentCameraBinding.progressCircular.visibility = View.GONE
+            binding.progressCircular.visibility = View.GONE
         }
     }
 }

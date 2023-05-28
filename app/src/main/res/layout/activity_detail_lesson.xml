@@ -46,46 +46,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_lesson_photo" />
 
-    <Button
-        android:id="@+id/btn_previous"
-        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-        android:layout_width="160dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#F7F2FA"
-        android:fontFamily="@font/roboto_medium"
-
-        app:icon="@drawable/ic_baseline_navigate_before_24"
-        app:iconPadding="0dp"
-        app:iconSize="24dp"
-
-        android:text="Sebelumnya"
-        android:textColor="@color/md_theme_light_primary"
-        android:textSize="16sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/btn_next"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="160dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#F7F2FA"
+        <Button
+            android:id="@+id/btn_previous"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#F7F2FA"
+            android:fontFamily="@font/roboto_medium"
 
-        app:icon="@drawable/ic_baseline_navigate_next_24"
+            android:text="Sebelumnya"
+            android:textColor="@color/md_theme_light_primary"
+            android:textSize="16sp"
 
-        app:iconSize="24dp"
+            app:icon="@drawable/ic_baseline_navigate_before_24"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_next"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="24dp"
+
+            android:backgroundTint="#F7F2FA"
+
+            android:fontFamily="@font/roboto_medium"
 
 
-        app:iconGravity="textEnd"
-        android:fontFamily="@font/roboto_medium"
-        android:text="Berikutnya"
-        android:textColor="@color/md_theme_light_primary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Berikutnya"
+            android:textColor="@color/md_theme_light_primary"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_baseline_navigate_next_24"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_previous" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

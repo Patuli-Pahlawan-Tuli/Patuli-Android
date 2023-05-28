@@ -20,7 +20,8 @@ import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
 class ObjectDetectorHelper(
 
     val context: Context,
-    val objectDetectorListener: DetectorListener
+    val objectDetectorListener: DetectorListener,
+    var currentModel: Int = 0
 ) {
     var threshold: Float = 0.6f
     var numThreads: Int = 2
@@ -80,7 +81,11 @@ class ObjectDetectorHelper(
 
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-        val modelName = "abjadA-Z.tflite"
+        val modelName =  when (currentModel) {
+            MODEL_ABJAD -> "abjadA-Z.tflite"
+            MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
+            else -> "abjadA-Z.tflite"
+        }
         try {
             objectDetector =
                 ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())
@@ -145,9 +150,8 @@ class ObjectDetectorHelper(
         const val DELEGATE_CPU = 0
         const val DELEGATE_GPU = 1
         const val DELEGATE_NNAPI = 2
-        const val MODEL_MOBILENETV1 = 0
-        const val MODEL_EFFICIENTDETV0 = 1
-        const val MODEL_EFFICIENTDETV1 = 2
-        const val MODEL_EFFICIENTDETV2 = 3
+        const val MODEL_ABJAD = 0
+        const val MODEL_MOBILENETV1 = 1
+
     }
 }

@@ -6,17 +6,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.puxxbu.PatuliApp.data.model.detailLessonItem
 import com.puxxbu.PatuliApp.databinding.ActivityDetailLessonBinding
+import com.puxxbu.PatuliApp.databinding.ActivityLessonListBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonListAdapter
 
 class LessonListActivity : AppCompatActivity() {
 
     private val TAG = "DetailLessonActivity"
-    private lateinit var binding: ActivityDetailLessonBinding
+    private lateinit var binding: ActivityLessonListBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailLessonBinding.inflate(layoutInflater)
+        binding = ActivityLessonListBinding.inflate(layoutInflater)
 
         setupView()
         setupAction()
