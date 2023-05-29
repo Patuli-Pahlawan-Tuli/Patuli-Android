@@ -2,6 +2,7 @@ package com.puxxbu.PatuliApp.ui.fragments.lesson
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.databinding.ActivityDetailLessonBinding
@@ -29,17 +30,46 @@ class DetailLessonActivity : AppCompatActivity() {
 
     private fun setupView() {
         binding.apply {
-            val id = intent.getStringExtra(EXTRA_ID)
             val type = intent.getStringExtra(EXTRA_TYPE)
-            val number = intent.getIntExtra(EXTRA_NUMBER,0)
+            var number = intent.getIntExtra(EXTRA_NUMBER,0)
             val size = intent.getIntExtra(EXTRA_SIZE,0)
+            Toast.makeText(this@DetailLessonActivity, "$number", Toast.LENGTH_SHORT).show()
 
-            lessonViewModel.getSessionData().observe(this@DetailLessonActivity) {
+            lessonViewModel.setNumber(number)
+
+            lessonViewModel.pageNumber.observe(this@DetailLessonActivity) {
+                btnPrevious.isEnabled = number > 1
+                btnNext.isEnabled = number < size
+            }
+
+            lessonViewModel.getSessionData().observe(this@DetailLessonActivity) {user ->
                 if (type != null) {
-                    lessonViewModel.getDetailLessonData(it.token, type, number)
+//
+                    lessonViewModel.getDetailLessonData(user.token, type, number)
+
+                    lessonViewModel.pageNumber.observe(this@DetailLessonActivity){
+                        btnNext.setOnClickListener {
+
+
+                            if (number < size) {
+                                lessonViewModel.setNumber(number++)
+                                lessonViewModel.getDetailLessonData(user.token, type, number)
+                            }
+                        }
+
+                        btnPrevious.setOnClickListener {
+
+                            if (number > 0) {
+                                lessonViewModel.setNumber(number--)
+                                lessonViewModel.getDetailLessonData(user.token, type, number)
+                            }
+                        }
+                    }
+
                 }else{
                     Toast.makeText(this@DetailLessonActivity, "Error", Toast.LENGTH_SHORT).show()
                 }
+
             }
 
             lessonViewModel.detailLessonData.observe(this@DetailLessonActivity) {
@@ -50,6 +80,10 @@ class DetailLessonActivity : AppCompatActivity() {
                 topAppBar.title = it.data.lessonName
 
             }
+
+
+
+
         }
 
 
