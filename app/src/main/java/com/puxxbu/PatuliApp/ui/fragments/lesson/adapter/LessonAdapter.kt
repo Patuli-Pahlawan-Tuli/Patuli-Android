@@ -32,6 +32,7 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                Glide.with(itemView.context)
                    .load(item.image_url)
                    .placeholder(R.drawable.ic_launcher_background)
+                   .fitCenter()
                    .into(ivLessonPhoto)
                tvTitle.text = item.title
                tvDescription.text = item.description

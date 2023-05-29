@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.puxxbu.PatuliApp.data.api.config.ApiService
+import com.puxxbu.PatuliApp.data.api.response.lesson.DetailLessonResponse
+import com.puxxbu.PatuliApp.data.api.response.lesson.LessonDataResponse
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditProfilePicResponse
@@ -41,6 +43,12 @@ class DataRepository constructor(
 
     private val _editProfilePicResponse = MutableLiveData<EditProfilePicResponse>()
     val editProfilePicResponse: LiveData<EditProfilePicResponse> = _editProfilePicResponse
+
+    private val _lessonListResponse = MutableLiveData<LessonDataResponse>()
+    val lessonListResponse: LiveData<LessonDataResponse> = _lessonListResponse
+
+    private val _lessonDetailResponse = MutableLiveData<DetailLessonResponse>()
+    val lessonDetailResponse: LiveData<DetailLessonResponse> = _lessonDetailResponse
 
 
     fun postRegister(name: String, email: String, password: String, passwordConfirmation: String) {
@@ -183,6 +191,58 @@ class DataRepository constructor(
             }
 
             override fun onFailure(call: retrofit2.Call<ProfileResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+    fun getLessonList(token:String, type: String){
+        _isLoading.value = true
+        val client = apiService.getLessonData(token , type)
+        client.enqueue(object : retrofit2.Callback<LessonDataResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<LessonDataResponse>,
+                response: retrofit2.Response<LessonDataResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _lessonListResponse.value = response.body()
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), LessonDataResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<LessonDataResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+    fun getLessonbyNumber(token:String, type: String, number : Int){
+        _isLoading.value = true
+        val client = apiService.getDetailLesson(token , type, number)
+        client.enqueue(object : retrofit2.Callback<DetailLessonResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<DetailLessonResponse>,
+                response: retrofit2.Response<DetailLessonResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _lessonDetailResponse.value = response.body()
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), DetailLessonResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<DetailLessonResponse>, t: Throwable) {
                 Log.d("TAG", "Failed: ${t.message}")
             }
         })

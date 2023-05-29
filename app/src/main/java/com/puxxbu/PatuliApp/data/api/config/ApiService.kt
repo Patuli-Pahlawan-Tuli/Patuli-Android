@@ -1,12 +1,13 @@
 package com.puxxbu.PatuliApp.data.api.config
 
+import com.puxxbu.PatuliApp.data.api.response.lesson.DetailLessonResponse
+import com.puxxbu.PatuliApp.data.api.response.lesson.LessonDataResponse
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditProfilePicResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -50,6 +51,20 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
     ): Call<EditProfilePicResponse>
+
+    @GET("lessons/{type}")
+    fun getLessonData(
+        @Header("Authorization") token: String,
+        @Path("type") type: String
+    ): Call<LessonDataResponse>
+
+    @GET("lessons/{type}/{number}")
+    fun getDetailLesson(
+        @Header("Authorization") token: String,
+        @Path("type") type: String,
+        @Path("number") number: Int
+    ): Call<DetailLessonResponse>
+
 
 
 }

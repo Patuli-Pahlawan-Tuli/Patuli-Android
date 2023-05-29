@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.puxxbu.PatuliApp.data.api.config.ApiConfig
 import com.puxxbu.PatuliApp.data.database.SessionDataPreferences
 import com.puxxbu.PatuliApp.data.repository.DataRepository
+import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileViewModel
 import com.puxxbu.PatuliApp.ui.home.HomeViewModel
 import com.puxxbu.PatuliApp.ui.login.LoginViewModel
@@ -41,6 +42,7 @@ class PatuliApp : Application() {
         viewModel { LoginViewModel(get()) }
         viewModel { HomeViewModel(get()) }
         viewModel { ProfileViewModel(get()) }
+        viewModel { LessonViewModel(get()) }
     }
 
     private val repoModule = module {
