@@ -57,3 +57,4 @@ fun reduceFileImage(file: File): File {
 
     return file
 }
+

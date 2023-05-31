@@ -16,6 +16,7 @@ import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.gms.vision.TfLiteVision
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
+import java.io.File
 
 class ObjectDetectorHelper(
 
@@ -81,14 +82,20 @@ class ObjectDetectorHelper(
 
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
+
+
+
+
         val modelName =  when (currentModel) {
-            MODEL_ABJAD -> "abjadA-Z.tflite"
-            MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
-            else -> "abjadA-Z.tflite"
+            MODEL_ABJAD ->  "abjad_fulltrain_quantized_metadata.tflite"
+            MODEL_MOBILENETV1 ->  "lite-model_ssd_mobilenet_v1_1_metadata_2.tflite"
+            else ->  "abjad_fulltrain_quantized_metadata.tflite"
         }
+
+        val file = File(context.getExternalFilesDir("models"), modelName)
         try {
             objectDetector =
-                ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())
+            ObjectDetector.createFromFileAndOptions(file,optionsBuilder.build())
         } catch (e: Exception) {
             objectDetectorListener.onError(
                 "Object detector failed to initialize. See error logs for details"
@@ -128,12 +135,9 @@ class ObjectDetectorHelper(
             tensorImage.width)
 
         _resultResponse.postValue(results)
-
-
-
-
-
     }
+
+
 
     interface DetectorListener {
         fun onInitialized()

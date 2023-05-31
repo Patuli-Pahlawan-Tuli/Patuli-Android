@@ -17,8 +17,19 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String", "URL", '"https://patuli-project.et.r.appspot.com/api/v1/"')
+//        buildConfigField("String", "URL", localProperties.getProperty("url"))
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    def apiPropertiesFile = rootProject.file("local.properties")
+    if (apiPropertiesFile.exists()) {
+        Properties apiProperties = new Properties()
+        apiProperties.load(new FileInputStream(apiPropertiesFile))
+        buildTypes.each {
+            it.buildConfigField 'String', 'URL', apiProperties.getProperty('api.url')
+            it.buildConfigField 'String', 'URL_ABJAD', apiProperties.getProperty('modelabjad.url')
+            it.buildConfigField 'String', 'URL_MOBILE', apiProperties.getProperty('modelmobile.url')
+        }
     }
 
     buildTypes {

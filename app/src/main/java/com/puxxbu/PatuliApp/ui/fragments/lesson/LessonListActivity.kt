@@ -60,7 +60,6 @@ class LessonListActivity : AppCompatActivity() {
         showLoading()
 
         val recyclerView : RecyclerView = binding.rvLessons
-        val items = detailLessonItem
 
         lessonViewModel.lessonData.observe(this) {
             val adapter = LessonListAdapter(it.data)

@@ -25,7 +25,14 @@ class DetailLessonActivity : AppCompatActivity() {
         binding = ActivityDetailLessonBinding.inflate(layoutInflater)
 
         setupView()
+        setupAction()
         setContentView(binding.root)
+    }
+
+    private fun setupAction() {
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     private fun setupView() {

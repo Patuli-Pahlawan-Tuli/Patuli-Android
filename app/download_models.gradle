@@ -4,23 +4,6 @@ task downloadModelFile(type: Download) {
     overwrite false
 }
 
-task downloadModelFile0(type: Download) {
-    src 'https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/object_detection/android_play_services/lite-model_efficientdet_lite0_detection_metadata_1.tflite'
-    dest project.ext.ASSET_DIR + '/efficientdet-lite0.tflite'
-    overwrite false
-}
-
-task downloadModelFile1(type: Download) {
-    src 'https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/object_detection/android_play_services/lite-model_efficientdet_lite1_detection_metadata_1.tflite'
-    dest project.ext.ASSET_DIR + '/efficientdet-lite1.tflite'
-    overwrite false
-}
-
-task downloadModelFile2(type: Download) {
-    src 'https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/object_detection/android_play_services/lite-model_efficientdet_lite2_detection_metadata_1.tflite'
-    dest project.ext.ASSET_DIR + '/efficientdet-lite2.tflite'
-    overwrite false
-}
 
 task downloadModelFile3(type: Download) {
     src 'https://drive.google.com/u/5/uc?id=196HD8RqmRUarYzLeiO0ynuQFsrQFv3-G&export=download'
