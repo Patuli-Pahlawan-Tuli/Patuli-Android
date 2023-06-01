@@ -144,7 +144,7 @@ class SplashActivity : AppCompatActivity() {
                         Thread.sleep(1000)
                     }
                 }
-                Toast.makeText(this@SplashActivity, "Model file(s) downloaded", Toast.LENGTH_SHORT)
+                Toast.makeText(this@SplashActivity, "Models downloaded", Toast.LENGTH_SHORT)
                     .show()
                 homeViewModel.incrementDownloadCount()
             }
