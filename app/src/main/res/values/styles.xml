@@ -4,4 +4,12 @@
         <item name="android:divider">@color/md_theme_light_primary</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
+
+    <style name="FabCircle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:tint">#FFFFFF</item>
+    </style>
+
+
 </resources>

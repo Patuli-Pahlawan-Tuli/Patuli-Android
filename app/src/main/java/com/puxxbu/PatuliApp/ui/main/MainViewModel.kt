@@ -1,4 +1,4 @@
-package com.puxxbu.PatuliApp.ui.home
+package com.puxxbu.PatuliApp.ui.main
 
 
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ import com.puxxbu.PatuliApp.data.repository.DataRepository
 import com.puxxbu.PatuliApp.utils.Event
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val dataRepository: DataRepository) : ViewModel() {
+class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
     private val _isloading = MutableLiveData<Boolean>()
     val isLoading: MutableLiveData<Boolean> = _isloading

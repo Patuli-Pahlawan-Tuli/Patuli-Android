@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
-import com.puxxbu.PatuliApp.ui.home.HomeActivity
+import com.puxxbu.PatuliApp.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
                     builder.setTitle("Login Berhasil")
                     builder.setMessage("Silahkan lanjutkan")
                     builder.setPositiveButton("OK") { dialog, which ->
-                        val intent = Intent(this, HomeActivity::class.java)
+                        val intent = Intent(this, MainActivity::class.java)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)

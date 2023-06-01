@@ -30,6 +30,7 @@
         <activity
             android:name=".ui.fragments.lesson.DetailLessonActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.fragments.lesson.LessonListActivity"
             android:exported="false" />
@@ -46,10 +47,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.OnboardingActivity"
+            android:name=".ui.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"
@@ -57,9 +58,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false" />
+
     </application>
 
 </manifest>

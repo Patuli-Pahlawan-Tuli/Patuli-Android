@@ -18,17 +18,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.puxxbu.PatuliApp.BuildConfig
-import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
-import com.puxxbu.PatuliApp.ui.home.HomeActivity
-import com.puxxbu.PatuliApp.ui.home.HomeViewModel
+import com.puxxbu.PatuliApp.ui.main.MainActivity
+import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.utils.Event
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val homeViewModel: MainViewModel by viewModel()
     private lateinit var i: Intent
     private val PERMISSIONS_REQUEST_CAMERA_AND_STORAGE = 1001
 
@@ -228,11 +227,11 @@ class SplashActivity : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 // Pindahkan ke halaman berikutnya
                 if (it.isLogin == true) {
-                    i = Intent(this, HomeActivity::class.java)
+                    i = Intent(this, MainActivity::class.java)
                     startActivity(i)
                     Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
                 } else {
-                    i = Intent(this, MainActivity::class.java)
+                    i = Intent(this, OnBoardingActivity::class.java)
                     startActivity(i)
                     Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
                 }

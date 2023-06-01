@@ -3,7 +3,6 @@ package com.puxxbu.PatuliApp.ui.fragments.profile
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,15 +12,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
-import com.puxxbu.PatuliApp.ui.MainActivity
-import com.puxxbu.PatuliApp.ui.OnboardingActivity
-import com.puxxbu.PatuliApp.ui.SplashActivity
-import com.puxxbu.PatuliApp.ui.login.LoginActivity
+import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.utils.reduceFileImage
 import com.puxxbu.PatuliApp.utils.uriToFile
 import kotlinx.coroutines.delay
@@ -91,7 +86,7 @@ class ProfileFragment : Fragment() {
                 }
                 activity?.finishAffinity()
                 activity?.finish()
-                val intentLogout = Intent(requireContext(), MainActivity::class.java)
+                val intentLogout = Intent(requireContext(), OnBoardingActivity::class.java)
                 intentLogout.flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 requireActivity().supportFragmentManager.beginTransaction()

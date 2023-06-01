@@ -1,18 +1,13 @@
-package com.puxxbu.PatuliApp.ui.home
+package com.puxxbu.PatuliApp.ui.main
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.util.Log
 import com.puxxbu.PatuliApp.R
-import com.puxxbu.PatuliApp.databinding.ActivityHomeBinding
-import com.puxxbu.PatuliApp.ui.MainActivity
-import com.puxxbu.PatuliApp.ui.OnboardingActivity
+import com.puxxbu.PatuliApp.databinding.ActivityMainBinding
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
 import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonFragment
@@ -20,11 +15,11 @@ import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class HomeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivityMainBinding
 
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val homeViewModel: MainViewModel by viewModel()
 
     private val fragmentManager = supportFragmentManager
     private val permissionsFragment = PermissionsFragment()
@@ -37,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         Log.d("HomeActivity", "onCreate: DIBUAT")
 
         val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
@@ -63,8 +58,6 @@ class HomeActivity : AppCompatActivity() {
                         PermissionsFragment::class.java.simpleName
                     )
                     .commit()
-            }else{
-
             }
 
             binding.bottomNavigation.setOnItemSelectedListener { item ->
