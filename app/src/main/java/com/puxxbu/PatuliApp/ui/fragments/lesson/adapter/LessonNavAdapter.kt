@@ -7,15 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.api.response.lesson.DataItem
+import com.puxxbu.PatuliApp.data.model.LessonItemNavModel
 import com.puxxbu.PatuliApp.databinding.ItemDetailLessonBinding
+import com.puxxbu.PatuliApp.databinding.ItemLessonNavigationBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.DetailLessonActivity
 
-class LessonListAdapter(private val items: List<DataItem>) :
-    RecyclerView.Adapter<LessonListAdapter.ViewHolder>() {
+class LessonNavAdapter(private val items: List<LessonItemNavModel>) :
+    RecyclerView.Adapter<LessonNavAdapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemDetailLessonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemLessonNavigationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -27,26 +30,19 @@ class LessonListAdapter(private val items: List<DataItem>) :
         return items.size
     }
 
-    inner class ViewHolder(private val binding: ItemDetailLessonBinding) :
+    inner class ViewHolder(private val binding: ItemLessonNavigationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DataItem) {
+        fun bind(item: LessonItemNavModel) {
             binding.apply {
-                Glide.with(itemView.context)
-                    .load(item.imageUrl)
-                    .fitCenter()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(ivLessonPhoto)
-                tvTitle.text = item.lessonName
+                tvTitle.text = item.title
             }
 
-            binding.card.setOnClickListener {
+            binding.cardLessonNav.setOnClickListener {
                 val intent: Intent = Intent(itemView.context, DetailLessonActivity::class.java)
-                intent.putExtra(DetailLessonActivity.EXTRA_TYPE, item.lessonType)
-                intent.putExtra(DetailLessonActivity.EXTRA_NUMBER, item.lessonNumber)
-                intent.putExtra(DetailLessonActivity.EXTRA_SIZE, items.size)
                 itemView.context.startActivity(intent)
             }
         }
     }
+
 }

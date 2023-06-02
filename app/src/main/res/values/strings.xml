@@ -27,8 +27,11 @@
     <string name="title_translate_result">Hasil Terjemahan</string>
     <string name="start_lesson">Mulai Pembelajaran</string>
     <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nibh ac vulputate vestibulum, dui enim eleifend lacus, vel iaculis felis augue nec libero.</string>
-    <string name="halo_namamu">Halo, %1$s</string>
-    <string name="quiz_progress">Kuis Diselesaikan %1$s/%1$s</string>
+    <string name="welcome_name">Halo, %1$s</string>
+    <string name="quiz_progress">Kuis Diselesaikan %1$s/%2$s</string>
+    <string name="time_needed">Membutuhkan %1$s jam</string>
+    <string name="lesson_desc">Belajar mengenal huruf abjad</string>
+    <string name="lesson_title">Abjad A-Z</string>
     <string-array name="models_spinner_titles">
         <item>MobileNet V1</item>
         <item>EfficientDet Lite0</item>

@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/camera_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
+
+
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:scaleType="fillStart">
 
     </androidx.camera.view.PreviewView>
 
 
-
     <com.puxxbu.PatuliApp.utils.OverlayView
         android:id="@+id/overlay"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_circular"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="visible"
-        android:layout_gravity="center"
-        style="?android:attr/progressBarStyleLarge" />
+        app:layout_constraintBottom_toBottomOf="@+id/view_finder"
+        app:layout_constraintEnd_toEndOf="@+id/view_finder"
+        app:layout_constraintStart_toStartOf="@+id/view_finder"
+        app:layout_constraintTop_toTopOf="parent" />
 
 <!--    <TextView-->
 <!--        android:id="@+id/tv_hasil"-->
@@ -46,7 +58,10 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_gravity="center|bottom"
-        android:layout_margin="14dp">
+        android:layout_margin="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,8 +79,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_translate_result"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
                 <TextView
                     android:id="@+id/tv_result"
                     android:layout_width="wrap_content"
@@ -73,8 +88,7 @@
                     android:layout_marginTop="8dp"
                     android:text=" A  AA A"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
 
@@ -87,31 +101,89 @@
         android:id="@+id/iv_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="115dp"
-        android:layout_marginRight="24dp"
         android:layout_gravity="right|bottom"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_baseline_refresh_24"
-        />
+        app:layout_constraintEnd_toEndOf="@+id/card"
+        app:layout_constraintTop_toTopOf="@+id/card" />
 
-    <Button
-        android:id="@+id/btn_change_model"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
+<!--    <Button-->
+<!--        android:id="@+id/btn_change_model"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_gravity="top|right"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:insetLeft="0dp"-->
+<!--        android:insetTop="0dp"-->
 
-        app:popupMenuStyle="@style/MyPopupMenuStyle"
+<!--        android:insetRight="0dp"-->
 
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="24dp"
+<!--        android:insetBottom="0dp"-->
 
-        android:layout_gravity="top|right"
+<!--        app:icon="@drawable/ic_baseline_person_24"-->
+<!--        app:iconGravity="textStart"-->
+<!--        app:iconPadding="0dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"-->
+<!--        app:popupMenuStyle="@style/MyPopupMenuStyle" />-->
 
-        app:icon="@drawable/ic_baseline_person_24"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:background="#80000000"
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/md_theme_light_onPrimary"
+            app:navigationIcon="@drawable/ic_baseline_clear_24"
+
+            app:navigationIconTint="@color/md_theme_light_onPrimary"
+            app:title="Kamera Penerjemah" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#80000000"
+        app:tabTextColor="@color/md_theme_light_onPrimary"
+
+
+        app:tabSelectedTextColor="#FFB700"
+        app:tabIndicatorColor="#FFB700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abjad" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Angka" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kata" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 <!--    <androidx.appcompat.widget.AppCompatSpinner-->
 <!--        android:id="@+id/spinner_model"-->
@@ -128,4 +200,4 @@
     <!--    <include-->
 <!--        android:id="@+id/bottom_sheet_layout"-->
 <!--        layout="@layout/info_bottom_sheet" />-->
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

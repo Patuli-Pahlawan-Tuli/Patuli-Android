@@ -3,13 +3,14 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/card_lesson"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="12dp"
+    android:elevation="4dp"
+    android:background="#ECE6F0"
 
     android:orientation="vertical"
     app:layout_constraintEnd_toEndOf="parent"
@@ -17,10 +18,24 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_lesson_photo"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/common_google_signin_btn_icon_dark_focused"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_difficulty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="#58CD01"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:text="Mudah"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lesson_photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,34 +47,49 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/halo_namamu"
+        android:text="@string/lesson_title"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
+        app:layout_constraintTop_toTopOf="@+id/iv_lesson_photo" />
 
     <TextView
         android:id="@+id/tv_lesson_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/halo_namamu"
-        android:textSize="14sp"
+        android:text="@string/lesson_desc"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/tv_lesson_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_lesson_title" />
 
-    <Button
+    <TextView
+        android:id="@+id/tv_time_needed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/time_needed"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_lesson_title" />
+
+    <Button
+        android:id="@+id/btn_start_lesson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_rec_button"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Selengkapnya"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </Button>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.content.Intent
 import android.util.Log
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityMainBinding
+import com.puxxbu.PatuliApp.ui.OnBoardingActivity
+import com.puxxbu.PatuliApp.ui.fragments.camera.CameraActivity
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
+import com.puxxbu.PatuliApp.ui.fragments.home.HomeFragment
 import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonFragment
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val cameraFragment = CameraFragment()
     private val lessonFragment = LessonFragment()
     private val profileFragment = ProfileFragment()
+    private val homeFragment = HomeFragment()
 
     private var isLogin : Boolean = false
 
@@ -37,12 +42,12 @@ class MainActivity : AppCompatActivity() {
 
         val containerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         Log.d("HomeActivity", "onCreate: $containerFragment")
-        if (containerFragment !is CameraFragment ){
+        if (containerFragment !is HomeFragment ){
             fragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    cameraFragment,
-                    CameraFragment::class.java.simpleName
+                    homeFragment,
+                    HomeFragment::class.java.simpleName
                 )
                 .commit()
 
@@ -64,8 +69,11 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.item_1 -> {
                         // Tampilkan CameraFragment
+//                        fragmentManager.beginTransaction()
+//                            .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
+//                            .commit()
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
+                            .replace(R.id.fragment_container, homeFragment, HomeFragment::class.java.simpleName)
                             .commit()
                         true
                     }
@@ -84,6 +92,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> false
                 }
+            }
+
+            binding.floatingActionButton.setOnClickListener {
+                val intent = Intent(this, CameraActivity::class.java)
+                startActivity(intent)
             }
         }
 

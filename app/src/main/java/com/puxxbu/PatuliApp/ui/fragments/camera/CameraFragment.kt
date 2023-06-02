@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.PopupMenu
+import android.widget.TableLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.MenuRes
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.tabs.TabLayout
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
 import kotlinx.coroutines.*
@@ -119,11 +121,34 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             dataResult = ""
         }
 
-        binding.btnChangeModel.setOnClickListener {
-            showMenu(it, R.menu.popup_menu)
+        binding.topAppBar.setNavigationOnClickListener {
+            activity?.finish()
         }
 
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let{
+                    when(it.position){
+                        0 -> {
+                            objectDetectorHelper.currentModel = 0
+                            updateControlsUi()
+                        }
+                        1 -> {
+                            objectDetectorHelper.currentModel = 1
+                            updateControlsUi()
+                        }
+                    }
+                }
+            }
 
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
 
         isFragmentActive = true
 

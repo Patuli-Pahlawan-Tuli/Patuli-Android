@@ -4,8 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.R
+import com.puxxbu.PatuliApp.data.model.alphabethItemList
 import com.puxxbu.PatuliApp.databinding.ActivityDetailLessonBinding
+import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonListAdapter
+import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonNavAdapter
 import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -89,6 +97,27 @@ class DetailLessonActivity : AppCompatActivity() {
             }
 
 
+            fabNavigationPage.setOnClickListener {
+                val dialogView = layoutInflater.inflate(R.layout.dialog_lesson_nav, null)
+                val rvDialog = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rv_lessons)
+
+                val recyclerView : RecyclerView = rvDialog
+
+                lessonViewModel.lessonData.observe(this@DetailLessonActivity) {
+                    val adapter = LessonNavAdapter(alphabethItemList)
+                    recyclerView.adapter = adapter
+                }
+
+                val layoutManager = GridLayoutManager(this@DetailLessonActivity,5)
+                recyclerView.layoutManager = layoutManager
+
+
+                val builder = MaterialAlertDialogBuilder(this@DetailLessonActivity)
+                builder.setView(dialogView)
+                val dialog = builder.create()
+
+                dialog.show()
+            }
 
 
         }

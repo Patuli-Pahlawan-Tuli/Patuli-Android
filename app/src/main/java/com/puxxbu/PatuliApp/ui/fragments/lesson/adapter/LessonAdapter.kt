@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.puxxbu.PatuliApp.PatuliApp.Companion.context
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.LessonItemModel
 import com.puxxbu.PatuliApp.databinding.ItemLessonBinding
@@ -34,13 +35,19 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                    .placeholder(R.drawable.ic_launcher_background)
                    .fitCenter()
                    .into(ivLessonPhoto)
-               tvTitle.text = item.title
-               tvDescription.text = item.description
-               tvVideoCount.text = item.video_count.toString()
+               tvLessonTitle.text = item.title
+               tvLessonDesc.text = item.description
+               tvTimeNeeded.text = context.getString(R.string.time_needed, "1")
            }
 
-            binding.card.setOnClickListener{
-                val intent: Intent = Intent(itemView.context, LessonListActivity::class.java)
+            binding.cardLesson.setOnClickListener{
+                val intent = Intent(itemView.context, LessonListActivity::class.java)
+                intent.putExtra("lesson_id", item.title)
+                itemView.context.startActivity(intent)
+            }
+
+            binding.btnStartLesson.setOnClickListener{
+                val intent = Intent(itemView.context, LessonListActivity::class.java)
                 intent.putExtra("lesson_id", item.title)
                 itemView.context.startActivity(intent)
             }

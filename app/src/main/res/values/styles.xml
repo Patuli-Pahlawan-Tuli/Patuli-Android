@@ -10,6 +10,12 @@
         <item name="cornerSize">50%</item>
         <item name="android:tint">#FFFFFF</item>
     </style>
+    <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@drawable/shape_rounded_lighter_grey</item>
+        <item name="android:windowMinWidthMajor">300dp</item>
+        <item name="android:windowMinWidthMinor">300dp</item>
+    </style>
+
 
 
 </resources>

@@ -3,7 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="?attr/materialCardViewElevatedStyle"
-    android:id="@+id/card"
+    android:id="@+id/card_lesson_nav"
     app:cardBackgroundColor="#F7F2FA"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -15,12 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Media -->
-        <ImageView
-            android:id="@+id/iv_lesson_photo"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:srcCompat="@drawable/ic_launcher_background" />
 
         <!-- Buttons -->
         <LinearLayout
@@ -34,19 +28,19 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:layout_gravity="center"
-                android:text="Huruf A"
+                android:text="A"
                 android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_difficulty"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:text="Mudah"-->
-<!--                android:textAppearance="?attr/textAppearanceBodyMedium"-->
-<!--                android:textColor="?android:attr/textColorSecondary" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_difficulty"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:text="Mudah"-->
+            <!--                android:textAppearance="?attr/textAppearanceBodyMedium"-->
+            <!--                android:textColor="?android:attr/textColorSecondary" />-->
 
 
         </LinearLayout>
