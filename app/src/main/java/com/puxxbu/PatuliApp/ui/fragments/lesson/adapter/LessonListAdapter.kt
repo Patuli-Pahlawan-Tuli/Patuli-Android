@@ -4,7 +4,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.puxxbu.PatuliApp.PatuliApp.Companion.context
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.api.response.lesson.DataItem
 import com.puxxbu.PatuliApp.databinding.ItemDetailLessonBinding
@@ -31,11 +37,26 @@ class LessonListAdapter(private val items: List<DataItem>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DataItem) {
+//            val requestOptions = RequestOptions().placeholder(
+//                CircularProgressDrawable(itemView.context).apply {
+//                    strokeWidth = 5f
+//                    centerRadius = 30f
+//                    start()
+//                }
+//            )
+
+            val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
+
             binding.apply {
                 Glide.with(itemView.context)
+                    .asBitmap()
                     .load(item.imageUrl)
                     .fitCenter()
-                    .placeholder(R.drawable.ic_launcher_background)
+                    .placeholder(circularProgressDrawable)
                     .into(ivLessonPhoto)
                 tvTitle.text = item.lessonName
             }

@@ -10,6 +10,13 @@ import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.LessonItemModel
 import com.puxxbu.PatuliApp.databinding.ItemLessonBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonListActivity
+import android.graphics.Bitmap
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 
 class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
 
@@ -34,6 +41,7 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                    .load(item.image_url)
                    .placeholder(R.drawable.ic_launcher_background)
                    .fitCenter()
+                   .diskCacheStrategy(DiskCacheStrategy.DATA)
                    .into(ivLessonPhoto)
                tvLessonTitle.text = item.title
                tvLessonDesc.text = item.description
