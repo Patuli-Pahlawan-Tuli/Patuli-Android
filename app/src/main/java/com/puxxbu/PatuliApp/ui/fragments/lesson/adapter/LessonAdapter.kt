@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.puxxbu.PatuliApp.ui.fragments.lesson.DetailLessonActivity
 
 class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
 
@@ -50,13 +51,13 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
 
             binding.cardLesson.setOnClickListener{
                 val intent = Intent(itemView.context, LessonListActivity::class.java)
-                intent.putExtra("lesson_id", item.title)
+                intent.putExtra(LessonListActivity.EXTRA_LESSON_NAME, item.title)
                 itemView.context.startActivity(intent)
             }
 
             binding.btnStartLesson.setOnClickListener{
                 val intent = Intent(itemView.context, LessonListActivity::class.java)
-                intent.putExtra("lesson_id", item.title)
+                intent.putExtra(LessonListActivity.EXTRA_LESSON_NAME, item.title)
                 itemView.context.startActivity(intent)
             }
         }

@@ -9,19 +9,19 @@ data class LessonItemModel(
 
 val itemLesson : List<LessonItemModel> = listOf(
     LessonItemModel(
-        "Lesson 1",
+        "Abjad A-Z",
         3,
         "This is a description",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
     ),
     LessonItemModel(
-        "Lesson 2",
+        "Angka",
         3,
         "This is a description",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
     ),
     LessonItemModel(
-        "Lesson 3",
+        "Kata",
         3,
         "This is a description",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"

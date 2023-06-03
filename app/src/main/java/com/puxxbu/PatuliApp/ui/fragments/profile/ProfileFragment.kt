@@ -8,13 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.Toast
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.R
+import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
+import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.utils.reduceFileImage
@@ -146,7 +150,7 @@ class ProfileFragment : Fragment() {
             if (!it.error) {
                 profileViewModel.profileErrorResponse.observe(viewLifecycleOwner) { message ->
                     message.getContentIfNotHandled()?.let {
-                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                       showDialog("Ubah Foto Profil")
                     }
                 }
             }
@@ -193,6 +197,23 @@ class ProfileFragment : Fragment() {
         profileViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
+    }
+
+    private fun showDialog(message : String){
+        val dialogView = DialogSuccessBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        tvTitle.text = message
+
+        dialog.show()
     }
 
 

@@ -29,7 +29,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
 
     private fun setupAction() {
-        binding.btnLogin.setOnClickListener {
+        binding.btnChangePassword.setOnClickListener {
             Toast.makeText(this, "Berhasil", Toast.LENGTH_SHORT).show()
         }
 
@@ -48,7 +48,7 @@ class ChangePasswordActivity : AppCompatActivity() {
     }
 
     private fun changePassword(token : String){
-        binding.btnLogin.setOnClickListener {
+        binding.btnChangePassword.setOnClickListener {
             Log.d("ChangePasswordActivity", "changePassword: $token")
             val oldPassword = binding.tietOldPassword.text.toString()
             val newPassword = binding.tietNewPassword.text.toString()

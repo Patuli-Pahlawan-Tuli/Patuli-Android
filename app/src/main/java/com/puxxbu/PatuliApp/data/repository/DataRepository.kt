@@ -223,6 +223,7 @@ class DataRepository constructor(
     }
 
     fun getLessonbyNumber(token:String, type: String, number : Int){
+        Log.d("TAGlesson", "onResponse: getLessonbyNumber")
         _isLoading.value = true
         val client = apiService.getDetailLesson(token , type, number)
         client.enqueue(object : retrofit2.Callback<DetailLessonResponse> {
@@ -235,6 +236,7 @@ class DataRepository constructor(
                     _lessonDetailResponse.value = response.body()
                     _responseMessage.value = Event(response.body()?.message.toString())
                 } else {
+                    Log.d("TAGlesson", "onResponse: GAGAL")
                     val errorResponse =
                         Gson().fromJson(response.errorBody()?.string(), DetailLessonResponse::class.java)
                     _responseMessage.value = Event(errorResponse.message)

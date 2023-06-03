@@ -19,7 +19,9 @@ class LessonListActivity : AppCompatActivity() {
 
     private val lessonViewModel : LessonViewModel by viewModel()
 
-
+    companion object {
+        const val EXTRA_LESSON_NAME = "extra_lesson_name"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLessonListBinding.inflate(layoutInflater)
@@ -58,6 +60,8 @@ class LessonListActivity : AppCompatActivity() {
     }
     private fun setupView() {
         showLoading()
+
+        binding.topAppBar.title = intent.getStringExtra(EXTRA_LESSON_NAME)
 
         val recyclerView : RecyclerView = binding.rvLessons
 

@@ -32,6 +32,8 @@
     <string name="time_needed">Membutuhkan %1$s jam</string>
     <string name="lesson_desc">Belajar mengenal huruf abjad</string>
     <string name="lesson_title">Abjad A-Z</string>
+    <string name="change_password">Ubah Kata Sandi</string>
+    <string name="show_more">Selengkapnya</string>
     <string-array name="models_spinner_titles">
         <item>MobileNet V1</item>
         <item>EfficientDet Lite0</item>

@@ -7,10 +7,14 @@ import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
+import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
+import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
+import com.puxxbu.PatuliApp.ui.register.RegisterActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -57,6 +61,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            Log.d("RegisterActivity", "Login")
+        }
     }
 
 
@@ -71,29 +81,11 @@ class LoginActivity : AppCompatActivity() {
             it.getContentIfNotHandled()?.let {
                 Log.d("LoginActivity", it)
                 if (it == "success") {
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Login Berhasil")
-                    builder.setMessage("Silahkan lanjutkan")
-                    builder.setPositiveButton("OK") { dialog, which ->
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                        Log.d("LoginActivity", "Login Berhasil")
-                        finish()
-                    }
-                    builder.show()
+                    showDialogSuccess("Login Berhasil")
                     saveSession()
 
                 } else {
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Login Gagal")
-                    builder.setMessage(it)
-                    builder.setPositiveButton("OK") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    builder.show()
-
+                    showDialogFailed("Login Gagal", it)
                 }
             }
         }
@@ -126,4 +118,48 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun showDialogSuccess(message : String){
+        val dialogView = DialogSuccessBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(this@LoginActivity)
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+        tvTitle.text = message
+
+        dialog.show()
+    }
+
+    private fun showDialogFailed(message : String, desc : String){
+        val dialogView = DialogFailedBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(this@LoginActivity)
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.dialogDesc.text = desc
+        tvTitle.text = message
+
+        dialog.show()
+    }
+
 }

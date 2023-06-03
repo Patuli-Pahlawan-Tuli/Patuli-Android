@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/dialog_layout"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="vertical"-->
+<!--    android:layout_gravity="center"-->
+<!--    android:padding="16dp">-->
+
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:id="@+id/animation_view"-->
+<!--        android:layout_width="240dp"-->
+<!--        android:layout_height="240dp"-->
+<!--        app:lottie_rawRes="@raw/check_tick_purple"-->
+<!--        app:lottie_autoPlay="true" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_dismiss"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:fontFamily="@font/roboto_medium"-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/animation_view"-->
+<!--        android:layout_alignEnd="@+id/animation_view"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:layout_marginEnd="14dp"-->
+<!--        android:text="Tutup" />-->
+
+<!--</RelativeLayout>-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_layout"
+    android:layout_width="match_parent"
+    android:background="@color/md_theme_light_onPrimary"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/geologica_regular"
+        android:text="Ubah Foto berhasil"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/check_tick_purple"
+        android:layout_width="240dp"
+        android:layout_height="240dp" />
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+
+</LinearLayout>

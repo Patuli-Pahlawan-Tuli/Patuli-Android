@@ -12,9 +12,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityRegisterBinding
+import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
+import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.ui.login.LoginActivity
+import com.puxxbu.PatuliApp.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.prefs.Preferences
 import java.util.regex.Pattern
@@ -91,23 +95,9 @@ class RegisterActivity : AppCompatActivity() {
             it.getContentIfNotHandled()?.let {
                 Log.d("RegisterActivity", it)
                 if (it == "Account Created") {
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle(R.string.register_success)
-                    builder.setPositiveButton("OK") { dialog, which ->
-                        finish()
-                    }
-                    builder.show()
-
+                    showDialogSuccess("Akun berhasil dibuat")
                 } else {
-
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Register Gagal")
-                    builder.setMessage(it)
-                    builder.setPositiveButton("OK") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    builder.show()
-
+                    showDialogFailed("Akun gagal dibuat", it)
                 }
             }
         }
@@ -125,5 +115,43 @@ class RegisterActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         }
+    }
+
+
+    private fun showDialogSuccess(message : String){
+        val dialogView = DialogSuccessBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(this@RegisterActivity)
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvTitle.text = message
+
+        dialog.show()
+    }
+
+    private fun showDialogFailed(message : String, desc : String){
+        val dialogView = DialogFailedBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(this@RegisterActivity)
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.dialogDesc.text = desc
+        tvTitle.text = message
+
+        dialog.show()
     }
 }
