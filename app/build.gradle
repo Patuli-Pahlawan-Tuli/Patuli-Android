@@ -28,7 +28,8 @@ android {
         buildTypes.each {
             it.buildConfigField 'String', 'URL', apiProperties.getProperty('api.url')
             it.buildConfigField 'String', 'URL_ABJAD', apiProperties.getProperty('modelabjad.url')
-            it.buildConfigField 'String', 'URL_MOBILE', apiProperties.getProperty('modelmobile.url')
+            it.buildConfigField 'String', 'URL_ANGKA', apiProperties.getProperty('modelangka.url')
+            it.buildConfigField 'String', 'URL_KATA', apiProperties.getProperty('modelkata.url')
         }
     }
 

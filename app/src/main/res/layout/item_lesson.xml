@@ -10,7 +10,7 @@
     android:layout_marginTop="16dp"
     android:layout_marginEnd="12dp"
     android:elevation="4dp"
-    android:background="#ECE6F0"
+    android:background="@drawable/shape_rounded_grey"
 
     android:orientation="vertical"
     app:layout_constraintEnd_toEndOf="parent"

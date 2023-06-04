@@ -87,9 +87,10 @@ class ObjectDetectorHelper(
 
 
         val modelName =  when (currentModel) {
-            MODEL_ABJAD ->  "abjad_fulltrain_quantized_metadata.tflite"
-            MODEL_MOBILENETV1 ->  "lite-model_ssd_mobilenet_v1_1_metadata_2.tflite"
-            else ->  "abjad_fulltrain_quantized_metadata.tflite"
+            MODEL_ABJAD ->  "abjad.tflite"
+            MODEL_ANGKA ->  "angka.tflite"
+            MODEL_KATA -> "kata.tflite"
+            else ->  "abjad"
         }
 
         val file = File(context.getExternalFilesDir("models"), modelName)
@@ -155,7 +156,8 @@ class ObjectDetectorHelper(
         const val DELEGATE_GPU = 1
         const val DELEGATE_NNAPI = 2
         const val MODEL_ABJAD = 0
-        const val MODEL_MOBILENETV1 = 1
+        const val MODEL_ANGKA = 1
+        const val MODEL_KATA = 2
 
     }
 }

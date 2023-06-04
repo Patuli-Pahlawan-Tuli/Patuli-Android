@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.puxxbu.PatuliApp.BuildConfig
+import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
@@ -42,14 +43,15 @@ class SplashActivity : AppCompatActivity() {
 
     private val modelUrls = listOf(
         BuildConfig.URL_ABJAD,
-        BuildConfig.URL_MOBILE
-
+        BuildConfig.URL_ANGKA,
+        BuildConfig.URL_KATA,
         )
 
     private var downloadCount: Int = 0
     private val modelNames = listOf(
-        "abjad_fulltrain_quantized_metadata.tflite",
-        "lite-model_ssd_mobilenet_v1_1_metadata_2.tflite"
+        "abjad.tflite",
+        "angka.tflite",
+        "kata.tflite",
     )
 
 
@@ -87,6 +89,7 @@ class SplashActivity : AppCompatActivity() {
                 if (downloaded) {
                     homeViewModel.downloadCount.observe(this) {
                         if (it == downloadCount) {
+                            Log.d("SplashActivity", "onCreate: $downloadCount")
                             homeViewModel.setProceed(Event(true))
                             homeViewModel.isLoading.value = false
                         }
@@ -130,7 +133,7 @@ class SplashActivity : AppCompatActivity() {
                 .setDescription("Downloading model")
             val downloadId = downloadManager.enqueue(request)
             downloadIds.add(downloadId)
-            Toast.makeText(this, "Downloading model", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Downloading model", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -140,7 +143,7 @@ class SplashActivity : AppCompatActivity() {
                 while (!allModelsDownloaded) {
                     allModelsDownloaded = downloadIds.all { isModelDownloaded(it) }
                     if (!allModelsDownloaded) {
-                        Thread.sleep(1000)
+                        Thread.sleep(300)
                     }
                 }
                 Toast.makeText(this@SplashActivity, "Models downloaded", Toast.LENGTH_SHORT)
@@ -239,6 +242,31 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }, 2000)
         }
+
+//        homeViewModel.getSessionData().observe(this) {
+//            if (it.isLogin == true) {
+//                homeViewModel.getProfile(it.token)
+//                homeViewModel.profileErrorResponse.observe(this) { it ->
+//                    it.getContentIfNotHandled()?.let { it ->
+//                        if (it == "Unauthorized") {
+//                            i = Intent(this, OnBoardingActivity::class.java)
+//
+//                        }else{
+//                            i = Intent(this, MainActivity::class.java)
+//                        }
+//                    }
+//                }
+//
+//                Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
+//            } else {
+//                i = Intent(this, OnBoardingActivity::class.java)
+//                Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
+//            }
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                startActivity(i)
+//                finish()
+//            }, 2000)
+//        }
     }
 
     private fun checkPermissions(): Boolean {
@@ -334,6 +362,39 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun refreshSession(session : UserDataModel){
+        val userData = UserDataModel(
+            session.name,
+            session.userId,
+            session.token,
+            true
+        )
+        homeViewModel.saveSession(userData)
+    }
+
+//    private fun checkSession() : Boolean{
+//        homeViewModel.getSessionData().observe(this){
+//            if (it.isLogin == true){
+//                homeViewModel.setIsLogin(true)
+//            } else {
+//                homeViewModel.setIsLogin(false)
+//            }
+//        }
+//    }
+
+//    private fun checkToken() : Boolean{
+//        homeViewModel.getSessionData().observe(this){
+//            homeViewModel.getProfile(it.token)
+//            homeViewModel.profileData.observe(this){ profile ->
+//                if (profile.status == 401){
+//                    homeViewModel.setIsLogin(false)
+//                } else {
+//                    homeViewModel.setIsLogin(true)
+//                }
+//            }
+//        }
+//    }
 
 
 }

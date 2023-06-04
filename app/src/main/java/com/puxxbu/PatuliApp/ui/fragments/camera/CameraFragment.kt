@@ -61,6 +61,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     val handler = Handler(Looper.getMainLooper())
 
+    private var isFrontCamera = false
+
 
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
@@ -125,6 +127,11 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             activity?.finish()
         }
 
+        binding.fabSwitchCamera.setOnClickListener {
+            isFrontCamera = !isFrontCamera
+            setUpCamera(if (isFrontCamera) CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK)
+        }
+
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let{
@@ -135,6 +142,10 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         }
                         1 -> {
                             objectDetectorHelper.currentModel = 1
+                            updateControlsUi()
+                        }
+                        2 -> {
+                            objectDetectorHelper.currentModel = 2
                             updateControlsUi()
                         }
                     }
@@ -200,7 +211,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     // Initialize CameraX, and prepare to bind the camera use cases
-    private fun setUpCamera() {
+    private fun setUpCamera(cameraPosition : Int) {
         if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
             cameraProviderFuture.addListener(
@@ -209,7 +220,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                     cameraProvider = cameraProviderFuture.get()
 
                     // Build and bind the camera use cases
-                    bindCameraUseCases()
+                    bindCameraUseCases(cameraPosition)
                 },
                 ContextCompat.getMainExecutor(requireContext())
             )
@@ -218,7 +229,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     // Declare and bind preview, capture and analysis use cases
     @SuppressLint("UnsafeOptInUsageError")
-    private fun bindCameraUseCases() {
+    private fun bindCameraUseCases(cameraPosition : Int) {
 
         // CameraProvider
         val cameraProvider =
@@ -226,14 +237,22 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         // CameraSelector - makes assumption that we're only using the back camera
         val cameraSelector =
-            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+            when(cameraPosition){
+                0 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+                1 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+                else -> CameraSelector.DEFAULT_BACK_CAMERA
+            }
+
 
         // Preview. Only using the 4:3 ratio because this is the closest to our models
+
+
         preview =
             Preview.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
+
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
@@ -259,6 +278,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         detectObjects(image)
                     }
                 }
+
+        binding.viewFinder.scaleX = 1f
 
         // Must unbind the use-cases before rebinding them
         cameraProvider.unbindAll()
@@ -353,10 +374,15 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             // Wait for the views to be properly laid out
             binding.viewFinder.post {
                 // Set up the camera and its use cases
-                setUpCamera()
+                setUpCamera(FRONT_CAMERA)
             }
 
             binding.progressCircular.visibility = View.GONE
         }
+    }
+
+    companion object{
+        private const val BACK_CAMERA = 0
+        private const val FRONT_CAMERA = 1
     }
 }

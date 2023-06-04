@@ -128,7 +128,9 @@ class RegisterActivity : AppCompatActivity() {
 
         val dialog = builder.create()
         okButton.setOnClickListener {
-            dialog.dismiss()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         tvTitle.text = message

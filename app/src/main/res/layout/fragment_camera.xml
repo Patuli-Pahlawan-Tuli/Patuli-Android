@@ -151,22 +151,32 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_switch_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_cameraswitch_24"
+        app:layout_constraintStart_toStartOf="@+id/card"
+        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="16dp"
+        android:background="@drawable/shape_rounded_grey"
         android:backgroundTint="#80000000"
-        app:tabTextColor="@color/md_theme_light_onPrimary"
-
-
-        app:tabSelectedTextColor="#FFB700"
-        app:tabIndicatorColor="#FFB700"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+
+
+        app:layout_constraintStart_toEndOf="@+id/fab_switch_camera"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:tabMode="fixed">
+        app:tabIndicatorColor="#FFB700"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#FFB700"
+        app:tabTextColor="@color/md_theme_light_onPrimary">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
