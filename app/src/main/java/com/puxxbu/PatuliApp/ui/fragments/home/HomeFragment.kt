@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
     private fun setupData() {
         homeViewModel.getSessionData().observe(viewLifecycleOwner) {
             Log.d(TAG, "setupData: GET PROFILE")
-            Toast.makeText(requireContext(), it.token, Toast.LENGTH_LONG).show()
             homeViewModel.getProfile(it.token)
         }
     }
@@ -78,15 +77,17 @@ class HomeFragment : Fragment() {
                     tvQuizProgress.text = getString(R.string.quiz_progress, "0", "3")
                 }
             }else{
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                homeViewModel.logout()
 
-                val intentLogout = Intent(requireContext(), LoginActivity::class.java)
-                intentLogout.flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .remove(this@HomeFragment).commit()
-                startActivity(intentLogout)
+//                homeViewModel.logout()
+//
+//                Toast.makeText(requireContext(), "Session Expired", Toast.LENGTH_LONG).show()
+//
+//                val intentLogout = Intent(requireContext(), LoginActivity::class.java)
+//                intentLogout.flags =
+//                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .remove(this@HomeFragment).commit()
+//                startActivity(intentLogout)
 
             }
         }

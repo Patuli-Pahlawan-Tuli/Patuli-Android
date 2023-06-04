@@ -45,7 +45,7 @@ class SplashActivity : AppCompatActivity() {
         BuildConfig.URL_ABJAD,
         BuildConfig.URL_ANGKA,
         BuildConfig.URL_KATA,
-        )
+    )
 
     private var downloadCount: Int = 0
     private val modelNames = listOf(
@@ -90,6 +90,8 @@ class SplashActivity : AppCompatActivity() {
                     homeViewModel.downloadCount.observe(this) {
                         if (it == downloadCount) {
                             Log.d("SplashActivity", "onCreate: $downloadCount")
+                            Toast.makeText(this@SplashActivity, "Models downloaded", Toast.LENGTH_SHORT)
+                                .show()
                             homeViewModel.setProceed(Event(true))
                             homeViewModel.isLoading.value = false
                         }
@@ -146,8 +148,7 @@ class SplashActivity : AppCompatActivity() {
                         Thread.sleep(300)
                     }
                 }
-                Toast.makeText(this@SplashActivity, "Models downloaded", Toast.LENGTH_SHORT)
-                    .show()
+
                 homeViewModel.incrementDownloadCount()
             }
         }
@@ -227,21 +228,31 @@ class SplashActivity : AppCompatActivity() {
     fun proceedApplication() {
 
         homeViewModel.getSessionData().observe(this) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                // Pindahkan ke halaman berikutnya
-                if (it.isLogin == true) {
-                    i = Intent(this, MainActivity::class.java)
-                    startActivity(i)
-                    Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
-                } else {
-                    i = Intent(this, OnBoardingActivity::class.java)
-                    startActivity(i)
-                    Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
+
+            // Pindahkan ke halaman berikutnya
+            if (it.isLogin == true) {
+
+                homeViewModel.getProfile(it.token)
+                homeViewModel.profileData.observe(this) {
+                    if (it.data != null) {
+                        i = Intent(this, MainActivity::class.java)
+                    } else {
+                        i = Intent(this, OnBoardingActivity::class.java)
+                    }
                 }
-                // Tutup tampilan splash screen
+                Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
+            } else {
+                i = Intent(this, OnBoardingActivity::class.java)
+                Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
+            }
+
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                startActivity(i)
                 finish()
             }, 2000)
         }
+
 
 //        homeViewModel.getSessionData().observe(this) {
 //            if (it.isLogin == true) {
@@ -363,7 +374,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshSession(session : UserDataModel){
+    private fun refreshSession(session: UserDataModel) {
         val userData = UserDataModel(
             session.name,
             session.userId,

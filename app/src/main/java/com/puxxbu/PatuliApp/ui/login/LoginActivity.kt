@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -81,8 +82,8 @@ class LoginActivity : AppCompatActivity() {
             it.getContentIfNotHandled()?.let {
                 Log.d("LoginActivity", it)
                 if (it == "success") {
-                    showDialogSuccess("Login Berhasil")
                     saveSession()
+                    showDialogSuccess("Login Berhasil")
 
                 } else {
                     showDialogFailed("Login Gagal", it)
@@ -96,6 +97,7 @@ class LoginActivity : AppCompatActivity() {
     private fun saveSession() {
         loginViewModel.loginResponse.observe(this) {
             Log.d("LoginActivity", it.data.name)
+
             val userData = UserDataModel(
                 it.data.name,
                 it.data.id,
