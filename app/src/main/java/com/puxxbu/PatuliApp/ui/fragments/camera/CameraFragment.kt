@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
+import android.view.Surface.ROTATION_180
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
@@ -242,9 +244,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 1 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
                 else -> CameraSelector.DEFAULT_BACK_CAMERA
             }
-
-
         // Preview. Only using the 4:3 ratio because this is the closest to our models
+
 
 
         preview =
@@ -253,12 +254,17 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
+        preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+//        preview.setPreview
+
+
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetResolution(Size(320, 320))
                 .setTargetRotation(binding.viewFinder.display.rotation)
+                .setTargetRotation(ROTATION_180)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
