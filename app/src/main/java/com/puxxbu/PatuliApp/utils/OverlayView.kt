@@ -3,6 +3,7 @@ package com.puxxbu.PatuliApp.utils
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.puxxbu.PatuliApp.R
@@ -53,34 +54,36 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         for (result in results) {
             val boundingBox = result.boundingBox
 
+            // Hitung koordinat tengah objek
+            val centerX = (boundingBox.left + boundingBox.right) / 2.0f
+            val centerY = (boundingBox.top + boundingBox.bottom) / 2.0f
+
             val top = boundingBox.top * scaleFactor
             val bottom = boundingBox.bottom * scaleFactor
-            val left = boundingBox.left * scaleFactor
-            val right = boundingBox.right * scaleFactor
+            var left = boundingBox.left * scaleFactor
+            var right = boundingBox.right * scaleFactor
+
+            // Flip horizontal
+            left = canvas.width.toFloat() - left
+            right = canvas.width.toFloat() - right
 
             // Draw bounding box around detected objects
             val drawableRect = RectF(left, top, right, bottom)
             canvas.drawRect(drawableRect, boxPaint)
 
-            // Create text to display alongside detected objects
+            // Draw text for detected object
             val drawableText =
                 result.categories[0].label + " " +
                         String.format("%.2f", result.categories[0].score)
 
-            // Draw rect behind display text
-            textBackgroundPaint.getTextBounds(drawableText, 0, drawableText.length, bounds)
+            // Hitung posisi teks
+            textPaint.getTextBounds(drawableText, 0, drawableText.length, bounds)
             val textWidth = bounds.width()
             val textHeight = bounds.height()
-            canvas.drawRect(
-                left,
-                top,
-                left + textWidth + Companion.BOUNDING_RECT_TEXT_PADDING,
-                top + textHeight + Companion.BOUNDING_RECT_TEXT_PADDING,
-                textBackgroundPaint
-            )
+            val textX = left - textWidth
+            val textY = top + bounds.height()
 
-            // Draw text for detected object
-            canvas.drawText(drawableText, left, top + bounds.height(), textPaint)
+            canvas.drawText(drawableText, textX, textY, textPaint)
         }
     }
 

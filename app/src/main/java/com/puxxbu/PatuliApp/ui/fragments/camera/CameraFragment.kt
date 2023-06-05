@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var cameraProvider: ProcessCameraProvider? = null
     private var job: Job? = null
     private val logDelay = 1000L // Delay in milliseconds
-    private var dataResult : String = ""
+    private var dataResult: String = ""
 
     private var isFragmentActive = false
 
@@ -110,14 +111,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
         val tvHasil = binding.tvResult
-        tvHasil.setText("Hasil")
+        tvHasil.text = "Hasil"
         startLogging(tvHasil)
         binding.ivRefresh.setOnClickListener {
             dataResult = ""
@@ -134,16 +133,18 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let{
-                    when(it.position){
+                tab?.let {
+                    when (it.position) {
                         0 -> {
                             objectDetectorHelper.currentModel = 0
                             updateControlsUi()
                         }
+
                         1 -> {
                             objectDetectorHelper.currentModel = 1
                             updateControlsUi()
                         }
+
                         2 -> {
                             objectDetectorHelper.currentModel = 2
                             updateControlsUi()
@@ -171,20 +172,19 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         super.onViewCreated(view, savedInstanceState)
 
         objectDetectorHelper = ObjectDetectorHelper(
-            context = requireContext(),
-            objectDetectorListener = this
+            context = requireContext(), objectDetectorListener = this
         )
 
         // Attach listeners to UI control widgets
 //        initBottomSheetControls()
     }
 
-    private fun showMenu(v : View, @MenuRes menuRes: Int){
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
         val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         popup.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.option_1 -> {
                     objectDetectorHelper.currentModel = 0
                     updateControlsUi()
@@ -211,8 +211,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     // Initialize CameraX, and prepare to bind the camera use cases
-    private fun setUpCamera(cameraPosition : Int) {
-        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
+    private fun setUpCamera(cameraPosition: Int) {
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
             cameraProviderFuture.addListener(
                 {
@@ -221,63 +221,58 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
                     // Build and bind the camera use cases
                     bindCameraUseCases(cameraPosition)
-                },
-                ContextCompat.getMainExecutor(requireContext())
+                }, ContextCompat.getMainExecutor(requireContext())
             )
         }
     }
 
     // Declare and bind preview, capture and analysis use cases
     @SuppressLint("UnsafeOptInUsageError")
-    private fun bindCameraUseCases(cameraPosition : Int) {
+    private fun bindCameraUseCases(cameraPosition: Int) {
 
         // CameraProvider
         val cameraProvider =
             cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
 
         // CameraSelector - makes assumption that we're only using the back camera
-        val cameraSelector =
-            when(cameraPosition){
-                0 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-                1 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
-                else -> CameraSelector.DEFAULT_BACK_CAMERA
-            }
+        val cameraSelector = when (cameraPosition) {
+            0 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+            1 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                .build()
+
+            else -> CameraSelector.DEFAULT_BACK_CAMERA
+        }
 
 
         // Preview. Only using the 4:3 ratio because this is the closest to our models
 
 
-        preview =
-            Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(binding.viewFinder.display.rotation)
-                .build()
+        preview = Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3)
+            .setTargetRotation(binding.viewFinder.display.rotation).build()
 
+        binding.viewFinder.scaleX = -1f
+        preview!!.setSurfaceProvider(binding.viewFinder.surfaceProvider)
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
-        imageAnalyzer =
-            ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(binding.viewFinder.display.rotation)
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                .build()
-                // The analyzer can then be assigned to the instance
-                .also {
-                    it.setAnalyzer(cameraExecutor) { image ->
-                        if (!::bitmapBuffer.isInitialized) {
-                            // The image rotation and RGB image buffer are initialized only once
-                            // the analyzer has started running
-                            bitmapBuffer = Bitmap.createBitmap(
-                                image.width,
-                                image.height,
-                                Bitmap.Config.ARGB_8888
-                            )
-                        }
-
-                        detectObjects(image)
+        imageAnalyzer = ImageAnalysis.Builder().setTargetResolution(
+                Size(320, 320)
+            ).setTargetRotation(binding.viewFinder.display.rotation)
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build()
+            // The analyzer can then be assigned to the instance
+            .also {
+                it.setAnalyzer(cameraExecutor) { image ->
+                    if (!::bitmapBuffer.isInitialized) {
+                        // The image rotation and RGB image buffer are initialized only once
+                        // the analyzer has started running
+                        bitmapBuffer = Bitmap.createBitmap(
+                            image.width, image.height, Bitmap.Config.ARGB_8888
+                        )
                     }
+
+                    detectObjects(image)
                 }
+            }
 
         binding.viewFinder.scaleX = 1f
 
@@ -313,19 +308,14 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     // Update UI after objects have been detected. Extracts original image height/width
     // to scale and place bounding boxes properly through OverlayView
     override fun onResults(
-        results: MutableList<Detection>?,
-        inferenceTime: Long,
-        imageHeight: Int,
-        imageWidth: Int
+        results: MutableList<Detection>?, inferenceTime: Long, imageHeight: Int, imageWidth: Int
     ) {
 
         if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) && activity != null) {
-            handler.post{
+            handler.post {
                 activity?.runOnUiThread {
                     binding.overlay.setResults(
-                        results ?: LinkedList<Detection>(),
-                        imageHeight,
-                        imageWidth
+                        results ?: LinkedList<Detection>(), imageHeight, imageWidth
                     )
 
                     _resultResponse.value = "No Result"
@@ -366,7 +356,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onInitialized() {
-        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
+        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             objectDetectorHelper.setupObjectDetector()
             // Initialize our background executor
             cameraExecutor = Executors.newSingleThreadExecutor()
@@ -381,7 +371,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         }
     }
 
-    companion object{
+    companion object {
         private const val BACK_CAMERA = 0
         private const val FRONT_CAMERA = 1
     }
