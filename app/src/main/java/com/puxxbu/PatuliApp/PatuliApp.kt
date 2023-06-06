@@ -11,6 +11,7 @@ import com.puxxbu.PatuliApp.data.repository.DataRepository
 import com.puxxbu.PatuliApp.ui.fragments.home.HomeViewModel
 import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileViewModel
+import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizViewModel
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.ui.login.LoginViewModel
 import com.puxxbu.PatuliApp.ui.register.RegisterViewModel
@@ -44,6 +45,7 @@ class PatuliApp : Application() {
         viewModel { ProfileViewModel(get()) }
         viewModel { LessonViewModel(get()) }
         viewModel { HomeViewModel(get()) }
+        viewModel { QuizViewModel(get()) }
     }
 
     private val repoModule = module {

@@ -9,7 +9,7 @@ data class LessonItemModel(
 
 val itemLesson : List<LessonItemModel> = listOf(
     LessonItemModel(
-        "Abjad A-Z",
+        "Abjad",
         3,
         "This is a description",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"

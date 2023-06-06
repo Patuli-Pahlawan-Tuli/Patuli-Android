@@ -61,7 +61,9 @@ class DetailLessonActivity : AppCompatActivity() {
 
 
             lessonViewModel.getSessionData().observe(this@DetailLessonActivity) {user ->
-                lessonViewModel.getDetailLessonData(user.token, "abjad", number)
+                if (type != null) {
+                    lessonViewModel.getDetailLessonData(user.token, type, number)
+                }
                 if (type != null) {
                     lessonViewModel.getDetailLessonData(user.token, type, number)
 

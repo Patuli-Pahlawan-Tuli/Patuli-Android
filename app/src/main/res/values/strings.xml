@@ -34,6 +34,11 @@
     <string name="lesson_title">Abjad A-Z</string>
     <string name="change_password">Ubah Kata Sandi</string>
     <string name="show_more">Pelajari</string>
+    <string name="quiz_desc">Quiz ini akan menguji kemampuan kalian dalam memperagakan gerakan bahasa isyarat mulai dari Abjad hingga Angka</string>
+    <string name="panduan_quiz">Pada Quiz ini Anda diharapkan untuk memperagakan gerakan dari bahasa isyarat Bisindo, persiapkan diri Anda untuk melakukan gerakan melalui camera Anda masing-masing</string>
+    <string name="quiz_progress_number">Quiz %1$s/%2$s</string>
+    <string name="quiz_number">Nomor. %1$s</string>
+    <string name="app_bar_quiz">Quiz %1$s</string>
     <string-array name="models_spinner_titles">
         <item>MobileNet V1</item>
         <item>EfficientDet Lite0</item>

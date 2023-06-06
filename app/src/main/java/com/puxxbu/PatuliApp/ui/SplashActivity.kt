@@ -23,6 +23,10 @@ import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.utils.Event
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -246,12 +250,14 @@ class SplashActivity : AppCompatActivity() {
                 Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
             }
 
-
             Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(i)
-                finish()
+                CoroutineScope(Dispatchers.Main).launch {
+                    navigate()
+                }
             }, 2000)
         }
+
+
 
 
 //        homeViewModel.getSessionData().observe(this) {
@@ -280,6 +286,11 @@ class SplashActivity : AppCompatActivity() {
 //        }
     }
 
+    private suspend fun navigate(){
+        delay(1000)
+        startActivity(i)
+        finish()
+    }
     private fun checkPermissions(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return (ContextCompat.checkSelfPermission(

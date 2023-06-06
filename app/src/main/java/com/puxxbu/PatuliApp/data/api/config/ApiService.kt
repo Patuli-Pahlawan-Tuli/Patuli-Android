@@ -6,6 +6,7 @@ import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditProfilePicResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
+import com.puxxbu.PatuliApp.data.api.response.quiz.QuizResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -64,6 +65,13 @@ interface ApiService {
         @Path("type") type: String,
         @Path("number") number: Int
     ): Call<DetailLessonResponse>
+
+    @GET("quizzes/{type}/{number}")
+    fun getQuizbyNumber(
+        @Header("Authorization") token: String,
+        @Path("type") type: String,
+        @Path("number") number: Int
+    ): Call<QuizResponse>
 
 
 

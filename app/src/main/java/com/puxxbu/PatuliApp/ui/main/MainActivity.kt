@@ -16,6 +16,7 @@ import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
 import com.puxxbu.PatuliApp.ui.fragments.home.HomeFragment
 import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonFragment
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileFragment
+import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private val permissionsFragment = PermissionsFragment()
     private val cameraFragment = CameraFragment()
+    private val quizFragment = QuizFragment()
     private val lessonFragment = LessonFragment()
     private val profileFragment = ProfileFragment()
     private val homeFragment = HomeFragment()
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.item_3 ->{
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, lessonFragment, LessonFragment::class.java.simpleName)
+                            .replace(R.id.fragment_container, quizFragment, QuizFragment::class.java.simpleName)
                             .commit()
                         true
                     }

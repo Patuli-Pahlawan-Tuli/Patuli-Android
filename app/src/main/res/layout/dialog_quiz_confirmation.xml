@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_layout"
+    android:layout_width="match_parent"
+    android:background="@color/md_theme_light_onPrimary"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/geologica_regular"
+        android:text="Siap Menjalankan Quiz?"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/quiz"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginBottom="14dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/ok_button"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/md_theme_dark_primaryContainer"
+            android:layout_height="wrap_content"
+            android:text="Siap" />
+        <Button
+            android:id="@+id/btn_dismiss"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/md_theme_dark_background"
+            android:backgroundTint="@color/md_theme_dark_surfaceTint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tidak" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

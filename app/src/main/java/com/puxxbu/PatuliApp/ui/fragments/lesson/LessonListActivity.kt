@@ -36,7 +36,7 @@ class LessonListActivity : AppCompatActivity() {
     private fun setupData() {
 
         lessonViewModel.getSessionData().observe(this) {
-            getLessonData(it.token, "abjad")
+            getLessonData(it.token, intent.getStringExtra(EXTRA_LESSON_NAME)?.lowercase() ?: "")
         }
 
     }
