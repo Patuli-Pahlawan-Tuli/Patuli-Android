@@ -7,11 +7,16 @@ import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityQuizBinding
 import com.puxxbu.PatuliApp.databinding.DialogCloseConfirmationBinding
 import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
+import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
+import com.puxxbu.PatuliApp.ui.fragments.quiz.camera.QuizCameraFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class QuizActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuizBinding
     private val quizViewModel : QuizViewModel by viewModel()
+
+    private val fragmentManager = supportFragmentManager
+    private val cameraFragment = QuizCameraFragment()
 
 
     companion object {
@@ -38,6 +43,11 @@ class QuizActivity : AppCompatActivity() {
 
     private fun setupView() {
         supportActionBar?.hide()
+
+        fragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, cameraFragment, QuizCameraFragment::class.java.simpleName)
+            .commit()
+
         quizViewModel.setNumber(1)
 
         binding.apply {
@@ -49,11 +59,6 @@ class QuizActivity : AppCompatActivity() {
                 }
             }
 
-            btnCamera.setOnClickListener {
-
-
-
-            }
 
 
 

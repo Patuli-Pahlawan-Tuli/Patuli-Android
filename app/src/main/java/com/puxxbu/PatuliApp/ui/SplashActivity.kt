@@ -250,12 +250,14 @@ class SplashActivity : AppCompatActivity() {
                 Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
             }
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                CoroutineScope(Dispatchers.Main).launch {
-                    navigate()
-                }
-            }, 2000)
+
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            CoroutineScope(Dispatchers.Main).launch {
+                navigate()
+            }
+        }, 2000)
 
 
 
