@@ -43,24 +43,28 @@ class QuizActivity : AppCompatActivity() {
 
     private fun setupView() {
         supportActionBar?.hide()
+        val type = intent.getStringExtra(EXTRA_TYPE)
+
+        val bundle = Bundle()
+        bundle.putString(QuizCameraFragment.EXTRA_TYPE, "angka")
+        cameraFragment.arguments = bundle
 
         fragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, cameraFragment, QuizCameraFragment::class.java.simpleName)
             .commit()
 
-        quizViewModel.setNumber(1)
+        quizViewModel.setNumber(intent.getIntExtra(EXTRA_NUMBER, 1))
 
         binding.apply {
-            val type = intent.getStringExtra(EXTRA_TYPE)
+
 
             quizViewModel.getSessionData().observe(this@QuizActivity) {user ->
                 if (type != null) {
-                    quizViewModel.getQuizData(user.token, type, 1)
+                    quizViewModel.quizNumber.observe(this@QuizActivity) {number ->
+                        quizViewModel.getQuizData(user.token, type, number)
+                    }
                 }
             }
-
-
-
 
             quizViewModel.quizData.observe(this@QuizActivity) {quiz ->
                 topAppBar.setTitle(getString(R.string.app_bar_quiz, quiz.data[0].quizDifficulty))

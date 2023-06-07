@@ -90,7 +90,7 @@ class ObjectDetectorHelper(
             MODEL_ABJAD ->  "abjad.tflite"
             MODEL_ANGKA ->  "angka.tflite"
             MODEL_KATA -> "kata.tflite"
-            else ->  "abjad"
+            else ->  "abjad.tflite"
         }
 
         val file = File(context.getExternalFilesDir("models"), modelName)

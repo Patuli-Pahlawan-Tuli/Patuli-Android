@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.util.Size
 import android.view.LayoutInflater
-import android.view.Surface.ROTATION_180
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
@@ -130,8 +128,16 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         }
 
         binding.fabSwitchCamera.setOnClickListener {
+            binding.overlay.clear()
+            binding.overlayFront.clear()
+            Log.d(TAG, "Switching camera $isFrontCamera")
             isFrontCamera = !isFrontCamera
-            setUpCamera(if (isFrontCamera) CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK)
+            Log.d(TAG, "Switching camera $isFrontCamera")
+            binding.viewFinder.post{
+                setUpCamera(if (isFrontCamera) 1 else 0)
+            }
+
+            Log.d(TAG, "Switching camera $isFrontCamera")
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -181,40 +187,17 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 //        initBottomSheetControls()
     }
 
-    private fun showMenu(v : View, @MenuRes menuRes: Int){
-        val popup = PopupMenu(requireContext(), v)
-        popup.menuInflater.inflate(menuRes, popup.menu)
-
-        popup.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.option_1 -> {
-                    objectDetectorHelper.currentModel = 0
-                    updateControlsUi()
-                    true
-                }
-
-                R.id.option_2 -> {
-                    objectDetectorHelper.currentModel = 1
-                    updateControlsUi()
-                    true
-                }
-
-                else -> false
-            }
-        }
-        popup.show()
-    }
 
     private fun updateControlsUi() {
         // Needs to be cleared instead of reinitialized because the GPU
         // delegate needs to be initialized on the thread using it when applicable
         objectDetectorHelper.clearObjectDetector()
         binding.overlay.clear()
+        binding.overlayFront.clear()
     }
 
     // Initialize CameraX, and prepare to bind the camera use cases
     private fun setUpCamera(cameraPosition : Int) {
-        if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) ) {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
             cameraProviderFuture.addListener(
                 {
@@ -226,7 +209,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 },
                 ContextCompat.getMainExecutor(requireContext())
             )
-        }
+
     }
 
     // Declare and bind preview, capture and analysis use cases
@@ -244,8 +227,9 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 1 -> CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
                 else -> CameraSelector.DEFAULT_BACK_CAMERA
             }
-        // Preview. Only using the 4:3 ratio because this is the closest to our models
 
+
+        // Preview. Only using the 4:3 ratio because this is the closest to our models
 
 
         preview =
@@ -254,17 +238,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
-        preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-//        preview.setPreview
-
-
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetResolution(Size(320, 320))
+                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(binding.viewFinder.display.rotation)
-                .setTargetRotation(ROTATION_180)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
@@ -328,11 +307,27 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         if (isFragmentActive && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) && activity != null) {
             handler.post{
                 activity?.runOnUiThread {
-                    binding.overlay.setResults(
-                        results ?: LinkedList<Detection>(),
-                        imageHeight,
-                        imageWidth
-                    )
+                    if (isFrontCamera){
+                        binding.overlay.visibility = View.GONE
+                        binding.overlayFront.visibility = View.VISIBLE
+                        binding.overlayFront.setResults(
+                            results ?: LinkedList<Detection>(),
+                            imageHeight,
+                            imageWidth
+                        )
+
+                        Log.d(TAG, "use frontcamera ")
+                    }else{
+                        binding.overlay.visibility = View.VISIBLE
+                        binding.overlayFront.visibility = View.GONE
+                        binding.overlay.setResults(
+                            results ?: LinkedList<Detection>(),
+                            imageHeight,
+                            imageWidth
+                        )
+                        updateControlsUi()
+                        Log.d(TAG, "use backcamera ")
+                    }
 
                     _resultResponse.value = "No Result"
                     if (results != null) {
@@ -342,7 +337,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         }
                     }
                     // Force a redraw
-                    binding.overlay.invalidate()
+
+                    if (isFrontCamera){
+                       binding.overlayFront.invalidate()
+                    }else{
+                        binding.overlay.invalidate()
+                    }
+
                 }
             }
 
@@ -380,7 +381,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             // Wait for the views to be properly laid out
             binding.viewFinder.post {
                 // Set up the camera and its use cases
-                setUpCamera(FRONT_CAMERA)
+                setUpCamera(BACK_CAMERA)
             }
 
             binding.progressCircular.visibility = View.GONE

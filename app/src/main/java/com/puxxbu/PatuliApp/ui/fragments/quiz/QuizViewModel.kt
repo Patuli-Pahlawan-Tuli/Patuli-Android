@@ -19,6 +19,7 @@ class QuizViewModel (private val dataRepository: DataRepository) : ViewModel() {
     val quizNumber: MutableLiveData<Int> = _quizNumber
     val quizData : LiveData<QuizResponse> = dataRepository.quizResponse
 
+
     fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
 
     fun getQuizData(token : String, type : String, number :Int){

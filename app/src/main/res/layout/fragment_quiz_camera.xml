@@ -21,7 +21,7 @@
     </androidx.camera.view.PreviewView>
 
 
-    <com.puxxbu.PatuliApp.utils.OverlayView
+    <com.puxxbu.PatuliApp.utils.OverlayViewFront
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

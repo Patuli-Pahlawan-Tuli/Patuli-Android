@@ -230,6 +230,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun proceedApplication() {
+        var isStartActivityExecuted = false
+
+        homeViewModel.setLogin(Event(false))
 
         homeViewModel.getSessionData().observe(this) {
 
@@ -240,14 +243,29 @@ class SplashActivity : AppCompatActivity() {
                 homeViewModel.profileData.observe(this) {
                     if (it.data != null) {
                         i = Intent(this, MainActivity::class.java)
+
                     } else {
                         i = Intent(this, OnBoardingActivity::class.java)
+
                     }
+                    homeViewModel.setLogin(Event(true))
                 }
                 Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
             } else {
                 i = Intent(this, OnBoardingActivity::class.java)
+                homeViewModel.setLogin(Event(true))
                 Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
+            }
+
+            homeViewModel.isLogin.observe(this) {
+                it.getContentIfNotHandled()?.let { isLogin ->
+                    if (isLogin && !isStartActivityExecuted) {
+                        Log.d("SplashActivity", "Main start activity")
+                        startActivity(i)
+                        isStartActivityExecuted = true
+                        finish()
+                    }
+                }
             }
 
 
@@ -255,9 +273,8 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             CoroutineScope(Dispatchers.Main).launch {
-                navigate()
             }
-        }, 2000)
+        }, 3000)
 
 
 
@@ -290,7 +307,7 @@ class SplashActivity : AppCompatActivity() {
 
     private suspend fun navigate(){
         delay(1000)
-        startActivity(i)
+
         finish()
     }
     private fun checkPermissions(): Boolean {

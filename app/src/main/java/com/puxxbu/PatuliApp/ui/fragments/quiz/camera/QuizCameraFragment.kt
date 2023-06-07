@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Rational
 import android.util.Size
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.Surface.ROTATION_180
 import android.view.View
 import android.view.ViewGroup
@@ -27,13 +29,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
+
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.tabs.TabLayout
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizCameraBinding
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
+import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizViewModel
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
 import kotlinx.coroutines.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -44,9 +49,12 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private val TAG = "CameraFragment"
 
     private var _binding: FragmentQuizCameraBinding? = null
+    private val quizViewModel : QuizViewModel by viewModel()
 
     private val binding
         get() = _binding!!
+
+
 
     private val _resultResponse = MutableLiveData<String>()
     val resultResponse: MutableLiveData<String> = _resultResponse
@@ -58,7 +66,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var job: Job? = null
-    private val logDelay = 1000L // Delay in milliseconds
+    private val logDelay = 1500L // Delay in milliseconds
     private var dataResult : String = ""
 
     private var isFragmentActive = false
@@ -113,6 +121,11 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 //        startLogging(tvHasil)
 
 
+
+
+
+
+
         isFragmentActive = true
 
         return binding.root
@@ -126,34 +139,30 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             context = requireContext(),
             objectDetectorListener = this
         )
+        val bundle = this.arguments
+        if (bundle != null) {
+            Log.d("bundle", bundle.getString(EXTRA_TYPE).toString())
+            when(bundle.getString(EXTRA_TYPE)){
+                "abjad" -> {
+                    objectDetectorHelper.currentModel = 0
+                    updateControlsUi()
+                }
+                "angka" -> {
+                    objectDetectorHelper.currentModel = 1
+                    updateControlsUi()
+                }
+                "kata" -> {
+                    objectDetectorHelper.currentModel = 2
+                    updateControlsUi()
+                }
+            }
+        }
+
 
         // Attach listeners to UI control widgets
 //        initBottomSheetControls()
     }
 
-    private fun showMenu(v : View, @MenuRes menuRes: Int){
-        val popup = PopupMenu(requireContext(), v)
-        popup.menuInflater.inflate(menuRes, popup.menu)
-
-        popup.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.option_1 -> {
-                    objectDetectorHelper.currentModel = 0
-                    updateControlsUi()
-                    true
-                }
-
-                R.id.option_2 -> {
-                    objectDetectorHelper.currentModel = 1
-                    updateControlsUi()
-                    true
-                }
-
-                else -> false
-            }
-        }
-        popup.show()
-    }
 
     private fun updateControlsUi() {
         // Needs to be cleared instead of reinitialized because the GPU
@@ -198,23 +207,19 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
 
 
+
         preview =
             Preview.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
-        preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-//        preview.setPreview
-
-
 
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetResolution(Size(320, 320))
+                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(binding.viewFinder.display.rotation)
-                .setTargetRotation(ROTATION_180)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
@@ -244,9 +249,9 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
-
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
@@ -327,6 +332,8 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             // Initialize our background executor
             cameraExecutor = Executors.newSingleThreadExecutor()
 
+
+
             // Wait for the views to be properly laid out
             binding.viewFinder.post {
                 // Set up the camera and its use cases
@@ -340,5 +347,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     companion object{
         private const val BACK_CAMERA = 0
         private const val FRONT_CAMERA = 1
+        const val EXTRA_TYPE = "extra_type"
     }
 }

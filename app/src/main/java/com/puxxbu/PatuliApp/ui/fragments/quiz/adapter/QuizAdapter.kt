@@ -69,6 +69,7 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
                     okButton.setOnClickListener {
                         val intent = Intent(itemView.context, QuizActivity::class.java)
                         intent.putExtra(QuizActivity.EXTRA_TYPE, item.quiz_type)
+                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
                         itemView.context.startActivity(intent)
                         dialog.dismiss()
                     }
