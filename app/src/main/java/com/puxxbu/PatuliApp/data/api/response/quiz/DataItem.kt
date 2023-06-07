@@ -10,6 +10,9 @@ data class DataItem(
 	@field:SerializedName("createdAt")
 	val createdAt: String,
 
+	@field:SerializedName("languageType")
+	val languageType: String,
+
 	@field:SerializedName("answer")
 	val answer: String,
 

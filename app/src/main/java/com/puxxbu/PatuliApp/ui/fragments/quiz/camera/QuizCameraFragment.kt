@@ -1,41 +1,32 @@
 package com.puxxbu.PatuliApp.ui.fragments.quiz.camera
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.util.Rational
-import android.util.Size
 import android.view.LayoutInflater
-import android.view.Surface
-import android.view.Surface.ROTATION_180
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.PopupMenu
-import android.widget.TableLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.MenuRes
-import androidx.annotation.RequiresApi
 import androidx.camera.core.*
-import com.puxxbu.PatuliApp.R
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.material.tabs.TabLayout
-import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizCameraBinding
-import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
+import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizViewModel
+import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,6 +52,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     private lateinit var objectDetectorHelper: ObjectDetectorHelper
     private lateinit var bitmapBuffer: Bitmap
+    private lateinit var sharedPreferences: SharedPreferences
     private var preview: Preview? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
@@ -68,12 +60,19 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var job: Job? = null
     private val logDelay = 1500L // Delay in milliseconds
     private var dataResult : String = ""
+    private var answerKey : String = ""
+    private var quizDifficulty : String = ""
+    private var quizNumber : Int = 0
+    private var languageType : String = ""
 
     private var isFragmentActive = false
 
     val handler = Handler(Looper.getMainLooper())
 
     private var isFrontCamera = false
+
+    private var isAnswered = false
+
 
 
     /** Blocking camera operations are performed using this executor */
@@ -84,7 +83,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         super.onResume()
 
         if (job?.isCancelled == true) {
-//            startLogging(binding.tvResult)
+            startLogging(answerKey)
         }
     }
 
@@ -116,9 +115,8 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     ): View {
         _binding = FragmentQuizCameraBinding.inflate(inflater, container, false)
 //
-//        val tvHasil = binding.tvResult
-//        tvHasil.setText("Hasil")
-//        startLogging(tvHasil)
+
+
 
 
 
@@ -139,10 +137,27 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             context = requireContext(),
             objectDetectorListener = this
         )
-        val bundle = this.arguments
-        if (bundle != null) {
-            Log.d("bundle", bundle.getString(EXTRA_TYPE).toString())
-            when(bundle.getString(EXTRA_TYPE)){
+        sharedPreferences = requireContext().getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
+
+        Log.d("QuizCameraFragment", "onViewCreated: DIBUATCAMERA}")
+        // Mengambil nilai-nilai dari SharedPreferences
+//        quizDifficulty =
+//            sharedPreferences.getString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, "").toString()
+//        quizNumber = sharedPreferences.getInt(QuizCameraFragment.EXTRA_NUMBER, 0)
+//        languageType = sharedPreferences.getString(QuizCameraFragment.EXTRA_TYPE, "").toString()
+//        answerKey= sharedPreferences.getString(QuizCameraFragment.EXTRA_ANSWER, "").toString()
+
+
+
+        Log.d("QuizCameraFragment", "onViewCreated: $answerKey")
+        quizViewModel.quizData.observe(viewLifecycleOwner) {
+            quizDifficulty = it.data[0].quizDifficulty
+            quizNumber = it.data[0].quizNumber
+            languageType = it.data[0].languageType
+            answerKey = it.data[0].answer
+            Log.d("QuizCameraFragment", "onCreateView: $answerKey")
+
+            when(languageType){
                 "abjad" -> {
                     objectDetectorHelper.currentModel = 0
                     updateControlsUi()
@@ -156,7 +171,12 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                     updateControlsUi()
                 }
             }
+
+            startLogging(answerKey)
         }
+
+
+
 
 
         // Attach listeners to UI control widgets
@@ -306,14 +326,18 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     }
 
-    fun startLogging(textView: TextView) {
+    fun startLogging(keyAnswer: String) {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 Log.d(TAG, "TES ${resultResponse.value}")
+                Log.d(TAG, "TES ${resultResponse.value?.lowercase()} $keyAnswer")
                 if (resultResponse.value != "No Result" && resultResponse.value != null) {
-                    dataResult += "${resultResponse.value} "
+                   if (checkAnswer(resultResponse.value!!.lowercase(), keyAnswer) && !isAnswered){
+                        showDialog("Jawaban Benar")
+                       isAnswered = true
+                   }
                 }
-                textView.text = dataResult
+
                 delay(logDelay)
             }
         }
@@ -344,9 +368,51 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         }
     }
 
+    private fun  checkAnswer(answer : String, keyAnswer : String) : Boolean{
+        return answer == keyAnswer
+    }
+
+    private fun showDialog(message : String){
+        val dialogView = DialogSuccessBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView.root)
+
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            val intent = Intent(context, QuizActivity::class.java)
+            intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, quizDifficulty)
+            Log.d(TAG, "showDialog: $quizNumber")
+            var nextNumber = quizNumber + 1
+            Log.d(TAG, "showDialog: $nextNumber")
+
+            intent.putExtra(QuizActivity.EXTRA_NUMBER,nextNumber)
+            startActivity(intent)
+            activity?.finish()
+            dialog.dismiss()
+        }
+        tvTitle.text = message
+
+        dialog.show()
+
+
+    }
+
+
+
     companion object{
         private const val BACK_CAMERA = 0
         private const val FRONT_CAMERA = 1
+        const val EXTRA_QUIZ_DIFFICULTY = "extra_quiz_difficulty"
+        const val EXTRA_NUMBER = "extra_number"
         const val EXTRA_TYPE = "extra_type"
+        const val EXTRA_ANSWER = "extra_answer"
     }
 }

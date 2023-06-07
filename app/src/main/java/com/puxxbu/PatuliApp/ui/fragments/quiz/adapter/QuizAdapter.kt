@@ -5,24 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.puxxbu.PatuliApp.PatuliApp.Companion.context
-import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.QuizModel
-import com.puxxbu.PatuliApp.databinding.ItemLessonBinding
-import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonListActivity
-import android.graphics.Bitmap
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.databinding.DialogQuizConfirmationBinding
-import com.puxxbu.PatuliApp.databinding.DialogQuizInfoBinding
 import com.puxxbu.PatuliApp.databinding.ItemQuizBinding
-import com.puxxbu.PatuliApp.ui.fragments.lesson.DetailLessonActivity
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
 
 class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<QuizAdapter.ViewHolder>() {
@@ -68,7 +55,7 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
                     val dialog = builder.create()
                     okButton.setOnClickListener {
                         val intent = Intent(itemView.context, QuizActivity::class.java)
-                        intent.putExtra(QuizActivity.EXTRA_TYPE, item.quiz_type)
+                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
                         intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
                         itemView.context.startActivity(intent)
                         dialog.dismiss()

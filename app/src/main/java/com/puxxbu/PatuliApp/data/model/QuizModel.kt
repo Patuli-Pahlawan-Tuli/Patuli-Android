@@ -2,7 +2,7 @@ package com.puxxbu.PatuliApp.data.model
 
 data class QuizModel(
     val quiz_title: String,
-    val quiz_type : String,
+    val quiz_difficulty : String,
     val start_number : Int = 1,
     val img_url : String,
     val desc : String,

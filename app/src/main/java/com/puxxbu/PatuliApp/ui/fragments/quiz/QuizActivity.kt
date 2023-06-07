@@ -1,13 +1,14 @@
 package com.puxxbu.PatuliApp.ui.fragments.quiz
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
+import com.puxxbu.PatuliApp.data.api.response.quiz.DataItem
 import com.puxxbu.PatuliApp.databinding.ActivityQuizBinding
 import com.puxxbu.PatuliApp.databinding.DialogCloseConfirmationBinding
-import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
-import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.quiz.camera.QuizCameraFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,7 +21,7 @@ class QuizActivity : AppCompatActivity() {
 
 
     companion object {
-        const val EXTRA_TYPE = "extra_type"
+        const val EXTRA_QUIZ_DIFFICULTY = "extra_type"
         const val EXTRA_NUMBER = "extra_number"
     }
 
@@ -34,6 +35,12 @@ class QuizActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onBackPressed() {
+        showDialogClose()
+    }
+
+
+
     private fun setupAction() {
         binding.topAppBar.setNavigationOnClickListener {
             showDialogClose()
@@ -43,25 +50,18 @@ class QuizActivity : AppCompatActivity() {
 
     private fun setupView() {
         supportActionBar?.hide()
-        val type = intent.getStringExtra(EXTRA_TYPE)
-
-        val bundle = Bundle()
-        bundle.putString(QuizCameraFragment.EXTRA_TYPE, "angka")
-        cameraFragment.arguments = bundle
-
-        fragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, cameraFragment, QuizCameraFragment::class.java.simpleName)
-            .commit()
+        val difficulty = intent.getStringExtra(EXTRA_QUIZ_DIFFICULTY)
 
         quizViewModel.setNumber(intent.getIntExtra(EXTRA_NUMBER, 1))
-
         binding.apply {
 
 
+
             quizViewModel.getSessionData().observe(this@QuizActivity) {user ->
-                if (type != null) {
+                if (difficulty != null) {
                     quizViewModel.quizNumber.observe(this@QuizActivity) {number ->
-                        quizViewModel.getQuizData(user.token, type, number)
+                        quizViewModel.getQuizData(user.token, difficulty, number)
+                        progressBar.progress = number
                     }
                 }
             }
@@ -74,6 +74,40 @@ class QuizActivity : AppCompatActivity() {
             }
         }
 
+        quizViewModel.quizData.observe(this@QuizActivity) {quiz ->
+
+            addQuizDataPreferences(quiz.data[0])
+
+
+            Log.d("QuizActivity", "setupViewJawaban: ${quiz.data[0].answer}")
+
+
+            Log.d("QuizActivity", "setupView: start fragment")
+            fragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, cameraFragment, QuizCameraFragment::class.java.simpleName)
+                .commit()
+        }
+
+
+        Log.d("QuizActivity", "setupViewNumber: ${intent.getIntExtra(EXTRA_NUMBER, 1)}")
+
+
+
+
+    }
+
+    private fun addQuizDataPreferences(quizData : DataItem){
+        val sharedPreferences = getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
+
+        Log.d("QuizActivity", "addQuizDataPreferences: ${quizData.answer} ${quizData.quizNumber}")
+        val editor = sharedPreferences.edit()
+
+        editor.putString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, quizData.quizDifficulty)
+        editor.putInt(QuizCameraFragment.EXTRA_NUMBER, quizData.quizNumber)
+        editor.putString(QuizCameraFragment.EXTRA_TYPE, quizData.languageType)
+        editor.putString(QuizCameraFragment.EXTRA_ANSWER, quizData.answer)
+
+        editor.apply()
     }
 
     private fun showDialogClose(){
