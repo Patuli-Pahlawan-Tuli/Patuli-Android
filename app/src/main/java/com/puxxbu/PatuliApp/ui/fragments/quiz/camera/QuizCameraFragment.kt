@@ -83,7 +83,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         super.onResume()
 
         if (job?.isCancelled == true) {
-            startLogging(answerKey)
+            startLogging()
         }
     }
 
@@ -172,8 +172,10 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 }
             }
 
-            startLogging(answerKey)
+
         }
+
+        startLogging()
 
 
 
@@ -326,13 +328,13 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     }
 
-    fun startLogging(keyAnswer: String) {
+    fun startLogging() {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 Log.d(TAG, "TES ${resultResponse.value}")
-                Log.d(TAG, "TES ${resultResponse.value?.lowercase()} $keyAnswer")
+                Log.d(TAG, "TES ${resultResponse.value?.lowercase()} $answerKey")
                 if (resultResponse.value != "No Result" && resultResponse.value != null) {
-                   if (checkAnswer(resultResponse.value!!.lowercase(), keyAnswer) && !isAnswered){
+                   if (checkAnswer(resultResponse.value!!.lowercase(), answerKey) && !isAnswered){
                         showDialog("Jawaban Benar")
                        isAnswered = true
                    }
@@ -394,6 +396,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             Log.d(TAG, "showDialog: $nextNumber")
 
             intent.putExtra(QuizActivity.EXTRA_NUMBER,nextNumber)
+            job?.cancel()
             startActivity(intent)
             activity?.finish()
             dialog.dismiss()
