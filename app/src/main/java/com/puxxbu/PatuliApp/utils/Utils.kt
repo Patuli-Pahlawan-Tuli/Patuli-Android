@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import java.io.*
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,5 +57,28 @@ fun reduceFileImage(file: File): File {
     bitmap.compress(bitmapJpeg, compressQuality, outputStream)
 
     return file
+}
+
+
+ fun calculateHash(file: File): String {
+    val md = MessageDigest.getInstance("MD5")
+    val inputStream = FileInputStream(file)
+    val buffer = ByteArray(8192)
+    var read: Int = inputStream.read(buffer)
+    while (read > 0) {
+        md.update(buffer, 0, read)
+        read = inputStream.read(buffer)
+    }
+    val hash = md.digest()
+    return bytesToHex(hash)
+}
+ fun bytesToHex(bytes: ByteArray): String {
+    val hexChars = CharArray(bytes.size * 2)
+    for (i in bytes.indices) {
+        val v = bytes[i].toInt() and 0xFF
+        hexChars[i * 2] = "0123456789abcdef"[v ushr 4]
+        hexChars[i * 2 + 1] = "0123456789abcdef"[v and 0x0F]
+    }
+    return String(hexChars)
 }
 

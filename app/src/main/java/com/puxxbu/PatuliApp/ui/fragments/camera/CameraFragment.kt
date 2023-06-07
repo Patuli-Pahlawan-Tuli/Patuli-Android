@@ -337,7 +337,6 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         }
                     }
                     // Force a redraw
-
                     if (isFrontCamera){
                        binding.overlayFront.invalidate()
                     }else{

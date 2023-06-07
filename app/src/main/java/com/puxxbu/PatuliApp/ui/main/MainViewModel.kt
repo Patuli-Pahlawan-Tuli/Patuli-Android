@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.puxxbu.PatuliApp.data.api.response.file.FileHashResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.data.repository.DataRepository
@@ -32,6 +33,14 @@ class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
     private val _downloadCount = MutableLiveData<Int>()
     val downloadCount: LiveData<Int> = _downloadCount
 
+    val fileHashResponse : LiveData<FileHashResponse> = dataRepository.fileHashResponse
+
+
+    fun getHashFileData(token: String){
+        viewModelScope.launch {
+            dataRepository.getFileHashData(token)
+        }
+    }
     fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
 
     fun logout() {

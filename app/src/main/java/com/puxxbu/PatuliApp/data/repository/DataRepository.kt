@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.puxxbu.PatuliApp.data.api.config.ApiService
+import com.puxxbu.PatuliApp.data.api.response.file.FileHashResponse
 import com.puxxbu.PatuliApp.data.api.response.lesson.DetailLessonResponse
 import com.puxxbu.PatuliApp.data.api.response.lesson.LessonDataResponse
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
@@ -53,6 +54,9 @@ class DataRepository constructor(
 
     private val _quizResponse = MutableLiveData<QuizResponse>()
     val quizResponse: LiveData<QuizResponse> = _quizResponse
+
+    private val _fileHashResponse = MutableLiveData<FileHashResponse>()
+    val fileHashResponse: LiveData<FileHashResponse> = _fileHashResponse
 
 
     fun postRegister(name: String, email: String, password: String, passwordConfirmation: String) {
@@ -279,6 +283,31 @@ class DataRepository constructor(
             }
         })
 
+    }
+
+
+    fun getFileHashData(token :String){
+        _isLoading.value = true
+        val client = apiService.getFileHash(token)
+        client.enqueue(object : retrofit2.Callback<FileHashResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<FileHashResponse>,
+                response: retrofit2.Response<FileHashResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _fileHashResponse.value = response.body()
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), FileHashResponse::class.java)
+
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<FileHashResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
     }
 
 

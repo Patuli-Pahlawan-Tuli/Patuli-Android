@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.api.response.quiz.DataItem
@@ -50,6 +51,7 @@ class QuizActivity : AppCompatActivity() {
 
     private fun setupView() {
         supportActionBar?.hide()
+        showLoading()
         val difficulty = intent.getStringExtra(EXTRA_QUIZ_DIFFICULTY)
 
         quizViewModel.setNumber(intent.getIntExtra(EXTRA_NUMBER, 1))
@@ -133,7 +135,24 @@ class QuizActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-
-
     }
+
+    private fun showLoading() {
+        quizViewModel.isLoading.observe(this) {
+            if (it) {
+                binding.apply {
+                    loading1.visibility = View.VISIBLE
+                    tvQuizProgress.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }
+            } else {
+                binding.apply {
+                    loading1.visibility = View.GONE
+                    tvQuizProgress.visibility = View.VISIBLE
+                    progressBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
 }

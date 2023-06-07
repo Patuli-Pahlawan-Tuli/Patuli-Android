@@ -18,17 +18,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.puxxbu.PatuliApp.BuildConfig
+import com.puxxbu.PatuliApp.PatuliApp.Companion.context
+import com.puxxbu.PatuliApp.data.api.response.file.Data
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.utils.Event
+import com.puxxbu.PatuliApp.utils.calculateHash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.FileInputStream
+import java.security.MessageDigest
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -68,6 +73,14 @@ class SplashActivity : AppCompatActivity() {
 
         showLoading()
 
+        homeViewModel.getSessionData().observe(this) {
+            homeViewModel.getHashFileData(it.token)
+        }
+        homeViewModel.fileHashResponse.observe(this) {
+            saveDataToSharedPreferences(it.data)
+        }
+        Thread.sleep(300)
+
 
         supportActionBar?.hide()
 
@@ -81,6 +94,8 @@ class SplashActivity : AppCompatActivity() {
         } else {
             homeViewModel.setPermissionResponse(true)
         }
+
+
 
         homeViewModel.permissionResponse.observe(this) {
             if (it) {
@@ -149,6 +164,7 @@ class SplashActivity : AppCompatActivity() {
                 while (!allModelsDownloaded) {
                     allModelsDownloaded = downloadIds.all { isModelDownloaded(it) }
                     if (!allModelsDownloaded) {
+                        Log.d("SplashActivity", "onReceive: belum semua download")
                         Thread.sleep(300)
                     }
                 }
@@ -305,11 +321,7 @@ class SplashActivity : AppCompatActivity() {
 //        }
     }
 
-    private suspend fun navigate(){
-        delay(1000)
 
-        finish()
-    }
     private fun checkPermissions(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return (ContextCompat.checkSelfPermission(
@@ -377,11 +389,32 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun isModelFileExists(fileName: String): Boolean {
+    private fun isModelFileExists(fileName: String) : Boolean {
+        val sharedPreferences = context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
         val file = File(getExternalFilesDir("models"), fileName)
-        Log.d("SplashActivity", "isModelFileExists: ${file.path}")
-        return file.exists()
+        Log.d("SplashActivity", "isModelFileExists: ${file.exists()}")
+        if (file.exists()) {
+
+            val hash = calculateHash(file)
+            var expectedHash = ""
+            when(fileName){
+                "abjad.tflite" -> expectedHash = sharedPreferences.getString("abjad", "").toString()
+                "angka.tflite" -> expectedHash = sharedPreferences.getString("angka", "").toString()
+                "kata.tflite" -> expectedHash = sharedPreferences.getString("kata", "").toString()
+            }
+            Log.d("SplashActivity", "isModelFileExists hash: ${expectedHash} \n ${hash}")
+            if (hash != expectedHash) {
+                file.delete()
+                return false
+            }
+            return true
+        } else {
+            return false
+        }
+
     }
+
+
 
     private fun checkModelFile(modelNames: List<String>, requiredModelUrl: MutableList<String>) {
         for (modelName in modelNames) {
@@ -390,6 +423,7 @@ class SplashActivity : AppCompatActivity() {
                 requiredModelUrl.add(modelUrls[modelNames.indexOf(modelName)])
                 downloadCount++
             }
+
         }
         homeViewModel.isDownloaded.value = Event(true)
     }
@@ -404,38 +438,22 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshSession(session: UserDataModel) {
-        val userData = UserDataModel(
-            session.name,
-            session.userId,
-            session.token,
-            true
-        )
-        homeViewModel.saveSession(userData)
+    fun saveDataToSharedPreferences(data: Data) {
+        val sharedPreferences = context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putString("abjad_lite", data.abjadLite)
+        editor.putString("kata", data.kata)
+        editor.putString("kata_lite", data.kataLite)
+        editor.putString("abjad", data.abjad)
+        editor.putString("angka", data.angka)
+        editor.putString("angka_lite", data.angkaLite)
+
+        editor.apply()
     }
 
-//    private fun checkSession() : Boolean{
-//        homeViewModel.getSessionData().observe(this){
-//            if (it.isLogin == true){
-//                homeViewModel.setIsLogin(true)
-//            } else {
-//                homeViewModel.setIsLogin(false)
-//            }
-//        }
-//    }
 
-//    private fun checkToken() : Boolean{
-//        homeViewModel.getSessionData().observe(this){
-//            homeViewModel.getProfile(it.token)
-//            homeViewModel.profileData.observe(this){ profile ->
-//                if (profile.status == 401){
-//                    homeViewModel.setIsLogin(false)
-//                } else {
-//                    homeViewModel.setIsLogin(true)
-//                }
-//            }
-//        }
-//    }
+
 
 
 }

@@ -39,6 +39,7 @@
     <string name="quiz_progress_number">Quiz %1$s/%2$s</string>
     <string name="quiz_number">Nomor. %1$s</string>
     <string name="app_bar_quiz">Quiz %1$s</string>
+    <string name="congratulation">Selamat Anda Berhasil Menyelesaikan Quiz</string>
     <string-array name="models_spinner_titles">
         <item>MobileNet V1</item>
         <item>EfficientDet Lite0</item>

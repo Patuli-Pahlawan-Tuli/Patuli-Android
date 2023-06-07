@@ -1,5 +1,6 @@
 package com.puxxbu.PatuliApp.data.api.config
 
+import com.puxxbu.PatuliApp.data.api.response.file.FileHashResponse
 import com.puxxbu.PatuliApp.data.api.response.lesson.DetailLessonResponse
 import com.puxxbu.PatuliApp.data.api.response.lesson.LessonDataResponse
 import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
@@ -72,6 +73,11 @@ interface ApiService {
         @Path("type") type: String,
         @Path("number") number: Int
     ): Call<QuizResponse>
+
+    @GET("hash")
+    fun getFileHash(
+        @Header("Authorization") token: String
+    ): Call<FileHashResponse>
 
 
 

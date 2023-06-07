@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.databinding.DialogQuizDoneBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizCameraBinding
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
@@ -64,6 +65,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var quizDifficulty : String = ""
     private var quizNumber : Int = 0
     private var languageType : String = ""
+    private var maxNumber = 5
 
     private var isFragmentActive = false
 
@@ -334,8 +336,12 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 Log.d(TAG, "TES ${resultResponse.value}")
                 Log.d(TAG, "TES ${resultResponse.value?.lowercase()} $answerKey")
                 if (resultResponse.value != "No Result" && resultResponse.value != null) {
-                   if (checkAnswer(resultResponse.value!!.lowercase(), answerKey) && !isAnswered){
-                        showDialog("Jawaban Benar")
+                   if (checkAnswer(resultResponse.value!!.lowercase(), answerKey.lowercase()) && !isAnswered){
+                       if (quizNumber == maxNumber){
+                           showDialogQuizDone()
+                       }else{
+                           showDialog("Jawaban Benar")
+                       }
                        isAnswered = true
                    }
                 }
@@ -405,7 +411,29 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         dialog.show()
 
+    }
 
+    private fun showDialogQuizDone(){
+        val dialogView = DialogQuizDoneBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val tvTitle = dialogView.dialogTitle
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView.root)
+
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            job?.cancel()
+            activity?.finish()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 
