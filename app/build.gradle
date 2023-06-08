@@ -67,7 +67,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
@@ -78,7 +78,7 @@ dependencies {
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
     //couroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
 
@@ -128,13 +128,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //okhttp logging
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 
     //lottie
-    implementation 'com.airbnb.android:lottie:5.1.1'
+    implementation 'com.airbnb.android:lottie:6.0.0'
 
     //room Paging
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"

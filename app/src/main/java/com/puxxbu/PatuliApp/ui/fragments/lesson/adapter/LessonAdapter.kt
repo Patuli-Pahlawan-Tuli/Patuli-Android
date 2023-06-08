@@ -46,7 +46,7 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                    .into(ivLessonPhoto)
                tvLessonTitle.text = item.title
                tvLessonDesc.text = item.description
-               tvTimeNeeded.text = context.getString(R.string.time_needed, "1")
+               tvTimeNeeded.text = context.getString(R.string.time_needed, item.hour_needed.toString())
            }
 
             binding.cardLesson.setOnClickListener{
@@ -55,11 +55,11 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                 itemView.context.startActivity(intent)
             }
 
-            binding.btnStartLesson.setOnClickListener{
-                val intent = Intent(itemView.context, LessonListActivity::class.java)
-                intent.putExtra(LessonListActivity.EXTRA_LESSON_NAME, item.title)
-                itemView.context.startActivity(intent)
-            }
+//            binding.btnStartLesson.setOnClickListener{
+//                val intent = Intent(itemView.context, LessonListActivity::class.java)
+//                intent.putExtra(LessonListActivity.EXTRA_LESSON_NAME, item.title)
+//                itemView.context.startActivity(intent)
+//            }
         }
     }
 }

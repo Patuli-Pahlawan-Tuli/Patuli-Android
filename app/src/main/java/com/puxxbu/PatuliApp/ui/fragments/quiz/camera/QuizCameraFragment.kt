@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.DialogQuizDoneBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizCameraBinding
@@ -387,8 +388,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)
-
-
         val dialog = builder.create()
         okButton.setOnClickListener {
             dialog.dismiss()
@@ -420,6 +419,21 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)
+
+        quizViewModel.getSessionData().observe(viewLifecycleOwner){
+            quizViewModel.updateQuizProgress(it.token,quizDifficulty.lowercase())
+        }
+
+        when(quizDifficulty.lowercase()){
+            "beginner" -> {
+                quizList[1].is_enabled = true
+                Log.d(TAG, "showDialogQuizDone: ${quizList[1].quiz_title}")
+            }
+            "intermediate" -> {
+                quizList[2].is_enabled = true
+            }
+        }
+
 
 
         val dialog = builder.create()

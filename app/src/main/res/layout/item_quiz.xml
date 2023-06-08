@@ -74,6 +74,18 @@
 
     </Button>
 
+    <ImageView
+        android:id="@+id/ic_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="@color/md_theme_light_onPrimary"
+        android:src="@drawable/ic_baseline_password_24"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_start_lesson"
+        app:layout_constraintEnd_toEndOf="@+id/btn_start_lesson"
+        app:layout_constraintStart_toStartOf="@+id/btn_start_lesson"
+        app:layout_constraintTop_toTopOf="@+id/btn_start_lesson" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

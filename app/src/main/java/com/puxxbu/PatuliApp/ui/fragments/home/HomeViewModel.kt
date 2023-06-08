@@ -10,21 +10,17 @@ import com.puxxbu.PatuliApp.utils.Event
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val dataRepository: DataRepository) : ViewModel() {
-    val profileData : LiveData<ProfileResponse> = dataRepository.profileResponse
+    val profileData: LiveData<ProfileResponse> = dataRepository.profileResponse
     val profileErrorResponse: LiveData<Event<String>> = dataRepository.profileErrorResponse
     val isLoading: LiveData<Boolean> = dataRepository.isLoading
 
     fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
             dataRepository.logout()
         }
     }
 
-    fun getProfile(token : String) {
-        viewModelScope.launch {
-            dataRepository.getProfile(token)
-        }
-    }
+    fun getProfile(token : String) = dataRepository.getProfile(token)
 }

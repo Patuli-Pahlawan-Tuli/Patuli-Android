@@ -52,8 +52,11 @@ class QuizFragment : Fragment() {
 
     private fun setupData() {
         quizViewModel.getSessionData().observe(viewLifecycleOwner) {
-            Log.d(TAG, "setupData: GET PROFILE")
             quizViewModel.getProfile(it.token)
+        }
+
+        quizViewModel.profileData.observe(viewLifecycleOwner) {
+
         }
     }
 
@@ -70,21 +73,47 @@ class QuizFragment : Fragment() {
 
     }
 
-    private fun setupView() {
-        val recyclerView : RecyclerView = binding.rvQuiz
-        val items = quizList
-        val adapter = QuizAdapter(items)
-        recyclerView.adapter = adapter
-        val layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.layoutManager = layoutManager
-
-
+    override fun onResume() {
+        super.onResume()
+        view?.invalidate()
+        showRecycleView()
+        Log.d(TAG, "onResume: refresh")
     }
 
 
+    private fun setupView() {
+       showRecycleView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+
+    private fun showRecycleView(){
+        quizViewModel.profileData.observe(viewLifecycleOwner) {
+
+
+
+            val recyclerView : RecyclerView = binding.rvQuiz
+            val items = quizList
+            val adapter = QuizAdapter(items)
+
+
+
+            recyclerView.adapter = adapter
+            recyclerView.invalidate()
+            val layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.layoutManager = layoutManager
+            adapter.notifyDataSetChanged()
+
+        }
+    }
     private fun showDialogInformation(){
         val dialogView = DialogQuizInfoBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton
+
 
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)

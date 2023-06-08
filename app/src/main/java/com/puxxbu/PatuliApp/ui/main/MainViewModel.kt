@@ -21,6 +21,9 @@ class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
     private val _permissionResponse = MutableLiveData<Boolean>()
     val permissionResponse: MutableLiveData<Boolean> = _permissionResponse
 
+    private val _downloadResponse = MutableLiveData<Boolean>()
+    val downloadResponse: MutableLiveData<Boolean> = _downloadResponse
+
     private val _isProceed = MutableLiveData<Event<Boolean>>()
     val isProceed: MutableLiveData<Event<Boolean>> = _isProceed
 
@@ -65,6 +68,10 @@ class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
     fun setPermissionResponse(response: Boolean) {
         _permissionResponse.value = response
+    }
+
+    fun setDownloadResponse(response: Boolean) {
+        _downloadResponse.value = response
     }
 
     fun setLogin(response: Event<Boolean>) {

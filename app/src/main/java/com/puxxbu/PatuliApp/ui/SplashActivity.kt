@@ -21,6 +21,7 @@ import com.puxxbu.PatuliApp.BuildConfig
 import com.puxxbu.PatuliApp.PatuliApp.Companion.context
 import com.puxxbu.PatuliApp.data.api.response.file.Data
 import com.puxxbu.PatuliApp.data.model.UserDataModel
+import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
@@ -72,14 +73,22 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         showLoading()
+        homeViewModel.setDownloadResponse(false)
 
         homeViewModel.getSessionData().observe(this) {
             homeViewModel.getHashFileData(it.token)
+            Log.d("SplashActivity", "hash masuk: ")
         }
         homeViewModel.fileHashResponse.observe(this) {
+            Log.d("SplashActivity", "hash disave: ${it.data}")
             saveDataToSharedPreferences(it.data)
+            homeViewModel.permissionResponse.observe(this) {
+                if (it) {
+                    downloadModels()
+                }
+            }
+
         }
-        Thread.sleep(300)
 
 
         supportActionBar?.hide()
@@ -97,11 +106,8 @@ class SplashActivity : AppCompatActivity() {
 
 
 
-        homeViewModel.permissionResponse.observe(this) {
-            if (it) {
-                downloadModels()
-            }
-        }
+
+
 
         homeViewModel.isDownloaded.observe(this) {
             it.getContentIfNotHandled()?.let { downloaded ->
@@ -109,7 +115,11 @@ class SplashActivity : AppCompatActivity() {
                     homeViewModel.downloadCount.observe(this) {
                         if (it == downloadCount) {
                             Log.d("SplashActivity", "onCreate: $downloadCount")
-                            Toast.makeText(this@SplashActivity, "Models downloaded", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this@SplashActivity,
+                                "Models downloaded",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                             homeViewModel.setProceed(Event(true))
                             homeViewModel.isLoading.value = false
@@ -131,7 +141,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun downloadModels() {
-
+Log.d("SplashActivity", "downloadModels: ")
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val requiredModelUrl = mutableListOf<String>()
 
@@ -265,6 +275,12 @@ class SplashActivity : AppCompatActivity() {
 
                     }
                     homeViewModel.setLogin(Event(true))
+                    for (item in quizList){
+                        Log.d("SplashActivity", "setupView: ${item.completed_quiz_req} ${it.data.completedQuiz}")
+                        if (it.data.completedQuiz < item.completed_quiz_req  ){
+                            item.is_enabled = false
+                        }
+                    }
                 }
                 Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
             } else {
@@ -293,32 +309,6 @@ class SplashActivity : AppCompatActivity() {
         }, 3000)
 
 
-
-
-//        homeViewModel.getSessionData().observe(this) {
-//            if (it.isLogin == true) {
-//                homeViewModel.getProfile(it.token)
-//                homeViewModel.profileErrorResponse.observe(this) { it ->
-//                    it.getContentIfNotHandled()?.let { it ->
-//                        if (it == "Unauthorized") {
-//                            i = Intent(this, OnBoardingActivity::class.java)
-//
-//                        }else{
-//                            i = Intent(this, MainActivity::class.java)
-//                        }
-//                    }
-//                }
-//
-//                Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
-//            } else {
-//                i = Intent(this, OnBoardingActivity::class.java)
-//                Log.d("SplashActivity", "Main isLogin: ${it.isLogin}")
-//            }
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                startActivity(i)
-//                finish()
-//            }, 2000)
-//        }
     }
 
 
@@ -389,20 +379,21 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun isModelFileExists(fileName: String) : Boolean {
-        val sharedPreferences = context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
+    private fun isModelFileExists(fileName: String): Boolean {
+        val sharedPreferences =
+            context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
         val file = File(getExternalFilesDir("models"), fileName)
         Log.d("SplashActivity", "isModelFileExists: ${file.exists()}")
         if (file.exists()) {
 
             val hash = calculateHash(file)
             var expectedHash = ""
-            when(fileName){
+            when (fileName) {
                 "abjad.tflite" -> expectedHash = sharedPreferences.getString("abjad", "").toString()
                 "angka.tflite" -> expectedHash = sharedPreferences.getString("angka", "").toString()
                 "kata.tflite" -> expectedHash = sharedPreferences.getString("kata", "").toString()
             }
-            Log.d("SplashActivity", "isModelFileExists hash: ${expectedHash} \n ${hash}")
+            Log.d("SplashActivity", "isModelFileExists hash diambil: ${expectedHash} \n ${hash}")
             if (hash != expectedHash) {
                 file.delete()
                 return false
@@ -413,7 +404,6 @@ class SplashActivity : AppCompatActivity() {
         }
 
     }
-
 
 
     private fun checkModelFile(modelNames: List<String>, requiredModelUrl: MutableList<String>) {
@@ -439,7 +429,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun saveDataToSharedPreferences(data: Data) {
-        val sharedPreferences = context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("hash_shared_pref", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         editor.putString("abjad_lite", data.abjadLite)
@@ -451,9 +442,6 @@ class SplashActivity : AppCompatActivity() {
 
         editor.apply()
     }
-
-
-
 
 
 }

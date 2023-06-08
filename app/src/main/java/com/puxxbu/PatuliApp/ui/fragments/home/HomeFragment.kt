@@ -37,18 +37,14 @@ class HomeFragment : Fragment() {
     ): View? {
        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setupData()
+        setupView()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         setupData()
-        setupView()
         setupAction()
-
-
     }
 
     private fun setupData() {
@@ -58,8 +54,26 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     private fun setupAction() {
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.profileData.observe(viewLifecycleOwner) {
+            if (it.data != null ) {
+                binding.apply {
+                    tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
+                    progressBar.progress = it.data.completedQuiz
+                    Log.d(TAG, "setupView homefragment: ${it.data.completedQuiz}")
+                }
+            }
+        }
     }
 
     private fun setupView() {
@@ -72,20 +86,10 @@ class HomeFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(it.data.imageUrl)
                         .into(ivProfilePicture)
-                    tvQuizProgress.text = getString(R.string.quiz_progress, "0", "3")
+                    tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
+                    progressBar.progress = it.data.completedQuiz
                 }
             }else{
-
-//                homeViewModel.logout()
-//
-//                Toast.makeText(requireContext(), "Session Expired", Toast.LENGTH_LONG).show()
-//
-//                val intentLogout = Intent(requireContext(), LoginActivity::class.java)
-//                intentLogout.flags =
-//                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .remove(this@HomeFragment).commit()
-//                startActivity(intentLogout)
 
             }
         }
@@ -106,7 +110,19 @@ class HomeFragment : Fragment() {
 
     private fun showLoading() {
         homeViewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.progressBarProfile.visibility = if (it) View.VISIBLE else View.GONE
+            if (it) {
+                binding.apply {
+                    progressBarProfile.visibility = View.VISIBLE
+                    tvWelcome.visibility = View.GONE
+                    tvQuizProgress.visibility = View.GONE
+                }
+            } else {
+                binding.progressBarProfile.visibility = View.GONE
+                binding.apply {
+                    tvWelcome.visibility = View.VISIBLE
+                    tvQuizProgress.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }

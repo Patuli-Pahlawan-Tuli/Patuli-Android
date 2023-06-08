@@ -7,6 +7,7 @@ import com.puxxbu.PatuliApp.data.api.response.login.LoginResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditPasswordResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.EditProfilePicResponse
 import com.puxxbu.PatuliApp.data.api.response.profile.ProfileResponse
+import com.puxxbu.PatuliApp.data.api.response.quiz.QuizProgressResponse
 import com.puxxbu.PatuliApp.data.api.response.quiz.QuizResponse
 import com.puxxbu.PatuliApp.data.api.response.register.RegisterResponse
 import okhttp3.MultipartBody
@@ -79,6 +80,14 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<FileHashResponse>
 
+
+    @FormUrlEncoded
+    @PUT("level/edit-completed-quiz-{type}")
+    fun updateQuizProgress(
+        @Header("Authorization") token: String,
+        @Path("type") type: String,
+        @Field("newQuestComplete") newQuestComplete: Int,
+    ): Call<QuizProgressResponse>
 
 
 }

@@ -71,17 +71,6 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         val permissionsFragment = PermissionsFragment()
         val fragmentManager = parentFragmentManager
         super.onResume()
-        // Make sure that all permissions are still present, since the
-        // user could have removed them while the app was in paused state.
-//        if (!PermissionsFragment.hasPermissions(requireContext())) {
-//            fragmentManager.beginTransaction()
-//                .replace(
-//                    R.id.fragment_container,
-//                    permissionsFragment,
-//                    PermissionsFragment::class.java.simpleName
-//                )
-//                .commit()
-//        }
 
         if (job?.isCancelled == true) {
             startLogging(binding.tvResult)
@@ -316,7 +305,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                             imageWidth
                         )
 
-                        Log.d(TAG, "use frontcamera ")
+                        Log.d(TAG, "use frontcamera $imageWidth $imageHeight ")
                     }else{
                         binding.overlay.visibility = View.VISIBLE
                         binding.overlayFront.visibility = View.GONE

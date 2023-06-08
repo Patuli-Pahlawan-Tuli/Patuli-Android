@@ -64,8 +64,9 @@ class OverlayViewFront(context: Context?, attrs: AttributeSet?) : View(context, 
             var right = boundingBox.right * scaleFactor
 
             // Flip horizontal
-            left = canvas.width.toFloat() - left
-            right = canvas.width.toFloat() - right
+            left = canvas.width.toFloat() - (left/1.5f)
+            right = canvas.width.toFloat() - (right/1.5f)
+            Log.d("OverlayViewFront", "left: $left, width: ${canvas.width}, right: $right")
 
             // Draw bounding box around detected objects
             val drawableRect = RectF(left, top, right, bottom)

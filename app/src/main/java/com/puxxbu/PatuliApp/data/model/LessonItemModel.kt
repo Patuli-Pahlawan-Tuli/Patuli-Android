@@ -2,7 +2,7 @@ package com.puxxbu.PatuliApp.data.model
 
 data class LessonItemModel(
     val title : String,
-    val video_count : Int,
+    val hour_needed : Int,
     val description : String,
     val image_url : String
 )
@@ -10,20 +10,20 @@ data class LessonItemModel(
 val itemLesson : List<LessonItemModel> = listOf(
     LessonItemModel(
         "Abjad",
-        3,
-        "This is a description",
+        1,
+        "Belajar abjad dari A-Z",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
     ),
     LessonItemModel(
         "Angka",
-        3,
-        "This is a description",
+        1,
+        "Belajar Angka 1-10",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
     ),
     LessonItemModel(
         "Kata",
-        3,
-        "This is a description",
+        2,
+        "Belajar kata sehari-hari",
         "https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg"
     ),
     )

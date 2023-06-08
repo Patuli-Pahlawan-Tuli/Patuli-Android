@@ -43,6 +43,14 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
                     .into(ivQuizImage)
                 tvLessonDesc.text = item.desc
 
+                if (item.is_enabled){
+                    icLock.visibility = ViewGroup.GONE
+                }else{
+                    icLock.visibility = ViewGroup.VISIBLE
+                    btnStartLesson.text = ""
+                    btnStartLesson.isEnabled = false
+                }
+
                 btnStartLesson.setOnClickListener {
 
                     val dialogView = DialogQuizConfirmationBinding.inflate(LayoutInflater.from(itemView.context))
