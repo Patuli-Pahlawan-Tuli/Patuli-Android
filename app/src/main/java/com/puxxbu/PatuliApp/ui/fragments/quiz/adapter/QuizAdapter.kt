@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.data.model.QuizModel
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.databinding.DialogChooseQuizBinding
 import com.puxxbu.PatuliApp.databinding.DialogQuizConfirmationBinding
 import com.puxxbu.PatuliApp.databinding.ItemQuizBinding
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
@@ -53,6 +54,25 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
 
                 btnStartLesson.setOnClickListener {
 
+//                    val dialogView = DialogChooseQuizBinding.inflate(LayoutInflater.from(itemView.context))
+//                    val builder = MaterialAlertDialogBuilder(itemView.context)
+//                    builder.setView(dialogView.root)
+//
+//                    val dialog = builder.create()
+//
+//                    dialogView.btnQuiz1.setOnClickListener {
+//                        val intent = Intent(itemView.context, QuizActivity::class.java)
+//                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
+//                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
+//                        itemView.context.startActivity(intent)
+//                        dialog.dismiss()
+//                    }
+//
+//                    dialogView.btnQuiz2.setOnClickListener {
+//
+//                    }
+
+
                     val dialogView = DialogQuizConfirmationBinding.inflate(LayoutInflater.from(itemView.context))
                     val okButton = dialogView.okButton
                     val cancelButton = dialogView.btnDismiss
@@ -75,6 +95,8 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
 
 
                     dialog.show()
+
+
 
 
                 }

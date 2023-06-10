@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                     .commit()
             }
 
+
             binding.bottomNavigation.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.item_1 -> {

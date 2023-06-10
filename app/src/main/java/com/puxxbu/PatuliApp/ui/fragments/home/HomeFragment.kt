@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.itemLesson
+import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.FragmentHomeBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonAdapter
@@ -71,6 +72,13 @@ class HomeFragment : Fragment() {
                     tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
                     progressBar.progress = it.data.completedQuiz
                     Log.d(TAG, "setupView homefragment: ${it.data.completedQuiz}")
+                }
+                for (item in quizList){
+                    Log.d("SplashActivity", "setupView: ${item.completed_quiz_req} ${it.data.completedQuiz}")
+                    if (it.data.completedQuiz < item.completed_quiz_req  ){
+                        item.is_enabled = false
+                        Log.d("SplashActivity", "setupView: ${item.quiz_title} ${item.is_enabled}")
+                    }
                 }
             }
         }

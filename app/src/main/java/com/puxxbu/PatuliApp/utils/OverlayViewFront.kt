@@ -54,9 +54,6 @@ class OverlayViewFront(context: Context?, attrs: AttributeSet?) : View(context, 
         for (result in results) {
             val boundingBox = result.boundingBox
 
-            // Hitung koordinat tengah objek
-            val centerX = (boundingBox.left + boundingBox.right) / 2.0f
-            val centerY = (boundingBox.top + boundingBox.bottom) / 2.0f
 
             val top = boundingBox.top * scaleFactor
             val bottom = boundingBox.bottom * scaleFactor
@@ -64,8 +61,8 @@ class OverlayViewFront(context: Context?, attrs: AttributeSet?) : View(context, 
             var right = boundingBox.right * scaleFactor
 
             // Flip horizontal
-            left = canvas.width.toFloat() - (left/1.5f)
-            right = canvas.width.toFloat() - (right/1.5f)
+            left = canvas.width.toFloat() - (left*0.75f)
+            right = canvas.width.toFloat() - (right*0.75f)
             Log.d("OverlayViewFront", "left: $left, width: ${canvas.width}, right: $right")
 
             // Draw bounding box around detected objects

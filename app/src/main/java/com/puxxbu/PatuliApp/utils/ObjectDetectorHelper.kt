@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tflite.client.TfLiteInitializationOptions
 import com.google.android.gms.tflite.gpu.support.TfLiteGpu
+import com.puxxbu.PatuliApp.PatuliApp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.Rot90Op
@@ -84,16 +85,27 @@ class ObjectDetectorHelper(
 
 
 
+        val sharedPreferences = PatuliApp.context.getSharedPreferences("model_type", Context.MODE_PRIVATE)
+        val modelType = sharedPreferences.getInt("model_type", 0)
 
-
-        val modelName =  when (currentModel) {
-            MODEL_ABJAD ->  "abjad.tflite"
-            MODEL_ANGKA ->  "angka.tflite"
-            MODEL_KATA -> "kata.tflite"
-            else ->  "abjad.tflite"
+        Log.d("model_type", modelType.toString())
+        val modelName = when (modelType) {
+            1 -> when (currentModel) {
+                MODEL_ABJAD -> "abjad_lite.tflite"
+                MODEL_ANGKA -> "angka_lite.tflite"
+                MODEL_KATA -> "kata_lite.tflite"
+                else -> "abjad_lite.tflite"
+            }
+            else -> when (currentModel) {
+                MODEL_ABJAD -> "abjad.tflite"
+                MODEL_ANGKA -> "angka.tflite"
+                MODEL_KATA -> "kata.tflite"
+                else -> "abjad.tflite"
+            }
         }
 
         val file = File(context.getExternalFilesDir("models"), modelName)
+
         try {
             objectDetector =
             ObjectDetector.createFromFileAndOptions(file,optionsBuilder.build())

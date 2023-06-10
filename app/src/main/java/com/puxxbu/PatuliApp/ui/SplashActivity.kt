@@ -17,12 +17,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.BuildConfig
 import com.puxxbu.PatuliApp.PatuliApp.Companion.context
 import com.puxxbu.PatuliApp.data.api.response.file.Data
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
+import com.puxxbu.PatuliApp.databinding.DialogChooseModelBinding
+import com.puxxbu.PatuliApp.databinding.DialogQuizDoneBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.utils.Event
@@ -57,11 +60,26 @@ class SplashActivity : AppCompatActivity() {
         BuildConfig.URL_KATA,
     )
 
+    private val modelLiteUrls = listOf(
+        BuildConfig.URL_ABJAD_LITE,
+        BuildConfig.URL_ANGKA_LITE,
+        BuildConfig.URL_KATA_LITE,
+    )
+
     private var downloadCount: Int = 0
+    private var isDownloaded: Boolean = false
+    private var modelType : Int = 0
+
     private val modelNames = listOf(
         "abjad.tflite",
         "angka.tflite",
         "kata.tflite",
+    )
+
+    private val modelLiteNames = listOf(
+        "abjad_lite.tflite",
+        "angka_lite.tflite",
+        "kata_lite.tflite",
     )
 
 
@@ -72,6 +90,7 @@ class SplashActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setIsDownloaded()
         showLoading()
         homeViewModel.setDownloadResponse(false)
 
@@ -84,7 +103,12 @@ class SplashActivity : AppCompatActivity() {
             saveDataToSharedPreferences(it.data)
             homeViewModel.permissionResponse.observe(this) {
                 if (it) {
-                    downloadModels()
+                    Log.d("SplashActivity", "onCreate: permission granted")
+                    if (isDownloaded){
+                        downloadModels()
+                    }else{
+                        showDialogChooseModel()
+                    }
                 }
             }
 
@@ -144,8 +168,13 @@ class SplashActivity : AppCompatActivity() {
 Log.d("SplashActivity", "downloadModels: ")
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val requiredModelUrl = mutableListOf<String>()
+        Log.d("SplashActivity", "onCreate: show dialog $modelType")
 
-        checkModelFile(modelNames, requiredModelUrl)
+        val modelUsed = when (modelType) {
+            1 -> modelLiteNames
+            else -> modelNames
+        }
+        checkModelFile(modelUsed, requiredModelUrl)
 
         if (requiredModelUrl.isEmpty()) {
             Log.d("SplashActivity", "proceedApplication:tdk butuh download ")
@@ -275,12 +304,7 @@ Log.d("SplashActivity", "downloadModels: ")
 
                     }
                     homeViewModel.setLogin(Event(true))
-                    for (item in quizList){
-                        Log.d("SplashActivity", "setupView: ${item.completed_quiz_req} ${it.data.completedQuiz}")
-                        if (it.data.completedQuiz < item.completed_quiz_req  ){
-                            item.is_enabled = false
-                        }
-                    }
+
                 }
                 Log.d("SplashActivity", " Home isLogin: ${it.isLogin}")
             } else {
@@ -388,11 +412,24 @@ Log.d("SplashActivity", "downloadModels: ")
 
             val hash = calculateHash(file)
             var expectedHash = ""
-            when (fileName) {
-                "abjad.tflite" -> expectedHash = sharedPreferences.getString("abjad", "").toString()
-                "angka.tflite" -> expectedHash = sharedPreferences.getString("angka", "").toString()
-                "kata.tflite" -> expectedHash = sharedPreferences.getString("kata", "").toString()
+
+            if (modelType == 1){
+                Log.d("SplashActivity", "isModelFileExists: Model Lite")
+                when (fileName) {
+                    "abjad_lite.tflite" -> expectedHash = sharedPreferences.getString("abjad_lite", "").toString()
+                    "angka_lite.tflite" -> expectedHash = sharedPreferences.getString("angka_lite", "").toString()
+                    "kata_lite.tflite" -> expectedHash = sharedPreferences.getString("kata_lite", "").toString()
+                }
+            }else{
+                Log.d("SplashActivity", "isModelFileExists: Model Normal")
+                when (fileName) {
+                    "abjad.tflite" -> expectedHash = sharedPreferences.getString("abjad", "").toString()
+                    "angka.tflite" -> expectedHash = sharedPreferences.getString("angka", "").toString()
+                    "kata.tflite" -> expectedHash = sharedPreferences.getString("kata", "").toString()
+                }
             }
+
+
             Log.d("SplashActivity", "isModelFileExists hash diambil: ${expectedHash} \n ${hash}")
             if (hash != expectedHash) {
                 file.delete()
@@ -409,8 +446,13 @@ Log.d("SplashActivity", "downloadModels: ")
     private fun checkModelFile(modelNames: List<String>, requiredModelUrl: MutableList<String>) {
         for (modelName in modelNames) {
             val isModelExists = isModelFileExists(modelName)
+            Log.d("SplashActivity", "onCreate: show model name $modelName")
+
+
+            val usedModelUrls = if (modelType == 1) modelLiteUrls else modelUrls
+
             if (!isModelExists) {
-                requiredModelUrl.add(modelUrls[modelNames.indexOf(modelName)])
+                requiredModelUrl.add(usedModelUrls[modelNames.indexOf(modelName)])
                 downloadCount++
             }
 
@@ -443,5 +485,55 @@ Log.d("SplashActivity", "downloadModels: ")
         editor.apply()
     }
 
+    fun setIsDownloaded(){
+        val sharedPreferences =
+            context.getSharedPreferences("model_type", Context.MODE_PRIVATE)
+        isDownloaded = sharedPreferences.getBoolean("is_model_saved", false)
+        modelType = sharedPreferences.getInt("model_type", 0)
+        Log.d("SplashActivity", "setIsDownloaded: $isDownloaded ")
+    }
+
+    fun saveModelPreferences(modelType: Int){
+        val sharedPreferences =
+            context.getSharedPreferences("model_type", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("model_type", modelType)
+        editor.putBoolean("is_model_saved", true)
+        editor.apply()
+    }
+
+    private fun showDialogChooseModel() {
+        val dialogView = DialogChooseModelBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(this).setView(dialogView.root)
+
+        val dialog = builder.create()
+        var isDismissedWithButton = false
+
+        dialogView.btnNormal.setOnClickListener {
+            setModelTypeAndDownload(0)
+            isDismissedWithButton = true
+            dialog.dismiss()
+        }
+
+        dialogView.btnlite.setOnClickListener {
+            setModelTypeAndDownload(1)
+            isDismissedWithButton = true
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            if (!isDismissedWithButton) {
+                setModelTypeAndDownload(0)
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun setModelTypeAndDownload(type: Int) {
+        modelType = type
+        saveModelPreferences(type)
+        downloadModels()
+    }
 
 }

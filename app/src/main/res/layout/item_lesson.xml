@@ -3,6 +3,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_lesson"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -56,23 +57,36 @@
         android:id="@+id/tv_lesson_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/geologica_regular"
         android:text="@string/lesson_desc"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_lesson_title"
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
         app:layout_constraintTop_toBottomOf="@+id/tv_lesson_title" />
+
+    <ImageView
+        android:id="@+id/iv_time_needed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_time_needed_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_lesson_desc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lesson_desc" />
 
     <TextView
         android:id="@+id/tv_time_needed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/geologica_regular"
         android:text="@string/time_needed"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_lesson_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_time_needed"
+        app:layout_constraintStart_toEndOf="@+id/iv_time_needed"
+        app:layout_constraintTop_toTopOf="@+id/iv_time_needed" />
 
 <!--    <Button-->
 <!--        android:id="@+id/btn_start_lesson"-->

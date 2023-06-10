@@ -27,9 +27,12 @@ android {
         apiProperties.load(new FileInputStream(apiPropertiesFile))
         buildTypes.each {
             it.buildConfigField 'String', 'URL', apiProperties.getProperty('api.url')
-            it.buildConfigField 'String', 'URL_ABJAD', apiProperties.getProperty('modelabjad.url')
-            it.buildConfigField 'String', 'URL_ANGKA', apiProperties.getProperty('modelangka.url')
-            it.buildConfigField 'String', 'URL_KATA', apiProperties.getProperty('modelkata.url')
+            it.buildConfigField 'String', 'URL_ABJAD', apiProperties.getProperty('abjad.url')
+            it.buildConfigField 'String', 'URL_ANGKA', apiProperties.getProperty('angka.url')
+            it.buildConfigField 'String', 'URL_KATA', apiProperties.getProperty('kata.url')
+            it.buildConfigField 'String', 'URL_ABJAD_LITE', apiProperties.getProperty('abjadlite.url')
+            it.buildConfigField 'String', 'URL_ANGKA_LITE', apiProperties.getProperty('angkalite.url')
+            it.buildConfigField 'String', 'URL_KATA_LITE', apiProperties.getProperty('katalite.url')
         }
     }
 

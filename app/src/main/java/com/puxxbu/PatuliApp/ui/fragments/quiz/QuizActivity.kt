@@ -24,6 +24,7 @@ class QuizActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_QUIZ_DIFFICULTY = "extra_type"
         const val EXTRA_NUMBER = "extra_number"
+        const val EXTRA_LEVEL = "extra_level"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
