@@ -40,6 +40,7 @@
     <string name="quiz_number">Nomor. %1$s</string>
     <string name="app_bar_quiz">Quiz %1$s</string>
     <string name="congratulation">Selamat Anda Berhasil Menyelesaikan Quiz</string>
+    <string name="long_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui auctor, aliquam ipsum eu, dapibus erat. Nam vel augue vel ipsum hendrerit semper nec nec lectus. Etiam non odio vel metus vestibulum congue. Duis volutpat lorem sit amet nisi interdum, non feugiat sapien cursus. Nunc euismod, augue in hendrerit iaculis, nibh massa faucibus tellus, nec auctor ante nibh in risus. Aliquam erat volutpat. Donec sagittis lacus non tortor dignissim, vel euismod massa tincidunt. Duis gravida, metus ac euismod bibendum, risus elit vestibulum mauris, vitae cursus ligula quam a ante. Praesent a urna a nunc interdum lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus id justo eu sapien sagittis convallis quis eget nisl. Nam aliquam, orci quis congue egestas, leo augue tincidunt velit, vitae euismod ipsum justo vel est. Fusce aliquet tellus in nibh interdum convallis</string>
     <string-array name="models_spinner_titles">
         <item>MobileNet V1</item>
         <item>EfficientDet Lite0</item>

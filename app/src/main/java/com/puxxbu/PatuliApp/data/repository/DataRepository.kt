@@ -38,6 +38,9 @@ class DataRepository constructor(
     private val _profileErrorResponse = MutableLiveData<Event<String>>()
     val profileErrorResponse: LiveData<Event<String>> = _profileErrorResponse
 
+    private val _profilePicErrorResponse = MutableLiveData<Event<String>>()
+    val profilePicErrorResponse: LiveData<Event<String>> = _profilePicErrorResponse
+
     private val _profileResponse = MutableLiveData<ProfileResponse>()
     val profileResponse: LiveData<ProfileResponse> = _profileResponse
 
@@ -138,13 +141,13 @@ class DataRepository constructor(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
-                    _profileErrorResponse.value = Event(response.body()?.message.toString())
+                    _profilePicErrorResponse.value = Event(response.body()?.message.toString())
                     _editProfilePicResponse.value = response.body()
 
                 } else {
                     val errorResponse =
                         Gson().fromJson(response.errorBody()?.string(), EditProfilePicResponse::class.java)
-                    _profileErrorResponse.value = Event(errorResponse.message)
+                    _profilePicErrorResponse.value = Event(errorResponse.message)
                     Log.d("TAG", "onResponse: ${errorResponse.message}")
                 }
             }

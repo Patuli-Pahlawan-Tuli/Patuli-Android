@@ -87,14 +87,22 @@
                     android:text="@string/title_translate_result"
                     android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-                <TextView
-                    android:id="@+id/tv_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text=" A  AA A"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary" />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:paddingBottom="8dp"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:id="@+id/tv_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/long_placeholder"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </ScrollView>
 
             </LinearLayout>
 
@@ -202,19 +210,6 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-<!--    <androidx.appcompat.widget.AppCompatSpinner-->
-<!--        android:id="@+id/spinner_model"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentRight="true"-->
 
-<!--        android:textSize="11sp"-->
 
-<!--        android:layout_gravity="top|right"-->
-<!--        android:entries="@array/models_spinner_titles"-->
-<!--        android:spinnerMode="dropdown" />-->
-
-    <!--    <include-->
-<!--        android:id="@+id/bottom_sheet_layout"-->
-<!--        layout="@layout/info_bottom_sheet" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

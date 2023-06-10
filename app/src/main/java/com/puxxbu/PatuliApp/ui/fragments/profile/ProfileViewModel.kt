@@ -19,6 +19,7 @@ class ProfileViewModel(private val dataRepository: DataRepository) : ViewModel()
     val isLoading: LiveData<Boolean> = dataRepository.isLoading
     val editProfilePicResponse: LiveData<EditProfilePicResponse> = dataRepository.editProfilePicResponse
     val editPasswordResponse: LiveData<Event<EditPasswordResponse>> = dataRepository.editPasswordResponse
+    val editPicResponse : LiveData<Event<String>> = dataRepository.profilePicErrorResponse
 
     fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
 

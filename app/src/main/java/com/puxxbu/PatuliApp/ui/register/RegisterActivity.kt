@@ -94,7 +94,7 @@ class RegisterActivity : AppCompatActivity() {
         registerViewModel.responseMessage.observe(this) {
             it.getContentIfNotHandled()?.let {
                 Log.d("RegisterActivity", it)
-                if (it == "Account Created") {
+                if (it == "Akun berhasil dibuat") {
                     showDialogSuccess("Akun berhasil dibuat")
                 } else {
                     showDialogFailed("Akun gagal dibuat", it)

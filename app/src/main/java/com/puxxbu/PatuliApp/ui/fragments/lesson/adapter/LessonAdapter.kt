@@ -11,6 +11,7 @@ import com.puxxbu.PatuliApp.data.model.LessonItemModel
 import com.puxxbu.PatuliApp.databinding.ItemLessonBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.LessonListActivity
 import android.graphics.Bitmap
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
@@ -37,10 +38,15 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
     inner class ViewHolder(private val binding : ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: LessonItemModel) {
+
+            val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
            binding.apply {
                Glide.with(itemView.context)
                    .load(item.image_url)
-                   .placeholder(R.drawable.ic_launcher_background)
+                   .placeholder(circularProgressDrawable)
                    .fitCenter()
                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                    .into(ivLessonPhoto)
@@ -55,11 +61,6 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                 itemView.context.startActivity(intent)
             }
 
-//            binding.btnStartLesson.setOnClickListener{
-//                val intent = Intent(itemView.context, LessonListActivity::class.java)
-//                intent.putExtra(LessonListActivity.EXTRA_LESSON_NAME, item.title)
-//                itemView.context.startActivity(intent)
-//            }
         }
     }
 }

@@ -20,7 +20,7 @@
             android:background="@color/md_theme_light_surfaceVariant"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/app_bar_quiz"
-            app:title="Quiz Bahasa Isyarat" />
+            app:title="Kuis Bahasa Isyarat" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

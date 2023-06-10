@@ -95,7 +95,6 @@ class DetailLessonActivity : AppCompatActivity() {
             lessonViewModel.detailLessonData.observe(this@DetailLessonActivity) {
                 Glide.with(this@DetailLessonActivity)
                     .load(it.data[0].imageUrl)
-                    .fitCenter()
                     .placeholder(circularProgressDrawable)
                     .into(ivLessonPhoto)
                 topAppBar.title = it.data[0].lessonName
@@ -103,20 +102,6 @@ class DetailLessonActivity : AppCompatActivity() {
             }
 
 
-            fabNavigationPage.setOnClickListener {
-                val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
-                val okButton = dialogView.findViewById<Button>(R.id.ok_button)
-
-                val builder = MaterialAlertDialogBuilder(this@DetailLessonActivity)
-                builder.setView(dialogView)
-
-                val dialog = builder.create()
-                okButton.setOnClickListener {
-                    dialog.dismiss()
-                }
-
-                dialog.show()
-            }
 
 
         }

@@ -1,16 +1,20 @@
 package com.puxxbu.PatuliApp.ui.fragments.profile
 
+import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
+import com.puxxbu.PatuliApp.databinding.DialogLoadingBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
@@ -30,6 +35,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import kotlin.math.ceil
+import kotlin.math.max
 
 class ProfileFragment : Fragment() {
 
@@ -38,6 +45,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _fragmentProfileBinding!!
 
     private var getFile: File? = null
+    private var progressDialog: AlertDialog? = null
     private val profileViewModel: ProfileViewModel by viewModel()
 
 
@@ -54,7 +62,9 @@ class ProfileFragment : Fragment() {
                 val myFile = uriToFile(selectedImg, requireContext())
 
                 getFile = myFile
-                binding.ivProfilePicture.setImageURI(selectedImg)
+                Glide.with(requireContext())
+                    .load(selectedImg)
+                    .into(binding.ivProfilePicture)
             }
         }
     }
@@ -145,12 +155,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun editProfilePicture(token: String, file: MultipartBody.Part) {
+        showDialogLoading() // Menampilkan dialog progress/loading sebelum mengupload foto
         profileViewModel.editProfilePicture(token, file)
         profileViewModel.editProfilePicResponse.observe(viewLifecycleOwner) {
             if (!it.error) {
-                profileViewModel.profileErrorResponse.observe(viewLifecycleOwner) { message ->
+                profileViewModel.editPicResponse.observe(viewLifecycleOwner) { message ->
                     message.getContentIfNotHandled()?.let {
-                       showDialog("Ubah Foto Profil")
+                        Log.d(TAG, "editProfilePicture: $it")
+                        hideLoading() // Menyembunyikan dialog progress/loading setelah pengiriman foto selesai
+                        showDialog("Ubah Foto Profil")
                     }
                 }
             }
@@ -161,6 +174,8 @@ class ProfileFragment : Fragment() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
+        val mimeTypes = arrayOf("image/jpeg", "image/jpg", "image/png")
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
 
         val chooser = Intent.createChooser(intent, "Choose a Picture")
         launcherIntentGallery.launch(chooser)
@@ -172,23 +187,74 @@ class ProfileFragment : Fragment() {
                 Log.d(TAG, "onGlobalLayout: foto ganti")
                 Log.d(TAG, "onGlobalLayout: $getFile ")
                 if (getFile != null) {
-                    Log.d(TAG, "onGlobalLayout: foto upload")
-                    val file = reduceFileImage(getFile as File)
-                    val requestImageFile = file.asRequestBody(
-                        "image/jpeg".toMediaTypeOrNull()
-                    )
-                    val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                        "file",
-                        file.name,
-                        requestImageFile
-                    )
-                    profileViewModel.getSessionData().observe(viewLifecycleOwner) {
-                        editProfilePicture(it.token, imageMultipart)
+                    val file = getFile as File
+                    if (file.length() > 2 * 1024 * 1024) {
+                        // Menampilkan pesan kesalahan jika ukuran file lebih dari 2 MB
+                        Toast.makeText(requireContext(), "File terlalu besar (maksimal 2 MB)", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d(TAG, "onGlobalLayout: foto upload")
+                        val reducedFile = reduceFileImage(file)
+                        val requestImageFile = reducedFile.asRequestBody(
+                            "image/jpeg".toMediaTypeOrNull()
+                        )
+                        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                            "file",
+                            reducedFile.name,
+                            requestImageFile
+                        )
+                        profileViewModel.getSessionData().observe(viewLifecycleOwner) {
+                            editProfilePicture(it.token, imageMultipart)
+                        }
                     }
                 }
                 binding.ivProfilePicture.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+    }
+
+    private fun showDialogLoading() {
+
+
+        val dialogView = DialogLoadingBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setCancelable(false)
+        builder.setView(dialogView.root)
+        progressDialog = builder.create()
+
+        progressDialog?.show()
+    }
+
+    private fun hideLoading() {
+        // Menyembunyikan alert dialog
+        progressDialog?.dismiss()
+    }
+
+    private fun reduceFileImage(file: File): File {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(file.path, options)
+        val imageHeight = options.outHeight
+        val imageWidth = options.outWidth
+        val scaleFactor = calculateScaleFactor(imageWidth, imageHeight, 1920, 1080)
+
+        options.inJustDecodeBounds = false
+        options.inSampleSize = scaleFactor
+        val resizedBitmap = BitmapFactory.decodeFile(file.path, options)
+        val resizedFile = File.createTempFile("resized_", ".jpg")
+        resizedFile.outputStream().use {
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, it)
+        }
+        return resizedFile
+    }
+
+    private fun calculateScaleFactor(imageWidth: Int, imageHeight: Int, targetWidth: Int, targetHeight: Int): Int {
+        var scaleFactor = 1
+        if (imageWidth > targetWidth || imageHeight > targetHeight) {
+            val widthRatio = imageWidth.toFloat() / targetWidth.toFloat()
+            val heightRatio = imageHeight.toFloat() / targetHeight.toFloat()
+            scaleFactor = ceil(max(widthRatio, heightRatio)).toInt()
+        }
+        return scaleFactor
     }
 
     private fun showLoading() {

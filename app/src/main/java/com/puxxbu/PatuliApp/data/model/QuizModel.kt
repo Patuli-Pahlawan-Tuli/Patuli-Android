@@ -19,7 +19,7 @@ data class SubQuiz(
 
 var quizList : List<QuizModel> = listOf(
     QuizModel(
-        "Quiz Beginner",
+        "Kuis Pemula",
         "Beginner",
         start_number = 1,
         "https://cdn.discordapp.com/attachments/946779825325084682/1115506988361724024/abc.png",
@@ -28,7 +28,7 @@ var quizList : List<QuizModel> = listOf(
         subQuiz = listOf(SubQuiz(unlock_requirement = 0), SubQuiz(unlock_requirement = 1))
     ),
     QuizModel(
-        "Quiz Intermediate",
+        "Kuis Menengah",
         "Intermediate",
         start_number = 1,
         "https://cdn.discordapp.com/attachments/946779825325084682/1116263244672270398/word-of-mouth.png",
@@ -37,7 +37,7 @@ var quizList : List<QuizModel> = listOf(
         subQuiz = listOf(SubQuiz(unlock_requirement = 2), SubQuiz(unlock_requirement = 3))
     ),
     QuizModel(
-        "Quiz Expert",
+        "Kuis Mahir",
         "Expert",
         start_number = 1,
         "https://cdn.discordapp.com/attachments/946779825325084682/1116657389698039858/signs.png",

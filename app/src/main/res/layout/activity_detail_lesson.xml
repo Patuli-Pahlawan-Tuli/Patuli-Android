@@ -29,8 +29,9 @@
         android:id="@+id/iv_lesson_photo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="-120dp"
+
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,15 +89,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_navigation_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_baseline_home_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

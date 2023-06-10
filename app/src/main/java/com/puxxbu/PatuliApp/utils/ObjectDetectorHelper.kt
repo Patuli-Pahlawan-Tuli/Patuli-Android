@@ -65,9 +65,19 @@ class ObjectDetectorHelper(
     // that are created on the main thread and used on a background thread, but
     // the GPU delegate needs to be used on the thread that initialized the detector
     fun setupObjectDetector() {
+
+        val sharedPreferences = PatuliApp.context.getSharedPreferences("model_type", Context.MODE_PRIVATE)
+        val modelType = sharedPreferences.getInt("model_type", 0)
+
+
         if (!TfLiteVision.isInitialized()) {
             Log.e(TAG, "setupObjectDetector: TfLiteVision is not initialized yet")
             return
+        }
+
+        when(modelType){
+            1 -> threshold = 0.7f
+            else -> threshold = 0.75f
         }
 
         // Create the base options for the detector using specifies max results and score threshold
@@ -85,8 +95,7 @@ class ObjectDetectorHelper(
 
 
 
-        val sharedPreferences = PatuliApp.context.getSharedPreferences("model_type", Context.MODE_PRIVATE)
-        val modelType = sharedPreferences.getInt("model_type", 0)
+
 
         Log.d("model_type", modelType.toString())
         val modelName = when (modelType) {
