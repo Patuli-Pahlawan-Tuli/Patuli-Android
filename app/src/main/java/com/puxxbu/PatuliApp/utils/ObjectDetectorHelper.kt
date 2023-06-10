@@ -104,6 +104,8 @@ class ObjectDetectorHelper(
             }
         }
 
+        Log.d("model_name", modelName)
+
         val file = File(context.getExternalFilesDir("models"), modelName)
 
         try {

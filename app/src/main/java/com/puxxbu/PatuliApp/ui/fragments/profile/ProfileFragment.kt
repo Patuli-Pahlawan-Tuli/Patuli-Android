@@ -183,9 +183,7 @@ class ProfileFragment : Fragment() {
                         requestImageFile
                     )
                     profileViewModel.getSessionData().observe(viewLifecycleOwner) {
-
                         editProfilePicture(it.token, imageMultipart)
-
                     }
                 }
                 binding.ivProfilePicture.viewTreeObserver.removeOnGlobalLayoutListener(this)
