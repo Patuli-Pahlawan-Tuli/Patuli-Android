@@ -54,13 +54,43 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
 
                 btnStartLesson.setOnClickListener {
 
-//                    val dialogView = DialogChooseQuizBinding.inflate(LayoutInflater.from(itemView.context))
+                    val dialogView = DialogChooseQuizBinding.inflate(LayoutInflater.from(itemView.context))
+                    val builder = MaterialAlertDialogBuilder(itemView.context)
+                    builder.setView(dialogView.root)
+
+                    val dialog = builder.create()
+
+                    dialogView.btnQuiz1.setOnClickListener {
+                        val intent = Intent(itemView.context, QuizActivity::class.java)
+                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
+                        intent.putExtra(QuizActivity.EXTRA_LEVEL, 1)
+                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
+                        itemView.context.startActivity(intent)
+                        dialog.dismiss()
+                    }
+
+                    dialogView.btnQuiz2.setOnClickListener {
+                        val intent = Intent(itemView.context, QuizActivity::class.java)
+                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
+                        intent.putExtra(QuizActivity.EXTRA_LEVEL, 2)
+                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
+                        itemView.context.startActivity(intent)
+                        dialog.dismiss()
+
+                    }
+
+                    dialog.show()
+
+//
+//                    val dialogView = DialogQuizConfirmationBinding.inflate(LayoutInflater.from(itemView.context))
+//                    val okButton = dialogView.okButton
+//                    val cancelButton = dialogView.btnDismiss
+//
 //                    val builder = MaterialAlertDialogBuilder(itemView.context)
 //                    builder.setView(dialogView.root)
 //
 //                    val dialog = builder.create()
-//
-//                    dialogView.btnQuiz1.setOnClickListener {
+//                    okButton.setOnClickListener {
 //                        val intent = Intent(itemView.context, QuizActivity::class.java)
 //                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
 //                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
@@ -68,33 +98,12 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
 //                        dialog.dismiss()
 //                    }
 //
-//                    dialogView.btnQuiz2.setOnClickListener {
-//
+//                    cancelButton.setOnClickListener {
+//                        dialog.dismiss()
 //                    }
-
-
-                    val dialogView = DialogQuizConfirmationBinding.inflate(LayoutInflater.from(itemView.context))
-                    val okButton = dialogView.okButton
-                    val cancelButton = dialogView.btnDismiss
-
-                    val builder = MaterialAlertDialogBuilder(itemView.context)
-                    builder.setView(dialogView.root)
-
-                    val dialog = builder.create()
-                    okButton.setOnClickListener {
-                        val intent = Intent(itemView.context, QuizActivity::class.java)
-                        intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)
-                        intent.putExtra(QuizActivity.EXTRA_NUMBER, item.start_number)
-                        itemView.context.startActivity(intent)
-                        dialog.dismiss()
-                    }
-
-                    cancelButton.setOnClickListener {
-                        dialog.dismiss()
-                    }
-
-
-                    dialog.show()
+//
+//
+//                    dialog.show()
 
 
 

@@ -515,7 +515,7 @@ Log.d("SplashActivity", "downloadModels: ")
             dialog.dismiss()
         }
 
-        dialogView.btnlite.setOnClickListener {
+        dialogView.btnLite.setOnClickListener {
             setModelTypeAndDownload(1)
             isDismissedWithButton = true
             dialog.dismiss()

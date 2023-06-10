@@ -11,7 +11,7 @@
     <solid android:color="?attr/colorPrimaryContainer" />
 
     <padding
-        android:bottom="5dp"
+        android:bottom="6dp"
         android:left="5dp"
         android:right="5dp"
         android:top="5dp" />
