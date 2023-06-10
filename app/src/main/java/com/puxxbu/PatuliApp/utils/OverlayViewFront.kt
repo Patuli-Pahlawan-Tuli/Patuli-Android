@@ -62,7 +62,7 @@ class OverlayViewFront(context: Context?, attrs: AttributeSet?) : View(context, 
 
             // Flip horizontal
             left = canvas.width.toFloat() - (left*0.75f)
-            right = canvas.width.toFloat() - (right*0.75f)
+            right = canvas.width.toFloat() - (right)
             Log.d("OverlayViewFront", "left: $left, width: ${canvas.width}, right: $right")
 
             // Draw bounding box around detected objects

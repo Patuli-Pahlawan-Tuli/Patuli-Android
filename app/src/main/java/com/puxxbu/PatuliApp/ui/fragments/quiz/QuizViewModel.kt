@@ -29,23 +29,21 @@ class QuizViewModel (private val dataRepository: DataRepository) : ViewModel() {
         }
     }
 
-
-
-    fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
-
-    fun getQuizData(token : String, type : String, number :Int){
+    fun updateSubQuizProgress(token: String,  subQuiz: Int){
         viewModelScope.launch {
-            dataRepository.getQuizbyNumber(token, type, number)
+            dataRepository.updateSubQuizProgress(token, subQuiz)
         }
     }
 
-    fun setAnswer(answer : String){
-        _quizAnswer.value = answer
+    fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
+
+    fun getQuizData(token : String, type : String, subQuiz : Int, number : Int){
+        viewModelScope.launch {
+            dataRepository.getQuizbyNumber(token, type, subQuiz, number)
+        }
     }
 
-    fun getAnswer() : LiveData<String>{
-        return quizAnswer
-    }
+
 
     fun setNumber(number : Int){
         _quizNumber.value = number

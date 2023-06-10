@@ -25,7 +25,7 @@ class ObjectDetectorHelper(
     val objectDetectorListener: DetectorListener,
     var currentModel: Int = 0
 ) {
-    var threshold: Float = 0.6f
+    var threshold: Float = 0.8f
     var numThreads: Int = 2
     var maxResults: Int = 1
 

@@ -73,12 +73,17 @@ class HomeFragment : Fragment() {
                     progressBar.progress = it.data.completedQuiz
                     Log.d(TAG, "setupView homefragment: ${it.data.completedQuiz}")
                 }
-                for (item in quizList){
-                    Log.d("SplashActivity", "setupView: ${item.completed_quiz_req} ${it.data.completedQuiz}")
-                    if (it.data.completedQuiz < item.completed_quiz_req  ){
+                quizList.forEach { item ->
+                    if (it.data.completedQuiz < item.completed_quiz_req) {
                         item.is_enabled = false
                         Log.d("SplashActivity", "setupView: ${item.quiz_title} ${item.is_enabled}")
                     }
+                    item.subQuiz.forEachIndexed { index, subQuiz ->
+                        if (it.data.completedSubQuiz < subQuiz.unlock_requirement) {
+                            item.subQuiz[index].is_enabled = false
+                        }
+                    }
+                    Log.d("SplashActivity", "setupView: ${item.completed_quiz_req} ${it.data.completedQuiz}")
                 }
             }
         }
@@ -97,8 +102,6 @@ class HomeFragment : Fragment() {
                     tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
                     progressBar.progress = it.data.completedQuiz
                 }
-            }else{
-
             }
         }
 

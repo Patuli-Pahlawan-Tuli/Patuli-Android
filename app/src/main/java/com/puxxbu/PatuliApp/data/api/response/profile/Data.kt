@@ -10,6 +10,9 @@ data class Data(
 	@field:SerializedName("password")
 	val password: String,
 
+	@field:SerializedName("completedSubQuiz")
+	val completedSubQuiz: Int,
+
 	@field:SerializedName("imageUrl")
 	val imageUrl: String,
 

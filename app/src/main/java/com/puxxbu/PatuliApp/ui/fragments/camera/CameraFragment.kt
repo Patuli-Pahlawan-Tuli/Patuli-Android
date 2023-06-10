@@ -223,7 +223,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         preview =
             Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
@@ -231,7 +231,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)

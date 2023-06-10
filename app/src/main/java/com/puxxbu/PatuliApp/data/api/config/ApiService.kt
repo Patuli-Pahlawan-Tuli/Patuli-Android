@@ -68,11 +68,12 @@ interface ApiService {
         @Path("number") number: Int
     ): Call<DetailLessonResponse>
 
-    @GET("quizzes/{type}/{number}")
+    @GET("quizzes/{type}/{subQuiz}/{quizNumber}")
     fun getQuizbyNumber(
         @Header("Authorization") token: String,
         @Path("type") type: String,
-        @Path("number") number: Int
+        @Path("subQuiz") subQuiz: Int,
+        @Path("quizNumber") quizNumber: Int
     ): Call<QuizResponse>
 
     @GET("hash")
@@ -89,5 +90,12 @@ interface ApiService {
         @Field("newQuestComplete") newQuestComplete: Int,
     ): Call<QuizProgressResponse>
 
+    @FormUrlEncoded
+    @PUT("level/edit-completed-sub-quiz")
+    fun updateSubQuizProgress(
+        @Header("Authorization") token: String,
+        @Field("newQuestComplete") newQuestComplete: Int,
+        @Field("subQuiz") subQuiz: Int,
+    ): Call<QuizProgressResponse>
 
 }

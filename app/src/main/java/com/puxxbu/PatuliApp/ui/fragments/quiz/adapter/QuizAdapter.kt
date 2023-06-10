@@ -60,6 +60,9 @@ class QuizAdapter (private val items: List<QuizModel>) : RecyclerView.Adapter<Qu
 
                     val dialog = builder.create()
 
+                    dialogView.btnQuiz1.isEnabled = item.subQuiz[0].is_enabled
+                    dialogView.btnQuiz2.isEnabled = item.subQuiz[1].is_enabled
+
                     dialogView.btnQuiz1.setOnClickListener {
                         val intent = Intent(itemView.context, QuizActivity::class.java)
                         intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, item.quiz_difficulty)

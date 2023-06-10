@@ -67,6 +67,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private var quizNumber : Int = 0
     private var languageType : String = ""
     private var maxNumber = 5
+    private var subQuiz = 0
 
     private var isFragmentActive = false
 
@@ -158,6 +159,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             quizNumber = it.data[0].quizNumber
             languageType = it.data[0].languageType
             answerKey = it.data[0].answer
+            subQuiz = it.data[0].subQuiz
             Log.d("QuizCameraFragment", "onCreateView: $answerKey")
 
             when(languageType){
@@ -231,11 +233,9 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         // Preview. Only using the 4:3 ratio because this is the closest to our models
 
 
-
-
         preview =
             Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
@@ -243,7 +243,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
@@ -393,6 +393,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             dialog.dismiss()
         }
 
+
         dialog.setOnDismissListener {
             val intent = Intent(context, QuizActivity::class.java)
             intent.putExtra(QuizActivity.EXTRA_QUIZ_DIFFICULTY, quizDifficulty)
@@ -400,13 +401,15 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             var nextNumber = quizNumber + 1
             Log.d(TAG, "showDialog: $nextNumber")
 
-            intent.putExtra(QuizActivity.EXTRA_NUMBER,nextNumber)
+            intent.putExtra(QuizActivity.EXTRA_NUMBER, nextNumber)
+            intent.putExtra(QuizActivity.EXTRA_LEVEL, subQuiz)
             job?.cancel()
             startActivity(intent)
             activity?.finish()
             dialog.dismiss()
         }
         tvTitle.text = message
+
 
         dialog.show()
 
@@ -420,18 +423,33 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)
 
-        quizViewModel.getSessionData().observe(viewLifecycleOwner){
-            quizViewModel.updateQuizProgress(it.token,quizDifficulty.lowercase())
+
+        when (quizDifficulty.lowercase()) {
+            "intermediate" -> subQuiz += 2
+            "expert" -> subQuiz += 4
         }
 
-        when(quizDifficulty.lowercase()){
-            "beginner" -> {
+        Log.d(TAG, "showDialog: $subQuiz")
+        when(subQuiz){
+            2 -> {
                 quizList[1].is_enabled = true
-                Log.d(TAG, "showDialogQuizDone: ${quizList[1].quiz_title}")
             }
-            "intermediate" -> {
+            4 -> {
                 quizList[2].is_enabled = true
             }
+        }
+
+        when(subQuiz){
+            1 -> quizList[0].subQuiz[1].is_enabled = true
+            2 -> quizList[1].subQuiz[0].is_enabled = true
+            3 -> quizList[1].subQuiz[1].is_enabled = true
+            4 -> quizList[2].subQuiz[0].is_enabled = true
+            5 -> quizList[2].subQuiz[1].is_enabled = true
+        }
+
+
+        quizViewModel.getSessionData().observe(viewLifecycleOwner) {
+            quizViewModel.updateSubQuizProgress(it.token, subQuiz)
         }
 
 
@@ -459,5 +477,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         const val EXTRA_NUMBER = "extra_number"
         const val EXTRA_TYPE = "extra_type"
         const val EXTRA_ANSWER = "extra_answer"
+        const val EXTRA_SUB_QUIZ = "extra_sub_quiz"
     }
 }

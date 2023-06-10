@@ -54,6 +54,7 @@ class QuizActivity : AppCompatActivity() {
         supportActionBar?.hide()
         showLoading()
         val difficulty = intent.getStringExtra(EXTRA_QUIZ_DIFFICULTY)
+        val level = intent.getIntExtra(EXTRA_LEVEL, 0)
 
         quizViewModel.setNumber(intent.getIntExtra(EXTRA_NUMBER, 1))
         binding.apply {
@@ -63,7 +64,7 @@ class QuizActivity : AppCompatActivity() {
             quizViewModel.getSessionData().observe(this@QuizActivity) {user ->
                 if (difficulty != null) {
                     quizViewModel.quizNumber.observe(this@QuizActivity) {number ->
-                        quizViewModel.getQuizData(user.token, difficulty, number)
+                        quizViewModel.getQuizData(user.token, difficulty, level, number)
                         progressBar.progress = number
                     }
                 }
@@ -79,7 +80,7 @@ class QuizActivity : AppCompatActivity() {
 
         quizViewModel.quizData.observe(this@QuizActivity) {quiz ->
 
-            addQuizDataPreferences(quiz.data[0])
+//            addQuizDataPreferences(quiz.data[0])
 
 
             Log.d("QuizActivity", "setupViewJawaban: ${quiz.data[0].answer}")
@@ -99,19 +100,20 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
-    private fun addQuizDataPreferences(quizData : DataItem){
-        val sharedPreferences = getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
-
-        Log.d("QuizActivity", "addQuizDataPreferences: ${quizData.answer} ${quizData.quizNumber}")
-        val editor = sharedPreferences.edit()
-
-        editor.putString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, quizData.quizDifficulty)
-        editor.putInt(QuizCameraFragment.EXTRA_NUMBER, quizData.quizNumber)
-        editor.putString(QuizCameraFragment.EXTRA_TYPE, quizData.languageType)
-        editor.putString(QuizCameraFragment.EXTRA_ANSWER, quizData.answer)
-
-        editor.apply()
-    }
+//    private fun addQuizDataPreferences(quizData : DataItem){
+//        val sharedPreferences = getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
+//
+//        Log.d("QuizActivity", "addQuizDataPreferences: ${quizData.answer} ${quizData.quizNumber}")
+//        val editor = sharedPreferences.edit()
+//
+//        editor.putInt(QuizCameraFragment.EXTRA_SUB_QUIZ, quizData.subQuiz)
+//        editor.putString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, quizData.quizDifficulty)
+//        editor.putInt(QuizCameraFragment.EXTRA_NUMBER, quizData.quizNumber)
+//        editor.putString(QuizCameraFragment.EXTRA_TYPE, quizData.languageType)
+//        editor.putString(QuizCameraFragment.EXTRA_ANSWER, quizData.answer)
+//
+//        editor.apply()
+//    }
 
     private fun showDialogClose(){
         val dialogView = DialogCloseConfirmationBinding.inflate(layoutInflater)

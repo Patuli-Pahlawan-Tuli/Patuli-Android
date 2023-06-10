@@ -262,9 +262,9 @@ class DataRepository constructor(
         })
     }
 
-    fun getQuizbyNumber(token : String, type : String, number : Int){
+    fun getQuizbyNumber(token : String, type : String,subQuiz : Int, number : Int){
         _isLoading.value = true
-        val client = apiService.getQuizbyNumber(token , type, number)
+        val client = apiService.getQuizbyNumber(token , type, subQuiz, number)
         client.enqueue(object : retrofit2.Callback<QuizResponse> {
             override fun onResponse(
                 call: retrofit2.Call<QuizResponse>,
@@ -317,6 +317,32 @@ class DataRepository constructor(
     fun updateQuizProgress(token: String, type: String){
         _isLoading.value = true
         val client = apiService.updateQuizProgress(token, type,-1)
+        client.enqueue(object : retrofit2.Callback<QuizProgressResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<QuizProgressResponse>,
+                response: retrofit2.Response<QuizProgressResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _updateQuizProgressResponse.value = response.body()
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), QuizProgressResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<QuizProgressResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+    fun updateSubQuizProgress(token: String, subQuiz: Int){
+        _isLoading.value = true
+        val client = apiService.updateSubQuizProgress(token,1,subQuiz)
         client.enqueue(object : retrofit2.Callback<QuizProgressResponse> {
             override fun onResponse(
                 call: retrofit2.Call<QuizProgressResponse>,

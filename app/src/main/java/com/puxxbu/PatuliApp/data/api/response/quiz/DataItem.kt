@@ -16,6 +16,9 @@ data class DataItem(
 	@field:SerializedName("answer")
 	val answer: String,
 
+	@field:SerializedName("subQuiz")
+	val subQuiz: Int,
+
 	@field:SerializedName("_id")
 	val id: String,
 
