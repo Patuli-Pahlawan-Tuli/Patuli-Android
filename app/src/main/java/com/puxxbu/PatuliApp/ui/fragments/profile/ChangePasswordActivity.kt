@@ -1,11 +1,10 @@
 package com.puxxbu.PatuliApp.ui.fragments.profile
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.puxxbu.PatuliApp.R
+import androidx.appcompat.app.AppCompatActivity
 import com.puxxbu.PatuliApp.databinding.ActivityChangePasswordBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

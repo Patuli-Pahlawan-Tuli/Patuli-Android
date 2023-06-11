@@ -1,6 +1,5 @@
 package com.puxxbu.PatuliApp.ui.fragments.profile
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,10 +8,10 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ProgressBar
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,13 +22,11 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
-import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
 import com.puxxbu.PatuliApp.databinding.DialogLoadingBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.utils.formatDate
-import com.puxxbu.PatuliApp.utils.reduceFileImage
 import com.puxxbu.PatuliApp.utils.uriToFile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

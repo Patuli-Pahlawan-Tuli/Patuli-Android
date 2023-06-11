@@ -34,12 +34,12 @@
     <string name="lesson_title">Abjad A-Z</string>
     <string name="change_password">Ubah Kata Sandi</string>
     <string name="show_more">Pelajari</string>
-    <string name="quiz_desc">Quiz ini akan menguji kemampuan kalian dalam memperagakan gerakan bahasa isyarat mulai dari Abjad hingga Angka</string>
-    <string name="panduan_quiz">Pada Quiz ini Anda diharapkan untuk memperagakan gerakan dari bahasa isyarat Bisindo, persiapkan diri Anda untuk melakukan gerakan melalui camera Anda masing-masing</string>
-    <string name="quiz_progress_number">Quiz %1$s/%2$s</string>
+    <string name="quiz_desc">Kuis ini akan menguji kemampuan kalian dalam memperagakan gerakan bahasa isyarat mulai dari Abjad hingga Angka</string>
+    <string name="panduan_quiz">Pada Kuis ini Anda diharapkan untuk memperagakan gerakan dari bahasa isyarat Bisindo, persiapkan diri Anda untuk melakukan gerakan melalui camera Anda masing-masing</string>
+    <string name="quiz_progress_number">Kuis %1$s/%2$s</string>
     <string name="quiz_number">Nomor. %1$s</string>
-    <string name="app_bar_quiz">Quiz %1$s</string>
-    <string name="congratulation">Selamat Anda Berhasil Menyelesaikan Quiz</string>
+    <string name="app_bar_quiz">Kuis %1$s</string>
+    <string name="congratulation">Selamat Anda Berhasil Menyelesaikan Kuis</string>
     <string name="long_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui auctor, aliquam ipsum eu, dapibus erat. Nam vel augue vel ipsum hendrerit semper nec nec lectus. Etiam non odio vel metus vestibulum congue. Duis volutpat lorem sit amet nisi interdum, non feugiat sapien cursus. Nunc euismod, augue in hendrerit iaculis, nibh massa faucibus tellus, nec auctor ante nibh in risus. Aliquam erat volutpat. Donec sagittis lacus non tortor dignissim, vel euismod massa tincidunt. Duis gravida, metus ac euismod bibendum, risus elit vestibulum mauris, vitae cursus ligula quam a ante. Praesent a urna a nunc interdum lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus id justo eu sapien sagittis convallis quis eget nisl. Nam aliquam, orci quis congue egestas, leo augue tincidunt velit, vitae euismod ipsum justo vel est. Fusce aliquet tellus in nibh interdum convallis</string>
     <string name="level_user">Level. %1$s</string>
     <string name="exp_quiz">+50 Experience</string>

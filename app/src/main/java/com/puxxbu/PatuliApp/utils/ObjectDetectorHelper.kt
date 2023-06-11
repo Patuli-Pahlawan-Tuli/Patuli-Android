@@ -2,8 +2,6 @@ package com.puxxbu.PatuliApp.utils
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

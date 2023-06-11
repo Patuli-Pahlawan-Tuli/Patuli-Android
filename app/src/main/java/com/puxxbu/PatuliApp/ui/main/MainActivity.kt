@@ -1,15 +1,14 @@
 package com.puxxbu.PatuliApp.ui.main
 
-import android.content.pm.PackageManager
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityMainBinding
-import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraActivity
 import com.puxxbu.PatuliApp.ui.fragments.camera.CameraFragment
 import com.puxxbu.PatuliApp.ui.fragments.camera.PermissionsFragment
@@ -27,14 +26,12 @@ class MainActivity : AppCompatActivity() {
     private val homeViewModel: MainViewModel by viewModel()
 
     private val fragmentManager = supportFragmentManager
-    private val permissionsFragment = PermissionsFragment()
-    private val cameraFragment = CameraFragment()
+
     private val quizFragment = QuizFragment()
     private val lessonFragment = LessonFragment()
     private val profileFragment = ProfileFragment()
     private val homeFragment = HomeFragment()
 
-    private var isLogin : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +54,6 @@ class MainActivity : AppCompatActivity() {
 
         homeViewModel.getSessionData().observe(this) {
             // Tampilkan PermissionsFragment jika user belum memberikan izin
-            if (!checkCameraPermission() && !checkFilePermission()) {
-                fragmentManager.beginTransaction()
-                    .add(
-                        R.id.fragment_container,
-                        permissionsFragment,
-                        PermissionsFragment::class.java.simpleName
-                    )
-                    .commit()
-            }
 
 
             binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -109,30 +97,5 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
     }
-
-    private fun checkCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun checkFilePermission(): Boolean{
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        // Hapus Fragment pada onDestroy()
-//        fragmentManager.beginTransaction()
-//            .remove(permissionsFragment)
-//            .remove(cameraFragment)
-//            .remove(profileFragment)
-//            .commit()
-//    }
 
 }

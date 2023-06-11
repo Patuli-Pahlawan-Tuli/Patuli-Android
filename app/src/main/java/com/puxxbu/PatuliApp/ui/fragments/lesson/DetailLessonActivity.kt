@@ -1,13 +1,10 @@
 package com.puxxbu.PatuliApp.ui.fragments.lesson
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityDetailLessonBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

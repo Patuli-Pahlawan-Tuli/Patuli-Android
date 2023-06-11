@@ -4,12 +4,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.puxxbu.PatuliApp.data.model.QuizModel
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.data.model.QuizModel
 import com.puxxbu.PatuliApp.databinding.DialogChooseQuizBinding
-import com.puxxbu.PatuliApp.databinding.DialogQuizConfirmationBinding
 import com.puxxbu.PatuliApp.databinding.ItemQuizBinding
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
 

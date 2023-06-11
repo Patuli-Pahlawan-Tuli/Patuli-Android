@@ -12,7 +12,7 @@
         android:layout_height="84dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/patuli_gradient"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

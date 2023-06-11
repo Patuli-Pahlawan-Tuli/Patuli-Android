@@ -25,11 +25,11 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"
-        android:layout_height="68dp"
+        android:layout_height="70dp"
 
         android:background="@color/md_theme_light_surfaceVariant"
         app:itemPaddingBottom="12dp"
-        app:itemPaddingTop="6dp"
+        app:itemPaddingTop="10dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
@@ -48,16 +48,17 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_theme_dark_primaryContainer"
+        android:layout_height="56dp"
 
+        android:backgroundTint="@color/md_theme_dark_primaryContainer"
         android:elevation="0dp"
         android:src="@drawable/ic_baseline_sign_language_24"
         app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@+id/shapeableImageView"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
+        app:layout_constraintVertical_bias="0.65"
         app:shapeAppearance="@style/FabCircle"
         app:tint="@color/md_theme_light_onPrimary" />
 

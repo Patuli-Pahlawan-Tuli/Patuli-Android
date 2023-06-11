@@ -1,13 +1,11 @@
 package com.puxxbu.PatuliApp.ui.fragments.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,9 +13,7 @@ import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.itemLesson
 import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.FragmentHomeBinding
-import com.puxxbu.PatuliApp.ui.OnBoardingActivity
 import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonAdapter
-import com.puxxbu.PatuliApp.ui.login.LoginActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

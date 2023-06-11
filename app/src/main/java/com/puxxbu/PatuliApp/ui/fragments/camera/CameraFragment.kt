@@ -3,7 +3,6 @@ package com.puxxbu.PatuliApp.ui.fragments.camera
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,21 +11,14 @@ import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.PopupMenu
-import android.widget.TableLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.MenuRes
-import androidx.annotation.RequiresApi
 import androidx.camera.core.*
-import com.puxxbu.PatuliApp.R
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.tabs.TabLayout
 import com.puxxbu.PatuliApp.databinding.FragmentCameraBinding
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
@@ -69,8 +61,6 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onResume() {
-        val permissionsFragment = PermissionsFragment()
-        val fragmentManager = parentFragmentManager
         super.onResume()
 
         if (job?.isCancelled == true) {

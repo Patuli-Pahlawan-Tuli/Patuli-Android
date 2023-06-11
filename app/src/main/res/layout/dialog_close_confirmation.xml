@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:fontFamily="@font/geologica_regular"
-        android:text="Anda yakin untuk meninggalkan Quiz?"
+        android:text="Anda yakin untuk meninggalkan Kuis?"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 

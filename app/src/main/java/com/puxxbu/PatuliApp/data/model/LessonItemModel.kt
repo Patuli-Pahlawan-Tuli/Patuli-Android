@@ -19,7 +19,7 @@ val itemLesson: List<LessonItemModel> = listOf(
     LessonItemModel(
         "Angka",
         1,
-        "Dalam sesi belajar ini Anda akan diajarkan bagaimana cara memperagakan bahasa isyarat dari angka 0-9 dalam standar Bisindo",
+        "Dalam sesi belajar ini Anda akan diajarkan bagaimana cara memperagakan bahasa isyarat dari angka 0-10 dalam standar Bisindo",
         "Mudah",
         "https://cdn.discordapp.com/attachments/946779825325084682/1116657814283227166/number-blocks.png"
     ),

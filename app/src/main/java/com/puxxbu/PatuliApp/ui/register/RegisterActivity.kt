@@ -1,27 +1,18 @@
 package com.puxxbu.PatuliApp.ui.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityRegisterBinding
 import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.ui.login.LoginActivity
-import com.puxxbu.PatuliApp.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.prefs.Preferences
-import java.util.regex.Pattern
 
 
 class RegisterActivity : AppCompatActivity() {

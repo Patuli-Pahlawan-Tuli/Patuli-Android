@@ -12,8 +12,8 @@ import com.puxxbu.PatuliApp.ui.fragments.home.HomeViewModel
 import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel
 import com.puxxbu.PatuliApp.ui.fragments.profile.ProfileViewModel
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizViewModel
-import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.ui.login.LoginViewModel
+import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.ui.register.RegisterViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

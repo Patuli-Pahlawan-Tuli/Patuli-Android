@@ -1,7 +1,7 @@
 package com.puxxbu.PatuliApp.ui.fragments.camera
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.ActivityCameraBinding
 

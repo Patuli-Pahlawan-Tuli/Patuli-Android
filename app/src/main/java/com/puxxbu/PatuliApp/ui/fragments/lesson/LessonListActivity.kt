@@ -1,12 +1,10 @@
 package com.puxxbu.PatuliApp.ui.fragments.lesson
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.puxxbu.PatuliApp.data.model.detailLessonItem
-import com.puxxbu.PatuliApp.databinding.ActivityDetailLessonBinding
 import com.puxxbu.PatuliApp.databinding.ActivityLessonListBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonListAdapter
 import com.puxxbu.PatuliApp.ui.fragments.lesson.viewmodel.LessonViewModel

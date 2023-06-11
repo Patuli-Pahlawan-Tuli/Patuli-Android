@@ -11,7 +11,6 @@ import android.content.pm.PackageManager
 import android.os.*
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,23 +20,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.BuildConfig
 import com.puxxbu.PatuliApp.PatuliApp.Companion.context
 import com.puxxbu.PatuliApp.data.api.response.file.Data
-import com.puxxbu.PatuliApp.data.model.UserDataModel
-import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.ActivitySplashBinding
 import com.puxxbu.PatuliApp.databinding.DialogChooseModelBinding
-import com.puxxbu.PatuliApp.databinding.DialogQuizDoneBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.ui.main.MainViewModel
 import com.puxxbu.PatuliApp.utils.Event
 import com.puxxbu.PatuliApp.utils.calculateHash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
-import java.io.FileInputStream
-import java.security.MessageDigest
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -139,12 +132,12 @@ class SplashActivity : AppCompatActivity() {
                     homeViewModel.downloadCount.observe(this) {
                         if (it == downloadCount) {
                             Log.d("SplashActivity", "onCreate: $downloadCount")
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "Models downloaded",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+//                            Toast.makeText(
+//                                this@SplashActivity,
+//                                "Models downloaded",
+//                                Toast.LENGTH_SHORT
+//                            )
+//                                .show()
                             homeViewModel.setProceed(Event(true))
                             homeViewModel.isLoading.value = false
                         }
@@ -189,7 +182,7 @@ Log.d("SplashActivity", "downloadModels: ")
             request
                 .setDestinationInExternalFilesDir(this, "models", url.substringAfterLast("/"))
                 .setTitle("Model Download")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                 .setDescription("Downloading model")
             val downloadId = downloadManager.enqueue(request)
             downloadIds.add(downloadId)

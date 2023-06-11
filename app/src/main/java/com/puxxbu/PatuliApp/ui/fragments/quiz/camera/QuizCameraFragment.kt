@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.DialogQuizDoneBinding
@@ -28,7 +28,6 @@ import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizCameraBinding
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizActivity
 import com.puxxbu.PatuliApp.ui.fragments.quiz.QuizViewModel
-import com.puxxbu.PatuliApp.ui.main.MainActivity
 import com.puxxbu.PatuliApp.utils.ObjectDetectorHelper
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -235,7 +234,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         preview =
             Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+                .setTargetResolution(Size(1080, 1920))
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .build()
 
@@ -243,7 +242,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         // ImageAnalysis. Using RGBA 8888 to match how our models work
         imageAnalyzer =
             ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+                .setTargetResolution(Size(1080, 1920))
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)

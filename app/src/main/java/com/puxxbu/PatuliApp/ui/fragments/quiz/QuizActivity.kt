@@ -1,13 +1,11 @@
 package com.puxxbu.PatuliApp.ui.fragments.quiz
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
-import com.puxxbu.PatuliApp.data.api.response.quiz.DataItem
 import com.puxxbu.PatuliApp.databinding.ActivityQuizBinding
 import com.puxxbu.PatuliApp.databinding.DialogCloseConfirmationBinding
 import com.puxxbu.PatuliApp.ui.fragments.quiz.camera.QuizCameraFragment
@@ -56,6 +54,7 @@ class QuizActivity : AppCompatActivity() {
         val difficulty = intent.getStringExtra(EXTRA_QUIZ_DIFFICULTY)
         val level = intent.getIntExtra(EXTRA_LEVEL, 0)
 
+
         quizViewModel.setNumber(intent.getIntExtra(EXTRA_NUMBER, 1))
         binding.apply {
 
@@ -71,7 +70,19 @@ class QuizActivity : AppCompatActivity() {
             }
 
             quizViewModel.quizData.observe(this@QuizActivity) {quiz ->
-                topAppBar.setTitle(getString(R.string.app_bar_quiz, quiz.data[0].quizDifficulty))
+                var tipeKuis = ""
+                when(quiz.data[0].quizDifficulty){
+                    "Beginner" -> {
+                        tipeKuis = "Pemula"
+                    }
+                    "Intermediate" -> {
+                        tipeKuis = "Menengah"
+                    }
+                    "Expert" -> {
+                        tipeKuis = "Mahir"
+                    }
+                }
+                topAppBar.setTitle(getString(R.string.app_bar_quiz, tipeKuis))
                 tvQuizProgress.text = getString(R.string.quiz_progress_number, quiz.data[0].quizNumber.toString(), "5")
                 tvQuestionNumber.text = getString(R.string.quiz_number, quiz.data[0].quizNumber.toString())
                 tvQuestion.text = quiz.data[0].quiz
@@ -99,22 +110,6 @@ class QuizActivity : AppCompatActivity() {
 
 
     }
-
-//    private fun addQuizDataPreferences(quizData : DataItem){
-//        val sharedPreferences = getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
-//
-//        Log.d("QuizActivity", "addQuizDataPreferences: ${quizData.answer} ${quizData.quizNumber}")
-//        val editor = sharedPreferences.edit()
-//
-//        editor.putInt(QuizCameraFragment.EXTRA_SUB_QUIZ, quizData.subQuiz)
-//        editor.putString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, quizData.quizDifficulty)
-//        editor.putInt(QuizCameraFragment.EXTRA_NUMBER, quizData.quizNumber)
-//        editor.putString(QuizCameraFragment.EXTRA_TYPE, quizData.languageType)
-//        editor.putString(QuizCameraFragment.EXTRA_ANSWER, quizData.answer)
-//
-//        editor.apply()
-//    }
-
     private fun showDialogClose(){
         val dialogView = DialogCloseConfirmationBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton

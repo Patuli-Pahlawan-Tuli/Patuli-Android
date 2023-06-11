@@ -4,11 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.puxxbu.PatuliApp.R
-import com.puxxbu.PatuliApp.data.api.response.lesson.DataItem
 import com.puxxbu.PatuliApp.data.model.LessonItemNavModel
-import com.puxxbu.PatuliApp.databinding.ItemDetailLessonBinding
 import com.puxxbu.PatuliApp.databinding.ItemLessonNavigationBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.DetailLessonActivity
 

@@ -5,13 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.puxxbu.PatuliApp.PatuliApp.Companion.context
-import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.api.response.lesson.DataItem
 import com.puxxbu.PatuliApp.databinding.ItemDetailLessonBinding
 import com.puxxbu.PatuliApp.ui.fragments.lesson.DetailLessonActivity

@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.OnboardingActivity">
+    tools:context=".ui.OnBoardingActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="214dp"
-        android:layout_height="214dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/patuli_solid_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="-14dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
@@ -35,9 +35,11 @@
 
     <TextView
         android:id="@+id/app_description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/roboto_regular"
         android:gravity="center"
         android:text="Aplikasi belajar dan penerjemah bahasa isyarat berbasis BISINDO"
@@ -51,9 +53,9 @@
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/md_theme_light_onPrimaryContainer"
         android:fontFamily="@font/roboto_medium"
 
@@ -69,9 +71,9 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginEnd="20dp"
 
 
         android:fontFamily="@font/roboto_medium"
