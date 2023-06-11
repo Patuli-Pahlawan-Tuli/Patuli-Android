@@ -52,7 +52,7 @@
 
         android:backgroundTint="@color/md_theme_dark_primaryContainer"
         android:elevation="0dp"
-        android:src="@drawable/ic_baseline_sign_language_24"
+        android:src="@drawable/ic_baseline_camera_enhance_24"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"

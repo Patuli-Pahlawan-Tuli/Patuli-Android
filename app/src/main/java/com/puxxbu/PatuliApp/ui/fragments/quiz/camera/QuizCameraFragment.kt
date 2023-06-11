@@ -120,6 +120,9 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 //
 
 
+        binding.viewFinder.setOnClickListener {
+            showDialog("Jawaban Benar")
+        }
 
 
 
@@ -338,7 +341,13 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 if (resultResponse.value != "No Result" && resultResponse.value != null) {
                    if (checkAnswer(resultResponse.value!!.lowercase(), answerKey.lowercase()) && !isAnswered){
                        if (quizNumber == maxNumber){
-                           showDialogQuizDone()
+                           val expAmount = when(quizDifficulty.lowercase()) {
+                               "beginner" -> 50
+                               "intermediate" -> 70
+                               "expert" -> 120
+                               else -> 50 // default value jika quizDifficulty tidak cocok dengan kondisi di atas
+                           }
+                           showDialogQuizDone(expAmount)
                        }else{
                            showDialog("Jawaban Benar")
                        }
@@ -414,10 +423,10 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     }
 
-    private fun showDialogQuizDone(){
+    private fun showDialogQuizDone(expAmount : Int){
         val dialogView = DialogQuizDoneBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton
-        val tvTitle = dialogView.dialogTitle
+        dialogView.expGain.text = getString(com.puxxbu.PatuliApp.R.string.exp_quiz, expAmount.toString())
 
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)
@@ -426,7 +435,7 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         quizViewModel.getSessionData().observe(viewLifecycleOwner) {
             quizViewModel.updateSubQuizProgress(it.token, subQuiz)
-            quizViewModel.updateUserExperience(it.token, 50)
+            quizViewModel.updateUserExperience(it.token, expAmount)
         }
 
         val dialog = builder.create()
