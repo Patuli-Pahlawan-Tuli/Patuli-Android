@@ -14,32 +14,39 @@ import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 
 class ProfileViewModel(private val dataRepository: DataRepository) : ViewModel() {
-    val profileData : LiveData<ProfileResponse> = dataRepository.profileResponse
+    val profileData: LiveData<ProfileResponse> = dataRepository.profileResponse
     val profileErrorResponse: LiveData<Event<String>> = dataRepository.profileErrorResponse
     val isLoading: LiveData<Boolean> = dataRepository.isLoading
-    val editProfilePicResponse: LiveData<EditProfilePicResponse> = dataRepository.editProfilePicResponse
-    val editPasswordResponse: LiveData<Event<EditPasswordResponse>> = dataRepository.editPasswordResponse
-    val editPicResponse : LiveData<Event<String>> = dataRepository.profilePicErrorResponse
+    val editProfilePicResponse: LiveData<EditProfilePicResponse> =
+        dataRepository.editProfilePicResponse
+    val editPasswordResponse: LiveData<Event<EditPasswordResponse>> =
+        dataRepository.editPasswordResponse
+    val editPicResponse: LiveData<Event<String>> = dataRepository.profilePicErrorResponse
 
     fun getSessionData(): LiveData<UserDataModel> = dataRepository.getSessionData()
 
-    fun changePassword(token: String, oldPassword: String, newPassword: String, newPasswordConfirmation: String )  {
+    fun changePassword(
+        token: String,
+        oldPassword: String,
+        newPassword: String,
+        newPasswordConfirmation: String
+    ) {
         viewModelScope.launch {
             dataRepository.editPassword(token, oldPassword, newPassword, newPasswordConfirmation)
         }
     }
 
-    fun editProfilePicture(token: String, image: MultipartBody.Part ) {
-        viewModelScope.launch {
-            dataRepository.editProfilePicture(token, image)
-        }
+    fun editProfilePicture(token: String, image: MultipartBody.Part) {
+        dataRepository.editProfilePicture(token, image)
+
     }
 
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
             dataRepository.logout()
         }
     }
-    fun getProfile(token : String) = dataRepository.getProfile(token)
+
+    fun getProfile(token: String) = dataRepository.getProfile(token)
 }

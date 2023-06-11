@@ -136,6 +136,7 @@ class DataRepository constructor(
 
     fun editProfilePicture(token : String, image : MultipartBody.Part){
         _isLoading.value = true
+        Log.d("TAG", "onResponse: CALL editpic")
         val client = apiService.editProfilePicture(token , image)
         client.enqueue(object : retrofit2.Callback<EditProfilePicResponse> {
             override fun onResponse(
@@ -144,6 +145,7 @@ class DataRepository constructor(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
+                    Log.d("TAG", "onResponse: response editpic")
                     _profilePicErrorResponse.value = Event(response.body()?.message.toString())
                     _editProfilePicResponse.value = response.body()
 
@@ -156,6 +158,7 @@ class DataRepository constructor(
             }
 
             override fun onFailure(call: retrofit2.Call<EditProfilePicResponse>, t: Throwable) {
+                _isLoading.value = false
                 Log.d("TAG", "Failed: ${t.message}")
             }
         })

@@ -4,6 +4,8 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -49,6 +51,7 @@ class ProfileFragment : Fragment() {
     private var progressDialog: AlertDialog? = null
     private lateinit var token : String
     private val profileViewModel: ProfileViewModel by viewModel()
+    private var isDialogShown = false
 
 
     private lateinit var launcherIntentGallery: ActivityResultLauncher<Intent>
@@ -66,6 +69,23 @@ class ProfileFragment : Fragment() {
                 getFile = myFile
 
                 if (myFile.length() <= 2 * 1024 * 1024) {
+                    if (getFile != null) {
+                        val file = getFile as File
+                        if (file.length() > 2 * 1024 * 1024) {
+                        } else {
+                            Log.d(TAG, "onGlobalLayout: foto upload")
+                            val reducedFile = reduceFileImage(file)
+                            val requestImageFile = reducedFile.asRequestBody(
+                                "image/jpeg".toMediaTypeOrNull()
+                            )
+                            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                                "file",
+                                reducedFile.name,
+                                requestImageFile
+                            )
+                            editProfilePicture(token, imageMultipart)
+                        }
+                    }
                     Glide.with(requireContext())
                         .load(selectedImg)
                         .into(binding.ivProfilePicture)
@@ -144,6 +164,18 @@ class ProfileFragment : Fragment() {
 
     fun setupView() {
 
+        profileViewModel.editPicResponse.observe(viewLifecycleOwner) { message ->
+            message.getContentIfNotHandled()?.let {
+                Log.d(TAG, "editProfilePicture: $it")
+                hideLoading()
+                if (!isDialogShown) {
+                    showDialog("Ubah Foto Profil")
+                    isDialogShown = true
+                }
+            }
+
+            profileViewModel.getProfile(token)
+        }
 
         showLoading()
         profileViewModel.profileData.observe(viewLifecycleOwner) {
@@ -170,7 +202,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun editProfilePicture(token: String, file: MultipartBody.Part) {
-        showDialogLoading()
+        isDialogShown = false
         Log.d(TAG, "editProfilePicture: EDIT PROFILE PICTURE")
         // Menampilkan dialog progress/loading sebelum mengupload foto
         profileViewModel.editProfilePicture(token, file)
@@ -191,23 +223,7 @@ class ProfileFragment : Fragment() {
         viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                if (getFile != null) {
-                    val file = getFile as File
-                    if (file.length() > 2 * 1024 * 1024) {
-                    } else {
-                        Log.d(TAG, "onGlobalLayout: foto upload")
-                        val reducedFile = reduceFileImage(file)
-                        val requestImageFile = reducedFile.asRequestBody(
-                            "image/jpeg".toMediaTypeOrNull()
-                        )
-                        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                            "file",
-                            reducedFile.name,
-                            requestImageFile
-                        )
-                        editProfilePicture(token, imageMultipart)
-                    }
-                }
+
                 binding.ivProfilePicture.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
@@ -257,10 +273,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLoading() {
-        showDialogLoading()
+        val dialogView = DialogLoadingBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setCancelable(false)
+        builder.setView(dialogView.root)
+        progressDialog = builder.create()
+
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         profileViewModel.isLoading.observe(viewLifecycleOwner) {
-            if (!it) {
-                hideLoading()
+//            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            if (it){
+                progressDialog?.show()
+            }else{
+                progressDialog?.dismiss()
             }
         }
     }
