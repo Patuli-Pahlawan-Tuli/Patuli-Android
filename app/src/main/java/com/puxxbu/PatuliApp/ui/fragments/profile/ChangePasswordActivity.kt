@@ -15,8 +15,6 @@ class ChangePasswordActivity : AppCompatActivity() {
     private val profileViewModel: ProfileViewModel by viewModel()
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePasswordBinding.inflate(layoutInflater)

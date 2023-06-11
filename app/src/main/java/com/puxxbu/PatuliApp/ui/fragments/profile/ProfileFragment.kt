@@ -157,15 +157,11 @@ class ProfileFragment : Fragment() {
     private fun editProfilePicture(token: String, file: MultipartBody.Part) {
         showDialogLoading() // Menampilkan dialog progress/loading sebelum mengupload foto
         profileViewModel.editProfilePicture(token, file)
-        profileViewModel.editProfilePicResponse.observe(viewLifecycleOwner) {
-            if (!it.error) {
-                profileViewModel.editPicResponse.observe(viewLifecycleOwner) { message ->
-                    message.getContentIfNotHandled()?.let {
-                        Log.d(TAG, "editProfilePicture: $it")
-                        hideLoading() // Menyembunyikan dialog progress/loading setelah pengiriman foto selesai
-                        showDialog("Ubah Foto Profil")
-                    }
-                }
+        profileViewModel.editPicResponse.observe(viewLifecycleOwner) { message ->
+            message.getContentIfNotHandled()?.let {
+                Log.d(TAG, "editProfilePicture: $it")
+                hideLoading() // Menyembunyikan dialog progress/loading setelah pengiriman foto selesai
+                showDialog("Ubah Foto Profil")
             }
         }
     }
@@ -189,7 +185,6 @@ class ProfileFragment : Fragment() {
                 if (getFile != null) {
                     val file = getFile as File
                     if (file.length() > 2 * 1024 * 1024) {
-                        // Menampilkan pesan kesalahan jika ukuran file lebih dari 2 MB
                         Toast.makeText(requireContext(), "File terlalu besar (maksimal 2 MB)", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d(TAG, "onGlobalLayout: foto upload")
