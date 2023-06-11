@@ -1,27 +1,23 @@
 package com.puxxbu.PatuliApp.ui.fragments.quiz
 
-import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.PatuliApp
 import com.puxxbu.PatuliApp.R
-import com.puxxbu.PatuliApp.data.model.itemLesson
 import com.puxxbu.PatuliApp.data.model.quizList
 import com.puxxbu.PatuliApp.databinding.DialogQuizInfoBinding
-import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
-import com.puxxbu.PatuliApp.databinding.FragmentHomeBinding
+import com.puxxbu.PatuliApp.databinding.DialogQuizIntroduceBinding
 import com.puxxbu.PatuliApp.databinding.FragmentQuizBinding
-import com.puxxbu.PatuliApp.ui.fragments.home.HomeViewModel
-import com.puxxbu.PatuliApp.ui.fragments.lesson.adapter.LessonAdapter
 import com.puxxbu.PatuliApp.ui.fragments.quiz.adapter.QuizAdapter
-import com.puxxbu.PatuliApp.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -51,6 +47,18 @@ class QuizFragment : Fragment() {
     }
 
     private fun setupData() {
+        val IS_FIRST_TIME = "IsFirstTime"
+
+        val sharedPreferences = PatuliApp.context.getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME, true)
+
+        if (isFirstTime) {
+            showDialogQuizIntroduce()
+            sharedPreferences.edit().putBoolean(IS_FIRST_TIME, false).apply()
+        }
+
+
+
         quizViewModel.getSessionData().observe(viewLifecycleOwner) {
             quizViewModel.getProfile(it.token)
         }
@@ -64,7 +72,7 @@ class QuizFragment : Fragment() {
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.info-> {
-                    showDialogInformation()
+                    showDialogQuizIntroduce()
                     true
                 }
                 else -> false
@@ -112,6 +120,23 @@ class QuizFragment : Fragment() {
     }
     private fun showDialogInformation(){
         val dialogView = DialogQuizInfoBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView.root)
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        dialog.show()
+    }
+
+    private fun showDialogQuizIntroduce(){
+        val dialogView = DialogQuizIntroduceBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton
 
 

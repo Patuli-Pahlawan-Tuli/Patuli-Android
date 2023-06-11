@@ -8,17 +8,19 @@
         android:title="Home"
         />
     <item
+        android:id="@+id/item_2"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_book_24"
+        android:title="Belajar"
+        />
+
+    <item
         android:id="@+id/item_3"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_quiz_24"
         android:title="Kuis"
          />
-<!--    <item-->
-<!--        android:id="@+id/item_3"-->
-<!--        android:enabled="true"-->
-<!--        android:icon="@drawable/ic_baseline_book_24"-->
-<!--        android:title="Belajar"-->
-<!--        />-->
+
     <item
         android:id="@+id/item_4"
         android:enabled="true"

@@ -71,12 +71,14 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigation.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.item_1 -> {
-                        // Tampilkan CameraFragment
-//                        fragmentManager.beginTransaction()
-//                            .replace(R.id.fragment_container, cameraFragment, CameraFragment::class.java.simpleName)
-//                            .commit()
                         fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, homeFragment, HomeFragment::class.java.simpleName)
+                            .commit()
+                        true
+                    }
+                    R.id.item_2 -> {
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, lessonFragment, LessonFragment::class.java.simpleName)
                             .commit()
                         true
                     }

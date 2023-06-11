@@ -40,6 +40,16 @@ fun createCustomTempFile(context: Context): File {
     return File.createTempFile(timeStamp, ".jpg", storageDir)
 }
 
+fun formatDate(inputDate : String) : String{
+    val inputFormat = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z", Locale.US)
+    val outputFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
+
+    val date = inputFormat.parse(inputDate)
+    val outputDate = outputFormat.format(date)
+
+    return outputDate
+}
+
 fun reduceFileImage(file: File): File {
     val bitmap = BitmapFactory.decodeFile(file.path)
     var compressQuality = 100

@@ -70,6 +70,11 @@ class HomeFragment : Fragment() {
             if (it.data != null ) {
                 binding.apply {
                     tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
+                    if (it.data.completedQuiz == 3) {
+                        icStar.setImageResource(R.drawable.ic_baseline_star_24)
+                    } else {
+                        icStar.setImageResource(R.drawable.ic_baseline_star_outline_24)
+                    }
                     progressBar.progress = it.data.completedQuiz
                     Log.d(TAG, "setupView homefragment: ${it.data.completedQuiz}")
                 }
@@ -99,6 +104,8 @@ class HomeFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(it.data.imageUrl)
                         .into(ivProfilePicture)
+                    tvLevel.text = getString(R.string.level_user, it.data.accountLevel.toString())
+                    levelBar.progress = it.data.accountExp % 100
                     tvQuizProgress.text = getString(R.string.quiz_progress, it.data.completedQuiz.toString(), "3")
                     progressBar.progress = it.data.completedQuiz
                 }

@@ -98,4 +98,12 @@ interface ApiService {
         @Field("subQuiz") subQuiz: Int,
     ): Call<QuizProgressResponse>
 
+
+    @FormUrlEncoded
+    @PUT("level/edit-exp")
+    fun updateUserExperience(
+        @Header("Authorization") token: String,
+        @Field("newExp") newExp: Int,
+    ): Call<QuizProgressResponse>
+
 }

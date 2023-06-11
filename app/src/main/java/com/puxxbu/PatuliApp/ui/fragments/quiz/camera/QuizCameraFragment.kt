@@ -423,7 +423,28 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView.root)
 
+        buttonStateForQuiz()
 
+        quizViewModel.getSessionData().observe(viewLifecycleOwner) {
+            quizViewModel.updateSubQuizProgress(it.token, subQuiz)
+            quizViewModel.updateUserExperience(it.token, 50)
+        }
+
+        val dialog = builder.create()
+        okButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            job?.cancel()
+            activity?.finish()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    fun buttonStateForQuiz(){
         when (quizDifficulty.lowercase()) {
             "intermediate" -> subQuiz += 2
             "expert" -> subQuiz += 4
@@ -446,26 +467,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             4 -> quizList[2].subQuiz[0].is_enabled = true
             5 -> quizList[2].subQuiz[1].is_enabled = true
         }
-
-
-        quizViewModel.getSessionData().observe(viewLifecycleOwner) {
-            quizViewModel.updateSubQuizProgress(it.token, subQuiz)
-        }
-
-
-
-        val dialog = builder.create()
-        okButton.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.setOnDismissListener {
-            job?.cancel()
-            activity?.finish()
-            dialog.dismiss()
-        }
-
-        dialog.show()
     }
 
 

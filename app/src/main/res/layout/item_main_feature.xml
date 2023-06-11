@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_lesson"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="16dp"
+    android:paddingBottom="12dp"
+    android:layout_marginEnd="12dp"
+    android:elevation="4dp"
+    android:background="@drawable/shape_rounded_grey"
+
+    android:orientation="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/iv_lesson_photo"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_baseline_sign_language_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_feature_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/md_theme_dark_scrim"
+        android:fontFamily="@font/geologica_medium"
+        android:text="Kamera Penerjemah"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
+        app:layout_constraintTop_toTopOf="@+id/iv_lesson_photo" />
+
+    <TextView
+        android:id="@+id/tv_feature_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/md_theme_dark_scrim"
+        android:fontFamily="@font/geologica_regular"
+        android:text="Pada menu ini anda dapat melakukan penerjemahan secara langsung dari bahasa isyarat Bisindo ke bahasa Indonesia"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feature_title" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/btn_start_lesson"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:background="@drawable/shape_rounded_lighter_grey"-->
+<!--        android:paddingRight="8dp"-->
+<!--        android:paddingLeft="8dp"-->
+<!--        android:paddingTop="5dp"-->
+<!--        android:textSize="12sp"-->
+<!--        android:paddingBottom="5dp"-->
+<!--        android:fontFamily="@font/geologica_regular"-->
+<!--        android:text="@string/show_more"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--    </Button>-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

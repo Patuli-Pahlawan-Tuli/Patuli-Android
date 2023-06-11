@@ -10,7 +10,9 @@
     android:layout_marginStart="12dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="12dp"
-    android:elevation="4dp"
+    android:layout_marginBottom="12dp"
+    android:paddingBottom="14dp"
+    android:elevation="8dp"
     android:background="@drawable/shape_rounded_grey"
 
     android:orientation="vertical"
@@ -30,14 +32,13 @@
         android:id="@+id/tv_difficulty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="-6dp"
         android:background="@drawable/shape_rounded_grey"
         android:backgroundTint="#58CD01"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="Mudah"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_lesson_photo"
         app:layout_constraintEnd_toEndOf="@+id/iv_lesson_photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_lesson_photo" />
@@ -47,36 +48,47 @@
         android:id="@+id/tv_lesson_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/geologica_medium"
         android:text="@string/lesson_title"
+        android:textColor="@color/md_theme_dark_scrim"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
-        app:layout_constraintTop_toTopOf="@+id/iv_lesson_photo" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_lesson_icon"
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_lesson_icon" />
 
     <TextView
         android:id="@+id/tv_lesson_desc"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/geologica_regular"
         android:text="@string/lesson_desc"
         android:textSize="12sp"
+        android:textColor="@color/md_theme_dark_scrim"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lesson_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_needed" />
+
+    <ImageView
+        android:id="@+id/iv_lesson_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_baseline_book_24"
+        app:layout_constraintStart_toEndOf="@+id/iv_lesson_photo"
+        app:layout_constraintTop_toTopOf="@+id/iv_lesson_photo" />
 
     <ImageView
         android:id="@+id/iv_time_needed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="4dp"
         android:src="@drawable/ic_time_needed_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_lesson_desc"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lesson_desc" />
+        app:layout_constraintStart_toStartOf="@+id/iv_lesson_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lesson_title" />
 
     <TextView
         android:id="@+id/tv_time_needed"
@@ -85,6 +97,7 @@
         android:layout_marginStart="8dp"
         android:fontFamily="@font/geologica_regular"
         android:text="@string/time_needed"
+        android:textColor="@color/md_theme_dark_scrim"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_time_needed"
         app:layout_constraintStart_toEndOf="@+id/iv_time_needed"

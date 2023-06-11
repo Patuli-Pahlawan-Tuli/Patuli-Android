@@ -8,29 +8,101 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.profile.ProfileFragment">
 
+    <TextView
+        android:id="@+id/tv_level_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/geologica_medium"
+        android:gravity="center"
+        android:text="@string/level_user"
+        android:textColor="@color/md_theme_light_surfaceTint"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/levelBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:minHeight="10dp"
+        android:progress="0"
+        app:layout_constraintEnd_toStartOf="@+id/iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/tv_level_user"
+        app:layout_constraintTop_toBottomOf="@+id/tv_level_user"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="10dp" />
+
+
+    <TextView
+        android:id="@+id/tv_user_experience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/geologica_regular"
+        android:gravity="center"
+        android:text="@string/current_exp"
+        android:textColor="@color/md_theme_light_surfaceTint"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/levelBar"
+        app:layout_constraintTop_toBottomOf="@+id/levelBar" />
+
+    <TextView
+        android:id="@+id/tv_joined_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/geologica_regular"
+        android:gravity="center"
+        android:text="@string/joined_date"
+        android:textColor="@color/md_theme_light_primary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_edit_photo"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_experience"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_experience" />
+
+
+    <TextView
+        android:id="@+id/tv_user_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/geologica_medium"
+        android:gravity="center"
+        android:text="Data Pribadi"
+        android:textColor="@color/md_theme_dark_scrim"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_joined_date" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_picture"
         android:layout_width="84dp"
         android:layout_height="84dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_level_user" />
 
     <TextView
         android:id="@+id/tv_edit_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto_medium"
+        android:fontFamily="@font/geologica_medium"
         android:gravity="center"
         android:text="@string/change_profile_picture"
         android:textColor="@color/link"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/iv_profile_picture"
         app:layout_constraintTop_toBottomOf="@+id/iv_profile_picture" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -39,17 +111,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:enabled="false"
+
         android:fontFamily="@font/roboto_regular"
 
         android:hint="@string/name"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_edit_photo"
 
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_data"
         app:startIconDrawable="@drawable/ic_baseline_person_24">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -143,18 +215,18 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/md_theme_light_onPrimaryContainer"
         android:enabled="true"
-        android:fontFamily="@font/roboto_medium"
-        android:text="@string/logout"
+        android:fontFamily="@font/geologica_medium"
 
+        android:text="@string/logout"
         android:textColor="@color/md_theme_light_onPrimary"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_password" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ProgressBar

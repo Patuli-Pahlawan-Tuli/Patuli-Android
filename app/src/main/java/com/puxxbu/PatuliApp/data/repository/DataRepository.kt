@@ -65,6 +65,9 @@ class DataRepository constructor(
     private val _updateQuizProgressResponse = MutableLiveData<QuizProgressResponse>()
     val updateQuizProgressResponse: LiveData<QuizProgressResponse> = _updateQuizProgressResponse
 
+    private val _updateExpResponse = MutableLiveData<QuizProgressResponse>()
+    val updateExpResponse: LiveData<QuizProgressResponse> = _updateExpResponse
+
 
     fun postRegister(name: String, email: String, password: String, passwordConfirmation: String) {
         _isLoading.value = true
@@ -354,6 +357,32 @@ class DataRepository constructor(
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
                     _updateQuizProgressResponse.value = response.body()
+                    _responseMessage.value = Event(response.body()?.message.toString())
+                } else {
+                    val errorResponse =
+                        Gson().fromJson(response.errorBody()?.string(), QuizProgressResponse::class.java)
+                    _responseMessage.value = Event(errorResponse.message)
+                    Log.d("TAG", "onResponse: ${errorResponse.message}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<QuizProgressResponse>, t: Throwable) {
+                Log.d("TAG", "Failed: ${t.message}")
+            }
+        })
+    }
+
+    fun updateUserExperience(token: String, newExp : Int){
+        _isLoading.value = true
+        val client = apiService.updateUserExperience(token, newExp)
+        client.enqueue(object : retrofit2.Callback<QuizProgressResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<QuizProgressResponse>,
+                response: retrofit2.Response<QuizProgressResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _updateExpResponse.value = response.body()
                     _responseMessage.value = Event(response.body()?.message.toString())
                 } else {
                     val errorResponse =

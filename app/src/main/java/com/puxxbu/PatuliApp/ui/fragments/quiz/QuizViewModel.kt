@@ -23,9 +23,9 @@ class QuizViewModel (private val dataRepository: DataRepository) : ViewModel() {
     private val _quizAnswer = MutableLiveData<String>()
     val quizAnswer: MutableLiveData<String> = _quizAnswer
 
-    fun updateQuizProgress(token: String, type: String){
+    fun updateUserExperience(token: String, experience: Int){
         viewModelScope.launch {
-            dataRepository.updateQuizProgress(token, type)
+            dataRepository.updateUserExperience(token, experience)
         }
     }
 

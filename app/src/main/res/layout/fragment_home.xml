@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_rounded_lighter_grey"
         android:orientation="vertical"
@@ -28,18 +28,45 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/welcome_name"
-            android:textSize="24sp"
+            android:textColor="@color/md_theme_dark_scrim"
+            android:textSize="26sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_picture"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/levelBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:minHeight="10dp"
+            android:progress="0"
+            app:layout_constraintEnd_toEndOf="@+id/iv_profile_picture"
+            app:layout_constraintStart_toStartOf="@+id/iv_profile_picture"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile_picture"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="10dp" />
+
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/geologica_regular"
+            android:text="@string/level_user"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="@+id/levelBar"
+            app:layout_constraintStart_toStartOf="@+id/levelBar"
+            app:layout_constraintTop_toBottomOf="@+id/levelBar" />
 
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -52,6 +79,7 @@
             android:max="3"
             android:minHeight="10dp"
             android:progress="0"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_profile_picture"
             app:layout_constraintEnd_toStartOf="@+id/iv_profile_picture"
             app:layout_constraintStart_toStartOf="@+id/tv_welcome"
             app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
@@ -62,14 +90,83 @@
             android:id="@+id/tv_quiz_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_regular"
             android:text="@string/quiz_progress"
+            android:textColor="@color/md_theme_dark_scrim"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_level"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
+        <ImageView
+            android:id="@+id/ic_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_quiz_progress"
+            app:layout_constraintStart_toEndOf="@+id/tv_quiz_progress"
+            app:layout_constraintTop_toTopOf="@+id/tv_quiz_progress"
+            app:tint="@color/md_theme_dark_inversePrimary" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_shortcut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+
+        <Button
+            android:id="@+id/btn_previous"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="160dp"
+
+            android:layout_height="52dp"
+
+            android:backgroundTint="#F7F2FA"
+            android:fontFamily="@font/roboto_medium"
+
+            android:text="Penerjemah"
+            android:textColor="@color/md_theme_light_primary"
+            android:textSize="16sp"
+
+            app:icon="@drawable/ic_baseline_sign_language_24"
+            app:iconPadding="6dp"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_quiz"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="160dp"
+
+            android:layout_height="52dp"
+            android:layout_marginLeft="16dp"
+
+            android:backgroundTint="#F7F2FA"
+            android:fontFamily="@font/roboto_medium"
+
+            android:text="Profile"
+            android:textColor="@color/md_theme_light_primary"
+            android:textSize="16sp"
+
+            app:icon="@drawable/ic_baseline_person_24"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -79,9 +176,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

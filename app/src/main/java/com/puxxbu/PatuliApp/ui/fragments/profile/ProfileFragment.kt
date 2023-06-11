@@ -26,6 +26,7 @@ import com.puxxbu.PatuliApp.databinding.DialogLoadingBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
+import com.puxxbu.PatuliApp.utils.formatDate
 import com.puxxbu.PatuliApp.utils.reduceFileImage
 import com.puxxbu.PatuliApp.utils.uriToFile
 import kotlinx.coroutines.delay
@@ -46,6 +47,7 @@ class ProfileFragment : Fragment() {
 
     private var getFile: File? = null
     private var progressDialog: AlertDialog? = null
+    private lateinit var token : String
     private val profileViewModel: ProfileViewModel by viewModel()
 
 
@@ -62,9 +64,15 @@ class ProfileFragment : Fragment() {
                 val myFile = uriToFile(selectedImg, requireContext())
 
                 getFile = myFile
-                Glide.with(requireContext())
-                    .load(selectedImg)
-                    .into(binding.ivProfilePicture)
+
+                if (myFile.length() <= 2 * 1024 * 1024) {
+                    Glide.with(requireContext())
+                        .load(selectedImg)
+                        .into(binding.ivProfilePicture)
+                }else {
+                    Toast.makeText(requireContext(), "File terlalu besar (maksimal 2 MB)", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
     }
@@ -116,13 +124,16 @@ class ProfileFragment : Fragment() {
     private fun setupData() {
         profileViewModel.getSessionData().observe(viewLifecycleOwner) {
             Log.d(TAG, "setupData: GET PROFILE")
+            token = it.token
             profileViewModel.getProfile(it.token)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.ivProfilePicture.viewTreeObserver?.removeOnGlobalLayoutListener(null)
         _fragmentProfileBinding = null
+
         Log.d(TAG, "onDestroyView: profile fragment")
     }
 
@@ -134,10 +145,14 @@ class ProfileFragment : Fragment() {
     fun setupView() {
 
 
-
         showLoading()
         profileViewModel.profileData.observe(viewLifecycleOwner) {
             binding.apply {
+                var currentExp = it.data.accountExp % 100
+                tvLevelUser.text = getString(R.string.level_user, it.data.accountLevel.toString())
+                levelBar.progress = currentExp
+                tvUserExperience.text = getString(R.string.current_exp, currentExp.toString())
+                tvJoinedDate.text = getString(R.string.joined_date, formatDate(it.data.createdAt))
                 tietName.setText(it.data.name)
                 tietEmail.setText(it.data.email)
                 Glide.with(requireContext()).load(it.data.imageUrl).into(ivProfilePicture)
@@ -155,15 +170,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun editProfilePicture(token: String, file: MultipartBody.Part) {
-        showDialogLoading() // Menampilkan dialog progress/loading sebelum mengupload foto
+        showDialogLoading()
+        Log.d(TAG, "editProfilePicture: EDIT PROFILE PICTURE")
+        // Menampilkan dialog progress/loading sebelum mengupload foto
         profileViewModel.editProfilePicture(token, file)
-        profileViewModel.editPicResponse.observe(viewLifecycleOwner) { message ->
-            message.getContentIfNotHandled()?.let {
-                Log.d(TAG, "editProfilePicture: $it")
-                hideLoading() // Menyembunyikan dialog progress/loading setelah pengiriman foto selesai
-                showDialog("Ubah Foto Profil")
-            }
-        }
+
     }
 
     private fun startGallery() {
@@ -180,12 +191,9 @@ class ProfileFragment : Fragment() {
         viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                Log.d(TAG, "onGlobalLayout: foto ganti")
-                Log.d(TAG, "onGlobalLayout: $getFile ")
                 if (getFile != null) {
                     val file = getFile as File
                     if (file.length() > 2 * 1024 * 1024) {
-                        Toast.makeText(requireContext(), "File terlalu besar (maksimal 2 MB)", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d(TAG, "onGlobalLayout: foto upload")
                         val reducedFile = reduceFileImage(file)
@@ -197,9 +205,7 @@ class ProfileFragment : Fragment() {
                             reducedFile.name,
                             requestImageFile
                         )
-                        profileViewModel.getSessionData().observe(viewLifecycleOwner) {
-                            editProfilePicture(it.token, imageMultipart)
-                        }
+                        editProfilePicture(token, imageMultipart)
                     }
                 }
                 binding.ivProfilePicture.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -208,8 +214,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showDialogLoading() {
-
-
         val dialogView = DialogLoadingBinding.inflate(layoutInflater)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setCancelable(false)
@@ -253,8 +257,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLoading() {
+        showDialogLoading()
         profileViewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            if (!it) {
+                hideLoading()
+            }
         }
     }
 

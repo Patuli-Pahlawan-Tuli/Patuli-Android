@@ -32,7 +32,7 @@
         app:itemPaddingTop="6dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
 
@@ -49,17 +49,17 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
+        android:backgroundTint="@color/md_theme_dark_primaryContainer"
 
         android:elevation="0dp"
-        app:shapeAppearance="@style/FabCircle"
-        android:backgroundTint="@color/md_theme_dark_primaryContainer"
         android:src="@drawable/ic_baseline_sign_language_24"
-        android:layout_marginEnd="24dp"
-        app:tint="@color/md_theme_light_onPrimary"
+        app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/shapeableImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/shapeableImageView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
+        app:shapeAppearance="@style/FabCircle"
+        app:tint="@color/md_theme_light_onPrimary" />
 
 
 
