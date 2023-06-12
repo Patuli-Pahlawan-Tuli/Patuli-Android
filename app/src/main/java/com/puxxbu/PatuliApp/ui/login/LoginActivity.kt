@@ -1,5 +1,6 @@
 package com.puxxbu.PatuliApp.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,12 +8,14 @@ import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.puxxbu.PatuliApp.PatuliApp
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.data.model.UserDataModel
 import com.puxxbu.PatuliApp.databinding.ActivityLoginBinding
 import com.puxxbu.PatuliApp.databinding.DialogFailedBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.ui.main.MainActivity
+import com.puxxbu.PatuliApp.ui.onboarding.IntroductionActivity
 import com.puxxbu.PatuliApp.ui.register.RegisterActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var binding: ActivityLoginBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +75,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun setupView() {
+
+
         supportActionBar?.hide()
     }
 
@@ -120,6 +126,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showDialogSuccess(message : String){
+
+
+
         val dialogView = DialogSuccessBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton
         val tvTitle = dialogView.dialogTitle

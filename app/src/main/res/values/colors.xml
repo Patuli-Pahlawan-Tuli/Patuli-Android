@@ -63,4 +63,8 @@
     <color name="md_theme_dark_scrim">#000000</color>
     <color name="link">#0972D3</color>
     <color name="bounding_box_color">#FF6F00</color>
+
+    <color name="pemula">#58CD01</color>
+    <color name="menengah">#FF6F00</color>
+    <color name="mahir">#8C1D18</color>
 </resources>

@@ -3,6 +3,7 @@ package com.puxxbu.PatuliApp.ui.fragments.lesson.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -44,6 +45,14 @@ class LessonAdapter (private val items: List<LessonItemModel>) : RecyclerView.Ad
                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                    .into(ivLessonPhoto)
                tvLessonTitle.text = item.title
+               tvDifficulty.text = item.difficulty
+               var color = when(item.difficulty){
+                   "Pemula" -> R.color.pemula
+                   "Menengah" -> R.color.menengah
+                   "Mahir" -> R.color.mahir
+                   else -> R.color.pemula
+               }
+               ViewCompat.setBackgroundTintList(tvDifficulty, context.getColorStateList(color))
                tvLessonDesc.text = item.description
                tvTimeNeeded.text = context.getString(R.string.time_needed, item.hour_needed.toString())
            }

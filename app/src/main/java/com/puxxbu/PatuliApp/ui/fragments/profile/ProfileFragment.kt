@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.puxxbu.PatuliApp.R
 import com.puxxbu.PatuliApp.databinding.DialogLoadingBinding
+import com.puxxbu.PatuliApp.databinding.DialogLogoutConfirmationBinding
 import com.puxxbu.PatuliApp.databinding.DialogSuccessBinding
 import com.puxxbu.PatuliApp.databinding.FragmentProfileBinding
 import com.puxxbu.PatuliApp.ui.OnBoardingActivity
@@ -46,7 +48,7 @@ class ProfileFragment : Fragment() {
 
     private var getFile: File? = null
     private var progressDialog: AlertDialog? = null
-    private lateinit var token : String
+    private lateinit var token: String
     private val profileViewModel: ProfileViewModel by viewModel()
     private var isDialogShown = false
 
@@ -75,24 +77,30 @@ class ProfileFragment : Fragment() {
                             val requestImageFile = reducedFile.asRequestBody(
                                 "image/jpeg".toMediaTypeOrNull()
                             )
-                            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                                "file",
-                                reducedFile.name,
-                                requestImageFile
-                            )
+                            val imageMultipart: MultipartBody.Part =
+                                MultipartBody.Part.createFormData(
+                                    "file",
+                                    reducedFile.name,
+                                    requestImageFile
+                                )
                             editProfilePicture(token, imageMultipart)
                         }
                     }
                     Glide.with(requireContext())
                         .load(selectedImg)
                         .into(binding.ivProfilePicture)
-                }else {
-                    Toast.makeText(requireContext(), "File terlalu besar (maksimal 2 MB)", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "File terlalu besar (maksimal 2 MB)",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -118,19 +126,8 @@ class ProfileFragment : Fragment() {
             }
 
             btnLogout.setOnClickListener {
-                profileViewModel.logout()
-                lifecycleScope.launch {
-                    delay(500) // menunggu 500ms
-                    parentFragmentManager.popBackStack()
-                }
-                activity?.finishAffinity()
-                activity?.finish()
-                val intentLogout = Intent(requireContext(), OnBoardingActivity::class.java)
-                intentLogout.flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .remove(this@ProfileFragment).commit()
-                startActivity(intentLogout)
+                showDialogClose()
+
                 Log.d(TAG, "setupAction: logout")
             }
         }
@@ -149,6 +146,7 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.ivProfilePicture.viewTreeObserver?.removeOnGlobalLayoutListener(null)
+        progressDialog?.dismiss()
         _fragmentProfileBinding = null
 
         Log.d(TAG, "onDestroyView: profile fragment")
@@ -259,7 +257,12 @@ class ProfileFragment : Fragment() {
         return resizedFile
     }
 
-    private fun calculateScaleFactor(imageWidth: Int, imageHeight: Int, targetWidth: Int, targetHeight: Int): Int {
+    private fun calculateScaleFactor(
+        imageWidth: Int,
+        imageHeight: Int,
+        targetWidth: Int,
+        targetHeight: Int
+    ): Int {
         var scaleFactor = 1
         if (imageWidth > targetWidth || imageHeight > targetHeight) {
             val widthRatio = imageWidth.toFloat() / targetWidth.toFloat()
@@ -280,15 +283,65 @@ class ProfileFragment : Fragment() {
 
         profileViewModel.isLoading.observe(viewLifecycleOwner) {
 //            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-            if (it){
+            if (it) {
                 progressDialog?.show()
-            }else{
+            } else {
                 progressDialog?.dismiss()
             }
         }
     }
 
-    private fun showDialog(message : String){
+
+    private fun showDialogClose() {
+        val dialogView = DialogLogoutConfirmationBinding.inflate(layoutInflater)
+        val okButton = dialogView.okButton
+        val dismissButton = dialogView.btnDismiss
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView.root)
+
+
+        val dialog = builder.create()
+
+
+
+        okButton.setOnClickListener {
+            showDialogLoading()
+            profileViewModel.logout()
+            lifecycleScope.launch {
+                delay(1000) // menunggu 500ms
+                hideLoading()
+                logoutSession()
+            }
+            dialog.dismiss()
+        }
+
+        dismissButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+
+    private fun logoutSession() {
+
+        lifecycleScope.launch {
+            delay(500) // menunggu 500ms
+            parentFragmentManager.popBackStack()
+        }
+        activity?.finishAffinity()
+        activity?.finish()
+        val intentLogout = Intent(requireContext(), OnBoardingActivity::class.java)
+        intentLogout.flags =
+            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        requireActivity().supportFragmentManager.beginTransaction()
+            .remove(this@ProfileFragment).commit()
+        startActivity(intentLogout)
+    }
+
+    private fun showDialog(message: String) {
         val dialogView = DialogSuccessBinding.inflate(layoutInflater)
         val okButton = dialogView.okButton
         val tvTitle = dialogView.dialogTitle

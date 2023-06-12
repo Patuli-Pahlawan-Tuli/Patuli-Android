@@ -95,6 +95,13 @@ class DetailLessonActivity : AppCompatActivity() {
                     .placeholder(circularProgressDrawable)
                     .into(ivLessonPhoto)
                 topAppBar.title = it.data[0].lessonName
+                var lessonName = when(it.data[0].lessonType){
+                    "abjad" -> "Huruf ${it.data[0].lessonName}"
+                    "angka" -> "Angka ${it.data[0].lessonName}"
+                    "kata" -> "${it.data[0].lessonName}"
+                    else -> {}
+                }
+                tvLessonName.text = lessonName.toString()
 
             }
 
