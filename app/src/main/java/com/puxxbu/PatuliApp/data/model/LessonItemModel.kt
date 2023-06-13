@@ -9,19 +9,20 @@ data class LessonItemModel(
 )
 
 val itemLesson: List<LessonItemModel> = listOf(
-    LessonItemModel(
-        "Abjad",
-        1,
-        "Dalam sesi belajar ini Anda akan diajarkan bagaimana cara memperagakan bahasa isyarat dari huruf A-Z dalam standar Bisindo",
-        "Pemula",
-        "https://cdn.discordapp.com/attachments/946779825325084682/1116657813872181258/abc-block.png"
-    ),
+
     LessonItemModel(
         "Angka",
         1,
         "Dalam sesi belajar ini Anda akan diajarkan bagaimana cara memperagakan bahasa isyarat dari angka 0-10 dalam standar Bisindo",
-        "Menengah",
+        "Pemula",
         "https://cdn.discordapp.com/attachments/946779825325084682/1116657814283227166/number-blocks.png"
+    ),
+    LessonItemModel(
+        "Abjad",
+        1,
+        "Dalam sesi belajar ini Anda akan diajarkan bagaimana cara memperagakan bahasa isyarat dari huruf A-Z dalam standar Bisindo",
+        "Menengah",
+        "https://cdn.discordapp.com/attachments/946779825325084682/1116657813872181258/abc-block.png"
     ),
     LessonItemModel(
         "Kata",

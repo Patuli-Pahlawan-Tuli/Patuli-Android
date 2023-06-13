@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Patuli App</string>
+    <string name="app_name">Patuli</string>
     <string name="error_name_empty">Nama tidak boleh kosong</string>
     <string name="hello_blank_fragment">Nama tidak boleh kosong</string>
     <string name="error_email_empty">Email tidak boleh kosong</string>

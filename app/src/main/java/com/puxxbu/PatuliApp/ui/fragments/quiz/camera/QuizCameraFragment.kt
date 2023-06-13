@@ -119,17 +119,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         _binding = FragmentQuizCameraBinding.inflate(inflater, container, false)
 //
 
-
-        binding.viewFinder.setOnClickListener {
-            showDialog("Jawaban Benar")
-        }
-
-
-
-
-
-
-
         isFragmentActive = true
 
         return binding.root
@@ -146,14 +135,6 @@ class QuizCameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         sharedPreferences = requireContext().getSharedPreferences("quiz_data_preferences", Context.MODE_PRIVATE)
 
         Log.d("QuizCameraFragment", "onViewCreated: DIBUATCAMERA}")
-        // Mengambil nilai-nilai dari SharedPreferences
-//        quizDifficulty =
-//            sharedPreferences.getString(QuizCameraFragment.EXTRA_QUIZ_DIFFICULTY, "").toString()
-//        quizNumber = sharedPreferences.getInt(QuizCameraFragment.EXTRA_NUMBER, 0)
-//        languageType = sharedPreferences.getString(QuizCameraFragment.EXTRA_TYPE, "").toString()
-//        answerKey= sharedPreferences.getString(QuizCameraFragment.EXTRA_ANSWER, "").toString()
-
-
 
         Log.d("QuizCameraFragment", "onViewCreated: $answerKey")
         quizViewModel.quizData.observe(viewLifecycleOwner) {
