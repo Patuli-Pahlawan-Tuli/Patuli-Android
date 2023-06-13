@@ -15,6 +15,18 @@
     * Provides gamification that makes users more excited to spell and practice sign language.
     * edit profile according to your preference
 
+- ### Installation
+    For the installation you need to place this URL list inside the local.properties project file.
+    ``` 
+    api.url ="https://master-dot-patuli-project.et.r.appspot.com/api/v1/"
+    abjad.url = "https://storage.googleapis.com/patuli-storage/ML-Model/abjad.tflite"
+    angka.url = "https://storage.googleapis.com/patuli-storage/ML-Model/angka.tflite"
+    kata.url = "https://storage.googleapis.com/patuli-storage/ML-Model/kata.tflite"
+    abjadlite.url = "https://storage.googleapis.com/patuli-storage/ML-Model/abjad_lite.tflite"
+    angkalite.url = "https://storage.googleapis.com/patuli-storage/ML-Model/angka_lite.tflite"
+    katalite.url = "https://storage.googleapis.com/patuli-storage/ML-Model/kata_lite.tflite"
+    ```
+
 
 ## Dependencies
 - [Android ktx](https://developer.android.com/kotlin/coroutines) 
