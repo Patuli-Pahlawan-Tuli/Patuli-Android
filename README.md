@@ -16,7 +16,8 @@
     * edit profile according to your preference
 
 - ### Installation
-    For the installation you need to place this URL list inside the local.properties project file.
+    - Clone this repository
+    - After that you need to place this URL list inside the local.properties project file.
     ``` 
     api.url ="https://master-dot-patuli-project.et.r.appspot.com/api/v1/"
     abjad.url = "https://storage.googleapis.com/patuli-storage/ML-Model/abjad.tflite"
