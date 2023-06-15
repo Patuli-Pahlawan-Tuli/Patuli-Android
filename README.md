@@ -15,6 +15,20 @@
     * Provides gamification that makes users more excited to spell and practice sign language.
     * edit profile according to your preference
 
+ - ### Application Screenshots
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/daca1e69-f6ed-4dd5-9ecc-e1d6e513cc40" width="300" />
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/f1cb79d5-a1b1-4955-adb5-ffb96d1193c9" width="300" />
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/1062c07b-33fc-4f6b-b992-488360dfad75" width="300" />
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/9af0ab8d-06bb-42c9-a5df-ef01d2d262af" width="300" />
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/b972a136-ac8b-4446-a4d5-7b93b36f9140" width="300" />
+   <img src="https://github.com/Patuli-Pahlawan-Tuli/Patuli-Android/assets/61315456/ec458c05-fcbb-4d49-a822-be02aacd62cd" width="300" />
+
+- ### Video Demonstration
+  [Link To App demonstration](https://www.youtube.com/watch?v=EL9E-cWJXW0)
+   
+   
+
+
 - ### Installation
     - Clone this repository
     - After that you need to place this URL list inside the local.properties project file.
